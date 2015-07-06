@@ -1,0 +1,33 @@
+CACHE MANIFEST
+# 000000000000
+
+# Additional resources to cache
+CACHE:
+
+# dhtmlx и metadata.js
+//www.oknosoft.ru/assets/lib/dhtmlx.css
+//www.oknosoft.ru/assets/lib/metadata.css
+//www.oknosoft.ru/assets/lib/dhtmlx.min.js
+//www.oknosoft.ru/assets/lib/metadata.js
+
+# css и картинки
+/data/48.png
+/data/128.png
+/data/paperless.css
+
+
+# offline.html will be displayed if the user is offline
+# FALLBACK:
+# / offline.html
+
+# All other resources (e.g. sites) require the user to be online.
+NETWORK:
+
+# безбумажка
+js/wnd_main.js
+js/scancmd.js
+
+# данные - xml-ки форм, панелей и менюшек
+/data/toolbar_pl.xml
+
+*

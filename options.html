@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta charset="UTF-8">
+    <title>Окнософт: Безбумажка: настройки</title>
+
+    <!--библиотеки dhtmlx и metadata.js-->
+    <script src="//unf.local/lib/dhtmlx_debug.js"></script>
+    <script src="//www.oknosoft.ru/assets/lib/metadata.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="data/paperless.css">
+
+    <script>
+
+        function query_variants(){
+
+            var cname = "БЕЗБУМАЖКА_ВАРИАНТЫ_ОТЧЕТОВ", response, atxt, txt;
+            $p.ajax.get($p.wsql.get_user_param("pl_hs_url") + "/q/constant?name=" + cname).then(
+                    function(req){
+
+                        response = JSON.parse(req.response);
+                        if(response[cname]){
+                            atxt = response[cname].split("\n");
+                            for(var  i in atxt){
+                                if(atxt[i].indexOf("//") != -1 || atxt[i].indexOf("#") != -1)
+                                    continue;
+                                if(txt)
+                                    txt+= "\n" + atxt[i];
+                                else
+                                    txt = atxt[i];
+                            }
+                            $p.wsql.set_user_param("pl_variant", txt);
+                            document.getElementById("pl_variant").value = txt;
+                        }
+
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+        }
+
+        function fill_params(){
+
+            var getp = $p.wsql.get_user_param;
+
+            document.getElementById("pl_hs_url").value = getp("pl_hs_url");
+            document.getElementById("phantom_url").value = getp("phantom_url");
+            document.getElementById("pl_action").value = getp("pl_action");
+            document.getElementById("relayURL").value = getp("relayURL");
+            document.getElementById("remoteHost").value = getp("remoteHost");
+            document.getElementById("remotePort").value = getp("remotePort", "number");
+
+            if(getp("pl_variant"))
+                document.getElementById("pl_variant").value = getp("pl_variant");
+            else
+                query_variants();
+
+            if(getp("reset_local_data"))
+                document.getElementById("reset_local_data").checked = true;
+            if(getp("enable_save_pwd"))
+                document.getElementById("enable_save_pwd").checked = true;
+        }
+
+        function body_on_load(){
+            var variants = document.getElementById("pl_variant");
+            variants.disabled = true;
+            variants.ondblclick = query_variants;
+            $p.wsql.init_params(fill_params);
+        }
+
+        function value_on_change(e){
+            var elm = (e || window.event).target;
+            if(elm.type == "checkbox")
+                $p.wsql.set_user_param(elm.id, elm.checked ? elm.checked : "");
+            else
+                $p.wsql.set_user_param(elm.id, elm.value);
+        }
+    </script>
+
+</head>
+<body onload="body_on_load()">
+
+<div id="tunes">
+    <img src="data/128.png">
+    <div style="display:inline-block; vertical-align: middle;">
+        <div id="name">Окнософт: безбумажка</div>
+        <div id="msg">Настройки приложения<br /></div>
+        <hr />
+        <div>
+            <label for="pl_hs_url" class="labelToControl">URL http-сервиса 1С:</label>
+            <input  id="pl_hs_url" type="search" class="support-hover-two" onchange="value_on_change(event)" />
+            <span class="tip-block">
+                <span class="tip-two">
+                  По умолчанию: <i>/a/main/hs/pl</i><br />Можно использовать как относительный, так и абсолютный url
+                </span>
+            </span>
+        </div>
+        <div>
+            <label for="phantom_url" class="labelToControl">URL сервиса PhantomJS:</label>
+            <input  id="phantom_url" type="search" class="support-hover-two" onchange="value_on_change(event)" />
+            <span class="tip-block">
+                <span class="tip-two">
+                  По умолчанию: <i>/p/</i><br />Можно использовать как относительный, так и абсолютный url
+                </span>
+            </span>
+        </div>
+        <div>
+            <label for="relayURL" class="labelToControl">URL node-сервиса relay:</label>
+            <input  id="relayURL" type="search" class="support-hover-two" onchange="value_on_change(event)" />
+            <span class="tip-block">
+                <span class="tip-two">
+                  По умолчанию: <i>http://192.168.1.103:8080</i>
+                </span>
+            </span>
+        </div>
+        <div>
+            <label for="remoteHost" class="labelToControl">Адрес фурн. станции:</label>
+            <input  id="remoteHost" type="search" class="support-hover-two" onchange="value_on_change(event)" />
+            <span class="tip-block">
+                <span class="tip-two">
+                  По умолчанию: <i>192.168.1.181</i>
+                </span>
+            </span>
+        </div>
+        <div>
+            <label for="remotePort" class="labelToControl">Порт фурн. станции:</label>
+            <input  id="remotePort" type="search" class="support-hover-two" onchange="value_on_change(event)" />
+            <span class="tip-block">
+                <span class="tip-two">
+                  По умолчанию: <i>53508</i>
+                </span>
+            </span>
+        </div>
+
+        <div>
+            <label for="pl_variant" class="labelToControl alignTop">Варианты:<br>
+                <input type="button" onclick="query_variants()" title="Загрузить список вариатнов" value="Прочитать из 1С">
+            </label>
+            <textarea  id="pl_variant" class="support-hover-two" onchange="value_on_change(event)">
+            </textarea>
+            <span class="tip-block">
+             <span class="tip-two">
+              Список доступных вариантов действий (обработок + методов + параметров)
+             </span>
+            </span>
+        </div>
+
+        <div>
+            <label for="pl_action" class="labelToControl">Действие по умолчанию:</label>
+            <input  id="pl_action" type="search" class="support-hover-two" onchange="value_on_change(event)" />
+            <span class="tip-block">
+                <span class="tip-two">
+                  Должен повторять одну из строк константы <i>Варианты</i>
+                </span>
+            </span>
+        </div>
+
+
+        <div style="display: none">
+
+            <div>
+                <label for="reset_local_data">Принудительно перечитать данные с сервера при следующем запуске:&nbsp;</label>
+                <input id="reset_local_data" type="checkbox" onchange="value_on_change(event)"  />
+            </div>
+
+            <div>
+                <label for="enable_save_pwd">Сохранять пароль пользователя (не рекомендуется) :&nbsp;</label>
+                <input id="enable_save_pwd" type="checkbox" onchange="value_on_change(event)"  />
+            </div>
+
+            <button id="save" >Записать</button>
+
+        </div>
+
+        <hr />
+        <a href="chrome://appcache-internals/">Управление кешем HTML5</a>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>

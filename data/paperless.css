@@ -1,0 +1,31 @@
+
+#risdiv {
+    overflow: hidden;
+}
+
+.dhxform_obj_dhx_web div.dhxform_base {
+    margin-right: 22px !important;
+}
+
+.dhxform_obj_dhx_web div.dhxform_item_label_top div.dhxform_label {
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+.pl_combo {
+    margin-top: 5px;
+    float: left;
+    border: none !important;
+}
+
+.pos_r10 {
+    position: fixed;
+    top: 56px;
+    right: 20px;
+}
+
+.pos_r20 {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+}
