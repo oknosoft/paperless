@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<point xmlns="http://v8.1c.ru/8.2/virtual-resource-system"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		base="/kademo"
+		ib="Srvr=&quot;1c-srv&quot;;Ref=&quot;perm-veka&quot;;Usr=Admin;Pwd=;"
+		enable="false">
+	<debug enable="true"
+			url=""/>
+	<ws enable="false"
+			pointEnableCommon="false">
+	</ws>
+	<httpServices publishByDefault="false">
+		<service name="PaperLess"
+				rootUrl="pl"
+				enable="true"/>
+	</httpServices>
+</point>

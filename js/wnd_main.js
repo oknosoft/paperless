@@ -11,16 +11,19 @@ $p.settings = function (prm, modifiers) {
 	prm.offline = false;                        // автономная работа запрещена
 	prm.additionsl_params = [
 		{p: "offline",      v: "", t:"boolean"},
-		{p: "relayURL",     v: "http://192.168.1.103:8080", t:"string"},
-		{p: "remoteHost",   v: "192.168.1.181", t:"string"},
+		{p: "relayURL",     v: "http://paperless.local:8080", t:"string"},  // адрес релейного сервиса для фурнитурной станции
+		{p: "remoteHost",   v: "cutter.local", t:"string"},                 // адрес рубщика фурнитурной станции
 		{p: "remotePort",   v: "53508", t:"number"},
-		{p: "pl_hs_url",    v: "/a/main/hs/pl", t:"string"},
+		{p: "pl_hs_url",    v: "/kademo/hs/pl", t:"string"},
 		{p: "pl_action",    v: "Фурнитура;;;", t:"string"},
 		{p: "pl_variant",   v: "", t:"string"}
 	];
 
 };
 
+/**
+ * Обработчик события при инициализации интерфейса пользователя
+ */
 $p.iface.oninit = function() {
 
 	var iface = $p.iface, prm, v;
