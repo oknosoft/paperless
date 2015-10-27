@@ -5,16 +5,10 @@ CACHE MANIFEST
 CACHE:
 
 # dhtmlx и metadata.js
-//www.oknosoft.ru/assets/lib/dhtmlx.css
-//www.oknosoft.ru/assets/lib/metadata.css
-//www.oknosoft.ru/assets/lib/dhtmlx.min.js
-//www.oknosoft.ru/assets/lib/metadata.js
 
 # css и картинки
 /data/48.png
 /data/128.png
-/data/paperless.css
-
 
 # offline.html will be displayed if the user is offline
 # FALLBACK:
@@ -25,6 +19,7 @@ NETWORK:
 
 # безбумажка
 js/reg.js
+data/paperless.css
 
 # данные - xml-ки форм, панелей и менюшек
 

@@ -1,0 +1,44 @@
+{
+  "enm": {},
+  "cat": { },
+  "doc": {
+    "barcodes": {
+      "name": "Штрихкоды",
+      "synonym": "Штрихкоды",
+      "illustration": "",
+      "obj_presentation": "Штрихкод",
+      "list_presentation": "Штрихкоды",
+      "input_by_string": ["number_doc"],
+      "hierarchical": false,
+      "has_owners": false,
+      "group_hierarchy": true,
+      "main_presentation_name": true,
+      "code_length": 0,
+      "fields": {},
+      "tabular_sections": {},
+      "printing_plates": {},
+      "async_write": "script",
+      "cachable": true,
+      "form": {
+        "selection": {
+          "fields": [
+            "date",
+            "number_doc",
+            "lc_changed"
+          ],
+          "cols": [
+            {"id": "date", "width": "140", "type": "ro", "align": "left", "sort": "server", "caption": "Время"},
+            {"id": "number_doc", "width": "*", "type": "ro", "align": "left", "sort": "server", "caption": "Штрихкод"},
+            {"id": "lc_changed", "width": "120", "type": "ch", "align": "left", "sort": "server", "caption": "Записан в 1С"}
+          ]
+        }
+      }
+    }
+  },
+  "ireg": {},
+  "areg": {},
+  "dp": {},
+  "rep": {},
+  "cch": {},
+  "cacc": {}
+}
