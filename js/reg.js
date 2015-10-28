@@ -14,9 +14,12 @@
  */
 $p.settings = function (prm, modifiers) {
 
-	// для транспорта используем rest, а не сервис http
-	prm.rest = true;
+	// для транспорта используем irest, а не сервис http
+	prm.rest = false;
 	prm.irest_enabled = true;
+
+	// разделитель для localStorage
+	prm.local_storage_prefix = "pl_reg_";
 
 	// расположение rest-сервиса ut
 	prm.rest_path = "/kademo/%1/odata/standard.odata/";
@@ -188,7 +191,7 @@ $p.iface.oninit = function() {
 
 				// обработчик события штрихкода
 				$p.iface.scandrv.onscan.push(function (code) {
-					if(code.length > 14){
+					if(code.length != 15 || code[0] != "G" || isNaN(parseInt(code.substr(1)))){
 						$p.iface.beep.error();
 						return;
 					}
@@ -197,7 +200,13 @@ $p.iface.oninit = function() {
 						.then(function (o) {
 							o.date = new Date();
 							o.number_doc = code;
-							o.save();
+							o.save()
+								.then(function () {
+									$p.iface._scan.wnd.elmnts.grid.reload();
+								})
+								.catch(function (err) {
+									console.log(err);
+								});
 						});
 
 					$p.iface.beep.ok();
@@ -206,8 +215,23 @@ $p.iface.oninit = function() {
 				// список документов штрихкод
 				$p.iface._scan.grid = $p.iface._scan.layout.cells("b");
 				setTimeout(function () {
-					$p.doc.barcodes.form_selection($p.iface._scan.grid, {hide_header: true});
-				}, 100);
+					$p.iface._scan.wnd = $p.doc.barcodes.form_selection($p.iface._scan.grid, {
+						hide_header: true,
+						date_from: new Date(),
+						on_grid_inited: function () {
+
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_select");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("sep1");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_new");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_edit");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_delete");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("sep2");
+
+							$p.iface._scan.wnd.elmnts.filter.input_filter.blur();
+						}
+					});
+
+				}, 40);
 			},
 
 			orders: function(cell){
