@@ -157,8 +157,10 @@ $p.settings = function (prm, modifiers) {
  */
 $p.iface.oninit = function() {
 
-	var hprm,       // параметры URL
-		tabmgrs = { // менеджеры закладок
+	var hprm;       // параметры URL
+
+	// менеджеры закладок
+	$p.iface.tabmgrs = {
 
 			scan: function(cell){
 
@@ -228,6 +230,10 @@ $p.iface.oninit = function() {
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("sep2");
 
 							$p.iface._scan.wnd.elmnts.filter.input_filter.blur();
+
+							$p.iface._scan.wnd.elmnts.grid.attachEvent("onCheck", function(rid,cind,state){
+								$p.iface._scan.wnd.elmnts.grid.cells(rid,2).setValue(!state);
+							});
 						}
 					});
 
@@ -235,6 +241,15 @@ $p.iface.oninit = function() {
 			},
 
 			orders: function(cell){
+
+				if($p.iface._orders)
+					return;
+
+				$p.iface._orders = {
+					dp: $p.dp.provider_orders.create()
+				};
+				$p.iface._orders.grid = cell.attachTabular({obj: $p.iface._orders.dp, ts: "orders"});
+
 
 			},
 
@@ -244,9 +259,21 @@ $p.iface.oninit = function() {
 
 			settings: function(cell){
 
-	}
+				if($p.iface._settings)
+					return;
 
-		}; // менеджеры закладок
+				$p.iface._settings = {
+					dp: $p.dp.provider_orders.create()
+				};
+				$p.iface._settings.grid = cell.attachHeadFields({obj: $p.iface._settings.dp});
+				var fields = $p.iface._settings.dp._metadata.fields;
+				for(var fld in fields){
+					$p.iface._settings.dp[fld] = $p.job_prm[fld] || $p.wsql.get_user_param(fld);
+				}
+
+			}
+
+		};
 
 	// midi пикалка - инфонмирует об успешном и ошибочном сканировании
 	$p.iface.beep = {
@@ -269,12 +296,12 @@ $p.iface.oninit = function() {
 					.setAttackDuration( 0.05 )      //  Attack ramp up duration in seconds.
 					.setDecayDuration( 0.05 )       //  Decay ramp down duration in seconds.
 					.setSustainGain( 0.5 )          //  Sustain gain level; percent of attackGain.
-					.setSustainDuration( 0.07 )     //  Sustain duration in seconds -- normally Infinity.
-					.setReleaseDuration( 0.07 )     //  Release ramp down duration in seconds.
+					.setSustainDuration( 0.1 )     //  Sustain duration in seconds -- normally Infinity.
+					.setReleaseDuration( 0.05 )     //  Release ramp down duration in seconds.
 					.play( 4 );
 			}
 			for(var count = 0; count < 3; count++)
-				setTimeout(play, count * 250);
+				setTimeout(play, count * 300);
 
 		}
 	};
@@ -317,7 +344,7 @@ $p.iface.oninit = function() {
 			$p.iface.set_hash(hprm.obj, hprm.ref, hprm.frm, id);
 
 		setTimeout(function () {
-			tabmgrs[id]($p.iface.main.cells(id))
+			$p.iface.tabmgrs[id]($p.iface.main.cells(id))
 		});
 
 		return true;

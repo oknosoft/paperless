@@ -37,7 +37,121 @@
   },
   "ireg": {},
   "areg": {},
-  "dp": {},
+  "dp": {
+    "provider_orders": {
+      "name": "provider_orders",
+      "synonym": "Заказы поставщикам",
+      "illustration": "",
+      "obj_presentation": "",
+      "list_presentation": "",
+      "hierarchical": false,
+      "has_owners": false,
+      "group_hierarchy": false,
+      "main_presentation_name": false,
+      "code_length": 0,
+      "fields": {
+        "user_name": {
+          "synonym": "Имя пользователя",
+          "multiline_mode": false,
+          "tooltip": "",
+          "type": {
+            "types": ["string"],
+            "str_len": 50
+          }
+        },
+        "user_pwd": {
+          "synonym": "Пароль",
+          "multiline_mode": false,
+          "tooltip": "",
+          "type": {
+            "types": ["string"],
+            "str_len": 50
+          }
+        },
+        "zone": {
+          "synonym": "Разделитель публикации fresh",
+          "multiline_mode": false,
+          "tooltip": "Для неразделенной базы = 0",
+          "type": {
+            "types": ["number"],
+            "digits": 9,
+            "fraction_figits": 0
+          }
+        },
+        "rest_path": {
+          "synonym": "Адрес rest 1C",
+          "multiline_mode": false,
+          "tooltip": "Относительный либо абсолютный url вида /kademo/%1/odata/standard.odata/",
+          "type": {
+            "types": ["string"],
+            "str_len": 512
+          }
+        },
+        "reg_path": {
+          "synonym": "Адрес команды регистрации",
+          "multiline_mode": false,
+          "tooltip": "Относительный либо абсолютный url вида /kademo/%1/hs/rest/Module_пзБезбумажкаСервер/ЗарегистрироватьМассивШтрихкодов/ или /kademo/%1/hs/rest/ExternalReport_РегистрацияСтеклопакетов/Зарегистрировать/",
+          "type": {
+            "types": [
+              "string"
+            ],
+            "str_len": 512
+          }
+        },
+        "report_path": {
+          "synonym": "Адрес команды отчета",
+          "multiline_mode": false,
+          "tooltip": "Относительный либо абсолютный url вида /kademo/%1/hs/rest/ExternalReport_РегистрацияСтеклопакетов/Отчет/",
+          "type": {
+            "types": [
+              "string"
+            ],
+            "str_len": 512
+          }
+        }
+      },
+      "tabular_sections": {
+        "orders": {
+          "name": "Заказы",
+          "synonym": "Заказы поставщикам",
+          "tooltip": "",
+          "fields": {
+            "order": {
+              "synonym": "Заказ",
+              "multiline_mode": false,
+              "tooltip": "Заказ поставщику",
+              "choice_groups_elm": "elm",
+              "type": {
+                "types": [
+                  "doc.ЗаказПоставщику"
+                ],
+                "is_ref": true
+              }
+            }
+          }
+        }
+      },
+      "form": {
+        "obj": {
+          "head": {
+            "Авторизация": ["user_name", {"id": "user_pwd", "path": "o.user_pwd", "synonym": "Пароль", "type": "pwd"}],
+            "Подключение к 1С": ["zone", "rest_path", "reg_path", "report_path"]
+          },
+          "tabular_sections": {
+            "orders":  {
+              "fields": ["row","order"],
+              "headers": "№,Заказ поставщику",
+              "widths": "40,*",
+              "min_widths": "40,200",
+              "aligns": "",
+              "sortings": "na,na",
+              "types": "cntr,ref"
+            }
+          }
+        }
+      }
+    }
+  },
   "rep": {},
   "cch": {},
   "cacc": {}
