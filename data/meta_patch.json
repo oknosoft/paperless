@@ -1,6 +1,15 @@
 {
   "enm": {},
-  "cat": { },
+  "cat": {
+    "Подразделения": {
+      "printing_plates": {},
+      "cachable": true
+    },
+    "Организации": {
+      "printing_plates": {},
+      "cachable": true
+    }
+  },
   "doc": {
     "barcodes": {
       "name": "Штрихкоды",
@@ -27,10 +36,51 @@
             "lc_changed"
           ],
           "cols": [
-            {"id": "date", "width": "140", "type": "ro", "align": "left", "sort": "server", "caption": "Время"},
+            {"id": "date", "width": "120", "type": "ro", "align": "left", "sort": "server", "caption": "Время"},
             {"id": "number_doc", "width": "*", "type": "ro", "align": "left", "sort": "server", "caption": "Штрихкод"},
-            {"id": "lc_changed", "width": "120", "type": "ch", "align": "left", "sort": "server", "caption": "Записан в 1С"}
+            {"id": "lc_changed", "width": "60", "type": "ch", "align": "left", "sort": "server", "caption": "В 1С"}
           ]
+        }
+      }
+    },
+    "ЗаказПоставщику": {
+      "printing_plates": {},
+      "form": {
+        "selection": {
+          "fields": [
+            "date",
+            "number_doc",
+            "Контрагент",
+            "СуммаДокумента",
+            "posted",
+            "Комментарий"
+          ],
+          "cols": [
+            {"id": "date", "width": "120", "type": "ro", "align": "left", "sort": "server", "caption": "Дата"},
+            {"id": "number_doc", "width": "120", "type": "ro", "align": "left", "sort": "server", "caption": "Номер"},
+            {"id": "Контрагент", "width": "170", "type": "ro", "align": "left", "sort": "server", "caption": "Контрагент"},
+            {"id": "СуммаДокумента", "width": "120", "type": "ron", "align": "right", "sort": "server", "caption": "Сумма"},
+            {"id": "Комментарий", "width": "*", "type": "ro", "align": "left", "sort": "server", "caption": "Комментарий"}
+          ]
+        },
+        "obj": {
+          "head": {
+            " ": ["number_doc", "date", "Организация", "Контрагент", "Договор"],
+            "Дополнительно": ["Склад", "Подразделение", "Ответственный", "Комментарий",
+              {"id": "СуммаДокумента", "path": "o.СуммаДокумента", "synonym": "Сумма документа", "type": "ro"}
+            ]
+          },
+          "tabular_sections": {
+            "Товары":  {
+              "fields": ["row","Номенклатура","ХарактеристикаНоменклатуры","Количество","ЕдиницаИзмерения","Цена","Сумма"],
+              "headers": "№,Номенклатура,Характеристика,Колич.,Ед,Цена,Сумма,",
+              "widths": "40,*,*,70,50,70,70",
+              "min_widths": "40,200,140,70,50,70,70",
+              "aligns": "",
+              "sortings": "na,na,na,na,na,na,na",
+              "types": "cntr,ref,ref,calck,refc,calck,ron"
+            }
+          }
         }
       }
     }
@@ -108,6 +158,16 @@
             ],
             "str_len": 512
           }
+        },
+        "department": {
+          "synonym": "Подразделение",
+          "multiline_mode": false,
+          "tooltip": "",
+          "choice_groups_elm": "elm",
+          "type": {
+            "types": ["cat.Подразделения"],
+            "is_ref": true
+          }
         }
       },
       "tabular_sections": {
@@ -135,7 +195,8 @@
         "obj": {
           "head": {
             "Авторизация": ["user_name", {"id": "user_pwd", "path": "o.user_pwd", "synonym": "Пароль", "type": "pwd"}],
-            "Подключение к 1С": ["zone", "rest_path", "reg_path", "report_path"]
+            "Подключение к 1С": ["zone", "rest_path", "reg_path", "report_path"],
+            "Регистрация": ["department"]
           },
           "tabular_sections": {
             "orders":  {

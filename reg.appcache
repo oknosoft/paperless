@@ -1,14 +1,60 @@
 CACHE MANIFEST
-# 000000000001
+# 000000000000
 
 # Additional resources to cache
 CACHE:
 
 # dhtmlx и metadata.js
+lib/alasql.min.js
+lib/beep/beep.min.js
+lib/dhtmlx.min.js
+js/scan_driver.js
+
+# Эти позиции включаем только в продакшене
+# lib/metadata.js
+# js/reg.js
+# js/worker.js
+# data/create_tables.sql
+# data/meta.json?v=201510300000
+# data/meta_patch.json?v=201510300000
+# data/zones/0/p_0.json?v=201510300000
 
 # css и картинки
-/data/48.png
-/data/128.png
+lib/dhtmlx.css
+lib/metadata.css
+data/paperless.css
+
+lib/imgs/dhxtabbar_web/dhxtabbar_arrows.gif
+lib/imgs/dhxlayout_web/dhxlayout_sep_h.gif
+lib/imgs/dhxlayout_web/dhxlayout_cell_btns.gif
+lib/imgs/dhxtoolbar_web/dhxtoolbar_arrow.gif
+lib/imgs/dhxtoolbar_web/print.gif
+lib/imgs/dhxtoolbar_web/tb_more_w.png
+lib/imgs/dhxtoolbar_web/tb_new_dis.png
+lib/imgs/dhxtoolbar_web/tb_edit_dis.png
+lib/imgs/dhxtoolbar_web/tb_delete_dis.png
+lib/imgs/dhxtoolbar_web/document_load.png
+lib/imgs/dhxtoolbar_web/document_save.png
+lib/imgs/dhxtabbar_web/dhxtabbar_cell_progress.gif
+lib/imgs/dhxgrid_web/sort_desc.gif
+lib/imgs/dhxtree_web/catelm.gif
+lib/imgs/dhxgrid_web/sort_asc.gif
+lib/imgs/dhxgrid_web/item_chk1.gif
+lib/imgs/dhxgrid_web/paging_pages.gif
+lib/imgs/dhxgrid_web/paging_rows.gif
+lib/imgs/dhxgrid_web/paging_page.gif
+lib/imgs/dhxgrid_web/ar_right_dis.gif
+lib/imgs/dhxgrid_web/ar_right_abs_dis.gif
+lib/imgs/dhxgrid_web/ar_left_dis.gif
+lib/imgs/dhxgrid_web/ar_left_abs_dis.gif
+lib/imgs/dhxtoolbar_web/execute.png
+lib/imgs/dhxtoolbar_web/full_screen.png
+lib/imgs/dhxtoolbar_web/close.png
+lib/imgs/dhxtoolbar_web/tb_new.png
+lib/imgs/dhxtoolbar_web/tb_delete.png
+lib/imgs/dhxgrid_skyblue/tree/minus.gif
+lib/imgs/dhxgrid_skyblue/tree/blank.gif
+
 
 # offline.html will be displayed if the user is offline
 # FALLBACK:

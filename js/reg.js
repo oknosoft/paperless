@@ -24,6 +24,9 @@ $p.settings = function (prm, modifiers) {
 	// расположение rest-сервиса ut
 	prm.rest_path = "/kademo/%1/odata/standard.odata/";
 
+	// адрес команды регистрации
+	prm.reg_path = "/kademo/hs/rest/Module_пзБезбумажкаСервер/ЗарегистрироватьМассивШтрихкодов/";
+
 	// по умолчанию, обращаемся к зоне %%%
 	prm.zone = 0;
 
@@ -55,43 +58,40 @@ $p.settings = function (prm, modifiers) {
 	modifiers.push(function($p){
 
 		var _mgr = $p.doc.barcodes, // менеджер документа штрихкодов
+			db_name = "paperless",
 			store_name = "barcodes";
 
-		function connect_idx_store(name){
-
-			return new Promise(function(resolve, reject){
-				var request = indexedDB.open(name, 1);
-				request.onerror = function(err){
-					reject(err);
-				};
-				request.onsuccess = function(){
-					// При успешном открытии вызвали коллбэк передав ему объект БД
-					resolve(request.result);
-				};
-				request.onupgradeneeded = function(e){
-					// Если БД еще не существует, то создаем хранилище объектов.
-					e.currentTarget.result.createObjectStore(name, { keyPath: "ref" });
-					return connect_idx_store(name);
-				}
-			});
-		}
-
-		connect_idx_store(store_name)
+		$p.wsql.idx_connect(db_name, store_name)
 			.then(function (idx_store) {
 
-				function save_idxdb(o){
-					var request = idx_store.transaction([store_name], "readwrite").objectStore(store_name).put(o._obj);
-					request.onerror = function(err){
-						console.log(err);
-					};
-					request.onsuccess = function(){
-						return request.result;
-					}
-				}
-
 				// попытка синхронизации всех незасинхронизированных
-				function try_sync(){
-
+				function try_sync(arr){
+					// если массив не задан, ищем все незасинхронизированные
+					if(!arr)
+						arr = _mgr.find_rows({lc_changed: 0});
+					if(!arr.length)
+						return;
+					var prm = JSON.stringify(arr.map(function(o) {
+							return o._obj;
+						})),
+						rattr = {};
+					$p.ajax.default_attr(rattr, $p.wsql.get_user_param("reg_path") || $p.job_prm.reg_path);
+					rattr.url += "?arr=" + prm + "&department=" + $p.wsql.get_user_param("department");
+					$p.ajax.get_ex(rattr.url, rattr)
+						.then(function (req) {
+							prm = JSON.parse(req.response);
+							prm.forEach(function (o) {
+								if(!o.error){
+									var obj = _mgr.get(o.ref);
+									obj.lc_changed = o.lc_changed;
+									obj.save();
+								}
+							});
+						})
+						.then(function () {
+							$p.iface._scan.wnd.elmnts.grid.reload();
+						})
+						.catch($p.record_log);
 				}
 
 
@@ -113,9 +113,6 @@ $p.settings = function (prm, modifiers) {
 					};
 				}
 
-				// такт синхронизации запускаем раз в минуту
-				setInterval(try_sync, 60000);
-
 				/**
 				 * Обработчик события "перед записью"
 				 * @this {DataObj} - обработчик вызывается в контексте текущего объекта
@@ -123,32 +120,79 @@ $p.settings = function (prm, modifiers) {
 				 */
 				_mgr.attache_event("before_save", function (attr) {
 
+					var obj = this;
+
 					// запишем в indexeddb, чтобы восстановить после перезапуска браузера
-					save_idxdb(this);
+					$p.wsql.idx_save(obj, idx_store, store_name)
+						.then(function () {
+							if(!obj.lc_changed)
+								try_sync([obj])
+						});
 
 					return false;
 				});
 
 				_mgr.__define({
-					clear_idxdb: {
+
+					idxdb_clesr: {
 						value: function (date) {
 
 						}
+					},
+
+					idxdb_sync: {
+						value: function (arr) {
+							try_sync(arr);
+						}
+					},
+
+					register_code: {
+						value: function (code){
+							//http://paperless.oknosoft.local/#s=G00122086061701
+
+							// защита от ложных срабатываний
+							if(code.length != 15 || code[0] != "G" || isNaN(parseInt(code.substr(1)))){
+								if(code.length > 6)
+									$p.iface.beep.error();
+								return;
+							}
+
+							_mgr.create()
+								.then(function (o) {
+									o.date = new Date();
+									o.number_doc = code;
+									o._set_loaded(o.ref);
+									o.save()
+										.then(function () {
+											if($p.iface._scan)
+												$p.iface._scan.wnd.elmnts.grid.reload();
+										})
+										.catch($p.record_log);
+								});
+
+							$p.iface.beep.ok();
+						}
 					}
+
+
 				});
+
+				// если штрихкод передали в url - регистрируем
+				if($p.job_prm._s){
+					_mgr.register_code($p.job_prm._s);
+					delete $p.job_prm._s;
+				}
 
 				// читаем кеш
 				restore_idxdb();
 
+				// такт синхронизации запускаем раз в три минуты
+				setInterval(try_sync, 200000);
+
 			})
-			.catch(function (err) {
-				console.log(err);
-			});
-
-
+			.catch($p.record_log);
 
 	});
-
 
 };
 
@@ -159,10 +203,12 @@ $p.iface.oninit = function() {
 
 	var hprm;       // параметры URL
 
-	// менеджеры закладок
+
+
+	// менеджеры закладок - их можно растащить по разным файлам
 	$p.iface.tabmgrs = {
 
-			scan: function(cell){
+		scan: function(cell){
 
 				if($p.iface._scan)
 					return;
@@ -192,26 +238,8 @@ $p.iface.oninit = function() {
 				$p.iface.scandrv = new $p.iface.ScanDriver($p.iface._scan.input);
 
 				// обработчик события штрихкода
-				$p.iface.scandrv.onscan.push(function (code) {
-					if(code.length != 15 || code[0] != "G" || isNaN(parseInt(code.substr(1)))){
-						$p.iface.beep.error();
-						return;
-					}
-
-					$p.doc.barcodes.create()
-						.then(function (o) {
-							o.date = new Date();
-							o.number_doc = code;
-							o.save()
-								.then(function () {
-									$p.iface._scan.wnd.elmnts.grid.reload();
-								})
-								.catch(function (err) {
-									console.log(err);
-								});
-						});
-
-					$p.iface.beep.ok();
+				$p.iface.scandrv.onscan.push(function(code) {
+					$p.doc.barcodes.register_code(code);
 				});
 
 				// список документов штрихкод
@@ -222,15 +250,33 @@ $p.iface.oninit = function() {
 						date_from: new Date(),
 						on_grid_inited: function () {
 
+							$p.iface._scan.wnd.elmnts.filter.input_filter.blur();
+
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_select");
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("sep1");
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_new");
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_edit");
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("btn_delete");
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("sep2");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("lbl_filter");
+							$p.iface._scan.wnd.elmnts.toolbar.hideItem("input_filter");
+							$p.iface._scan.wnd.elmnts.toolbar.setItemText("lbl_date_from", "с:");
 
-							$p.iface._scan.wnd.elmnts.filter.input_filter.blur();
+							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "sync", "~", "button", "Выгрузить 1С", "execute.png");
+							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "full_screen", "~", "button", "Полный экран", "full_screen.png");
+							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "clear", "~", "button", "Удалить устаревшие данные", "close.png");
+							$p.iface._scan.wnd.elmnts.toolbar.attachEvent("onclick", function(btn_id){
+								if(btn_id=="full_screen"){
+									if(document.documentElement.webkitRequestFullScreen)
+										document.documentElement.webkitRequestFullScreen();
+									else if(document.documentElement.mozRequestFullScreen)
+										document.documentElement.mozRequestFullScreen();
 
+								}else if(btn_id=="sync")
+									$p.doc.barcodes.idxdb_sync();
+							});
+
+							// запрещыем редактирование флажком
 							$p.iface._scan.wnd.elmnts.grid.attachEvent("onCheck", function(rid,cind,state){
 								$p.iface._scan.wnd.elmnts.grid.cells(rid,2).setValue(!state);
 							});
@@ -240,7 +286,7 @@ $p.iface.oninit = function() {
 				}, 40);
 			},
 
-			orders: function(cell){
+		orders: function(cell){
 
 				if($p.iface._orders)
 					return;
@@ -253,11 +299,11 @@ $p.iface.oninit = function() {
 
 			},
 
-			report: function(cell){
+		report: function(cell){
 
 			},
 
-			settings: function(cell){
+		settings: function(cell){
 
 				if($p.iface._settings)
 					return;
@@ -270,10 +316,44 @@ $p.iface.oninit = function() {
 				for(var fld in fields){
 					$p.iface._settings.dp[fld] = $p.job_prm[fld] || $p.wsql.get_user_param(fld);
 				}
+				Object.observe($p.iface._settings.dp, function (changes) {
+					changes.forEach(function(change){
+						var v = $p.iface._settings.dp[change.name];
+						if($p.is_data_obj(v))
+							v = v.ref;
+						$p.wsql.set_user_param(change.name, v);
+					});
+				}, ["update"]);
 
+			},
+
+		worker: function () {
+			var worker = new Worker('js/worker.js');
+			worker.addEventListener('message', function(e) {
+				if(e.data.action == "lazy_load"){
+					var mgr = $p.md.mgr_by_class_name(e.data.class_name),
+						data = [];
+					e.data.res.value.forEach(function (rdata) {
+						data.push($p.rest.to_data(rdata, mgr));
+					});
+					mgr.load_array(data, true);
+
+				}else
+					console.log('Worker said: ', e.data);
+			}, false);
+
+			var attr = {
+				action: "lazy_load",
+				username: $p.wsql.get_user_param("user_name"),
+				password: $p.wsql.get_user_param("user_pwd"),
+				class_name: "cat.Подразделения"
+			};
+			if(attr.username){
+				$p.rest.build_select(attr, $p.cat.Подразделения);
+				worker.postMessage(attr);
 			}
-
-		};
+		}
+	};
 
 	// midi пикалка - инфонмирует об успешном и ошибочном сканировании
 	$p.iface.beep = {
@@ -367,16 +447,20 @@ $p.iface.oninit = function() {
 
 	$p.eve.auto_log_in()
 		.then(function () {
+
+			$p.iface.tabmgrs.worker();
+
 			hprm = $p.job_prm.parse_url();
-			if(!hprm.view || $p.iface.main.getAllTabs().indexOf(hprm.view) == -1)
+			if(hprm.hasOwnProperty("s"))
+				$p.job_prm._s = hprm.s;
+
+			if(hprm.view != "scan")
 				$p.iface.set_hash(hprm.obj, hprm.ref, hprm.frm, "scan");
 			else
-				setTimeout($p.iface.hash_route);
-		})
-		.catch(function (err) {
-			console.log(err);
-		});
+				setTimeout($p.iface.hash_route, 40);
 
+		})
+		.catch($p.record_log);
 
 };
 
