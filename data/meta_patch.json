@@ -1,5 +1,23 @@
 {
-  "enm": {},
+  "enm": {
+    "СостоянияОтправки": [
+      {
+        "order": 0,
+        "name": "Отправленные",
+        "synonym": "Отправленные"
+      },
+      {
+        "order": 1,
+        "name": "НеОтправленные",
+        "synonym": "Не отправленные"
+      },
+      {
+        "order": 2,
+        "name": "Все",
+        "synonym": "Все"
+      }
+    ]
+  },
   "cat": {
     "Подразделения": {
       "printing_plates": {},
@@ -211,6 +229,41 @@
           }
         }
       }
+    },
+    "drop_prm": {
+      "name": "drop_prm",
+      "synonym": "Параметры удаления",
+      "illustration": "",
+      "obj_presentation": "",
+      "list_presentation": "",
+      "hierarchical": false,
+      "has_owners": false,
+      "group_hierarchy": false,
+      "main_presentation_name": false,
+      "code_length": 0,
+      "fields": {
+        "state": {
+          "synonym": "Состояние",
+          "multiline_mode": false,
+          "tooltip": "",
+          "type": {
+            "types": ["enm.СостоянияОтправки"],
+            "is_ref": true
+          }
+        },
+        "date": {
+          "synonym": "Дата ранее",
+          "multiline_mode": false,
+          "tooltip": "События ранее этой даты будут удалены",
+          "type": {
+            "types": [
+              "date"
+            ],
+            "date_part": "date_time"
+          }
+        }
+      },
+      "tabular_sections": {}
     }
   },
   "rep": {},

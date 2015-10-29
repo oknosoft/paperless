@@ -135,8 +135,22 @@ $p.settings = function (prm, modifiers) {
 				_mgr.__define({
 
 					idxdb_clesr: {
-						value: function (date) {
+						value: function () {
+							var prm = $p.dp.drop_prm.create();
+							prm.date = new Date();
+							prm.state = $p.enm.СостоянияОтправки.Отправленные;
 
+							var options = {
+									name: 'text',
+									wnd: {
+										caption: "Параметры удаления",
+										width: 290,
+										height: 160
+									}
+								},
+								wnd = $p.iface.dat_blank(null, options.wnd),
+								grid = wnd.attachHeadFields({obj: prm});
+							wnd.center();
 						}
 					},
 
@@ -262,6 +276,9 @@ $p.iface.oninit = function() {
 							$p.iface._scan.wnd.elmnts.toolbar.hideItem("input_filter");
 							$p.iface._scan.wnd.elmnts.toolbar.setItemText("lbl_date_from", "с:");
 
+							$p.iface._scan.wnd.elmnts.toolbar.removeListOption("bs_more", "btn_import");
+							$p.iface._scan.wnd.elmnts.toolbar.removeListOption("bs_more", "btn_export");
+
 							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "sync", "~", "button", "Выгрузить 1С", "execute.png");
 							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "full_screen", "~", "button", "Полный экран", "full_screen.png");
 							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "clear", "~", "button", "Удалить устаревшие данные", "close.png");
@@ -274,6 +291,10 @@ $p.iface.oninit = function() {
 
 								}else if(btn_id=="sync")
 									$p.doc.barcodes.idxdb_sync();
+
+								else if(btn_id=="clear")
+									$p.doc.barcodes.idxdb_clesr();
+
 							});
 
 							// запрещыем редактирование флажком
