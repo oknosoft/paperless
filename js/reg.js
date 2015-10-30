@@ -62,7 +62,7 @@ $p.settings = function (prm, modifiers) {
 			store_name = "barcodes";
 
 		$p.wsql.idx_connect(db_name, store_name)
-			.then(function (idx_store) {
+			.then(function (idx_db) {
 
 				// попытка синхронизации всех незасинхронизированных
 				function try_sync(arr){
@@ -81,7 +81,15 @@ $p.settings = function (prm, modifiers) {
 						.then(function (req) {
 							prm = JSON.parse(req.response);
 							prm.forEach(function (o) {
-								if(!o.error){
+								// если есть ошибка
+								if(o.error){
+									// и если ошибка для данного штрихкода еще не зарегистрирована
+									if(!$p.ireg.$log.find_rows({note: {like: o.number_doc}}).length)
+										$p.record_log({
+											note: o.number_doc + ": " + o.error,
+											class: "error"
+										});
+								}else{
 									var obj = _mgr.get(o.ref);
 									obj.lc_changed = o.lc_changed;
 									obj.save();
@@ -99,7 +107,7 @@ $p.settings = function (prm, modifiers) {
 
 					var barcodes = [];
 
-					idx_store.transaction([store_name], "readonly").objectStore(store_name).openCursor().onsuccess = function(event) {
+					idx_db.transaction([store_name], "readonly").objectStore(store_name).openCursor().onsuccess = function(event) {
 						var cursor = event.target.result;
 						if (cursor) {
 							barcodes.push(cursor.value);
@@ -123,7 +131,7 @@ $p.settings = function (prm, modifiers) {
 					var obj = this;
 
 					// запишем в indexeddb, чтобы восстановить после перезапуска браузера
-					$p.wsql.idx_save(obj, idx_store, store_name)
+					$p.wsql.idx_save(obj, idx_db, store_name)
 						.then(function () {
 							if(!obj.lc_changed)
 								try_sync([obj])
@@ -134,23 +142,74 @@ $p.settings = function (prm, modifiers) {
 
 				_mgr.__define({
 
-					idxdb_clesr: {
-						value: function () {
+					idxdb_clear: {
+						value: function (date) {
+
 							var prm = $p.dp.drop_prm.create();
 							prm.date = new Date();
 							prm.state = $p.enm.СостоянияОтправки.Отправленные;
 
-							var options = {
-									name: 'text',
-									wnd: {
-										caption: "Параметры удаления",
-										width: 290,
-										height: 160
+							function _delete(){
+
+								var keys = [];
+
+								idx_db.transaction([store_name], "readonly").objectStore(store_name).openCursor().onsuccess = function(event) {
+									var cursor = event.target.result;
+									if (cursor) {
+										// здесь фильтруем
+										if(cursor.value.date <= prm.date){
+											if((prm.state == $p.enm.СостоянияОтправки.Все) ||
+												(prm.state == $p.enm.СостоянияОтправки.Отправленные && cursor.value.lc_changed != 0) ||
+												(prm.state == $p.enm.СостоянияОтправки.НеОтправленные && cursor.value.lc_changed == 0))
+												keys.push(cursor.value.ref);
+										}
+										cursor.continue();
 									}
-								},
-								wnd = $p.iface.dat_blank(null, options.wnd),
-								grid = wnd.attachHeadFields({obj: prm});
-							wnd.center();
+									else {
+										if(keys.length){
+											// а здесь удаляем отфильтрованные
+											$p.eve.reduce_promices(
+												keys.map(function(key) {
+													_mgr.delete_loc(key);
+													return $p.wsql.idx_delete(key, idx_db, store_name);
+												}), function () {
+
+												})
+												.then(function (v) {
+													$p.iface._scan.wnd.elmnts.grid.reload();
+												})
+										}
+									}
+								};
+							}
+
+							if(date){
+								prm.date = date;
+								_delete();
+							}else{
+								var options = {
+										name: 'text',
+										wnd: {
+											caption: "Параметры удаления",
+											width: 290,
+											height: 130,
+											allow_close: true,
+											modal: true
+										}
+									},
+									wnd = $p.iface.dat_blank(null, options.wnd),
+									grid = wnd.attachHeadFields({obj: prm});
+								wnd.center();
+								wnd.bottom_toolbar({
+									buttons: [
+										{name: 'btn_ok', b: 'Удалить устаревшие', width:'170px', float: 'right'}],
+									onclick: function (name) {
+										wnd.close(true);
+										_delete();
+										return false;
+									}
+								});
+							}
 						}
 					},
 
@@ -259,7 +318,7 @@ $p.iface.oninit = function() {
 				// список документов штрихкод
 				$p.iface._scan.grid = $p.iface._scan.layout.cells("b");
 				setTimeout(function () {
-					$p.iface._scan.wnd = $p.doc.barcodes.form_selection($p.iface._scan.grid, {
+					$p.iface._scan.wnd = $p.doc.barcodes.form_list($p.iface._scan.grid, {
 						hide_header: true,
 						date_from: new Date(),
 						on_grid_inited: function () {
@@ -293,7 +352,7 @@ $p.iface.oninit = function() {
 									$p.doc.barcodes.idxdb_sync();
 
 								else if(btn_id=="clear")
-									$p.doc.barcodes.idxdb_clesr();
+									$p.doc.barcodes.idxdb_clear();
 
 							});
 
@@ -326,18 +385,19 @@ $p.iface.oninit = function() {
 
 		settings: function(cell){
 
-				if($p.iface._settings)
-					return;
+			if($p.iface._settings)
+				return;
 
-				$p.iface._settings = {
-					dp: $p.dp.provider_orders.create()
-				};
-				$p.iface._settings.grid = cell.attachHeadFields({obj: $p.iface._settings.dp});
-				var fields = $p.iface._settings.dp._metadata.fields;
-				for(var fld in fields){
+			// сверху - параметры, снизу - журнал регистрации
+			$p.iface._settings = {
+				dp: $p.dp.provider_orders.create()
+			};
+			$p.iface._settings.grid = cell.attachHeadFields({obj: $p.iface._settings.dp});
+			var fields = $p.iface._settings.dp._metadata.fields;
+			for(var fld in fields){
 					$p.iface._settings.dp[fld] = $p.job_prm[fld] || $p.wsql.get_user_param(fld);
 				}
-				Object.observe($p.iface._settings.dp, function (changes) {
+			Object.observe($p.iface._settings.dp, function (changes) {
 					changes.forEach(function(change){
 						var v = $p.iface._settings.dp[change.name];
 						if($p.is_data_obj(v))
@@ -346,7 +406,32 @@ $p.iface.oninit = function() {
 					});
 				}, ["update"]);
 
-			},
+		},
+
+		log: function (cell) {
+
+			if($p.iface._log)
+				return;
+
+			$p.iface._log = {
+				wnd: $p.ireg.$log.form_list(cell, {hide_header: true})
+			};
+
+			$p.iface._log.wnd.elmnts.toolbar.removeListOption("bs_more", "btn_import");
+			$p.iface._log.wnd.elmnts.toolbar.removeListOption("bs_more", "btn_export");
+
+			if($p.device_type != "desktop"){
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("btn_select");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("sep1");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("btn_new");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("btn_edit");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("btn_delete");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("sep2");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("lbl_filter");
+				$p.iface._log.wnd.elmnts.toolbar.hideItem("input_filter");
+			}
+
+		},
 
 		worker: function () {
 			var worker = new Worker('js/worker.js');
@@ -433,7 +518,12 @@ $p.iface.oninit = function() {
 			{
 				id:      "settings",
 				text:    "Настройки"
+			},
+			{
+				id:      "log",
+				text:    "Журнал"
 			}
+
 		]
 	});
 	$p.iface.docs = $p.iface.main.cells("report");
