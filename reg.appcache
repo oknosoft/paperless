@@ -5,14 +5,14 @@ CACHE MANIFEST
 CACHE:
 
 # dhtmlx и metadata.js
-lib/alasql.min.js
-lib/beep/beep.min.js
+//cdn.jsdelivr.net/alasql/latest/alasql.min.js
+lib_ext/beep/beep.min.js
 lib/dhtmlx.min.js
 js/scan_driver.js
 
 # Эти позиции включаем только в продакшене
 lib/metadata.min.js
-lib/metadata.node.js
+lib/metadata.core.js
 js/reg.js
 js/worker.js
 data/create_tables.sql
@@ -22,7 +22,7 @@ data/zones/0/p_0.json?v=201510300000
 data/zones/0/ireg.json?v=201510300000
 
 # css и картинки
-lib/dhtmlx.css
+lib/dhtmlx_web.css
 lib/metadata.css
 data/paperless.css
 
@@ -59,8 +59,8 @@ lib/imgs/dhxgrid_skyblue/tree/minus.gif
 lib/imgs/dhxgrid_skyblue/tree/blank.gif
 lib/imgs/dhxwins_web/dhxwins_icon.gif
 lib/imgs/dhxwins_web/dhxwins_buttons.gif
-lib/imgs/custom_field/tb_delete.png
-lib/imgs/custom_field/save.png
+lib/imgs/custom_web/tb_delete.png
+lib/imgs/custom_web/save.png
 lib/imgs/dhxform_web/dhxform_chbxrd.gif
 lib/imgs/dhxpopup_web/dhxpopup_arrow_bottom.gif
 lib/imgs/dhxpopup_web/dhxpopup_arrow_top.gif

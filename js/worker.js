@@ -9,7 +9,7 @@
 
 self.addEventListener("message", function(e) {
 
-	importScripts("../lib/metadata.node.js");
+	importScripts("../lib/metadata.core.js");
 
 	if(e.data.action == "lazy_load"){
 		var attr = e.data;
