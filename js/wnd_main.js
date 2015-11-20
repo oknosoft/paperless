@@ -3,6 +3,9 @@
  */
 $p.settings = function (prm, modifiers) {
 
+	// разделитель для localStorage
+	prm.local_storage_prefix = "pl_";
+
 	prm.check_browser_compatibility = false;    // совместимость браузера не проверяем
 	prm.use_builder =  false;                   // построитель Raphael не используем
 	prm.use_wrapper = true;                     // но используем wrapper с главной страницы
