@@ -6,13 +6,13 @@ CACHE:
 
 # dhtmlx и metadata.js
 //cdn.jsdelivr.net/alasql/latest/alasql.min.js
-lib_ext/beep/beep.min.js
+lib/beep/beep.min.js
 lib/dhtmlx.min.js
 js/scan_driver.js
 
 # Эти позиции включаем только в продакшене
 lib/metadata.min.js
-lib_ext/metadata.core.js
+lib/metadata.core.js
 js/reg.js
 js/worker.js
 data/create_tables.sql
