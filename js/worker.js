@@ -9,7 +9,7 @@
 
 self.addEventListener("message", function(e) {
 
-	importScripts("../lib/metadata.core.js");
+	importScripts("//oknosoft.github.io/metadata.js/dist/metadata.core.min.js");
 
 	if(e.data.action == "lazy_load"){
 		var attr = e.data;

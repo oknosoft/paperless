@@ -5,10 +5,10 @@ CACHE MANIFEST
 CACHE:
 
 # dhtmlx и metadata.js
-//www.oknosoft.ru/assets/lib/dhtmlx.css
-//www.oknosoft.ru/assets/lib/metadata.css
-//www.oknosoft.ru/assets/lib/dhtmlx.min.js
-//www.oknosoft.ru/assets/lib/metadata.js
+//oknosoft.github.io/metadata.js/dist/dhx_web.css
+//oknosoft.github.io/metadata.js/dist/metadata.css
+//oknosoft.github.io/metadata.js/dist/dhtmlx.min.js
+//oknosoft.github.io/metadata.js/lib/metadata.js
 
 # css и картинки
 /data/48.png
@@ -22,12 +22,5 @@ CACHE:
 
 # All other resources (e.g. sites) require the user to be online.
 NETWORK:
-
-# безбумажка
-js/wnd_main.js
-js/scancmd.js
-
-# данные - xml-ки форм, панелей и менюшек
-/data/toolbar_pl.xml
 
 *
