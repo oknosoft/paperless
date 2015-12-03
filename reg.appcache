@@ -20,10 +20,11 @@ data/meta.json?v=201510300000
 data/meta_patch.json?v=201510300000
 data/zones/0/p_0.json?v=201510300000
 data/zones/0/ireg.json?v=201510300000
+data/about_reg.html
 
 # css и картинки
 //oknosoft.github.io/metastore/templates/imgs/fav-md32.png
-
+//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css
 //oknosoft.github.io/metadata.js/dist/dhx_web.css
 //oknosoft.github.io/metadata.js/dist/metadata.css
 data/paperless.css

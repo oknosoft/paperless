@@ -1,0 +1,123 @@
+<div class="md_column1300">
+    <h1><i class="fa fa-barcode"></i> Регистратор штрихкодов</h1>
+    <p>Регистратор штрихкодов - это одно из веб-приложений подсистемы безбумажного производства с открытым исходным кодом, разработанное компанией <a href="http://www.oknosoft.ru/" target="_blank">Окнософт</a> на базе фреймворка <a href="http://www.oknosoft.ru/metadata/" target="_blank">Metadata.js</a>.<br />
+        Исходный код и документация доступны на <a href="https://github.com/oknosoft/paperless" target="_blank">GitHub <i class="fa fa-github-alt"></i></a>.
+    </p>
+    <table>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-chrome fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Для промышленной эксплуатации рекомендуется google chrome.
+            </td>
+        </tr>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-chrome fa-fw"></i>
+                <i class="fa fa-firefox fa-fw"></i>
+                <i class="fa fa-opera fa-fw"></i>
+                <i class="fa fa-safari fa-fw"></i>
+                <i class="fa fa-internet-explorer fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Поддержаны все современные мобильные браузеры.
+            </td>
+        </tr>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-windows fa-fw"></i>
+                <i class="fa fa-apple fa-fw"></i>
+                <i class="fa fa-linux fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Возможна компиляция веб-приложения в формат нативных мобильных или десктопных приложений.
+            </td>
+        </tr>
+    </table>
+
+
+    <h3>Ключевые возможности и особенности</h3>
+    <table>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-usb fa-fw"></i>
+                <i class="fa fa-bluetooth fa-fw"></i>
+                <i class="fa fa-keyboard-o fa-fw"></i>
+                <i class="fa fa-camera fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Регистрация штрихкода, полученного сканерами usb, bluetooth, водом с клавиатуры или камерой мобильного устройства.
+            </td>
+        </tr>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-venus-mars fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Полная интеграция с 1С. Возможность показать любой отчет, диаграмму или иные данные ИБ 1С с поддержкой ссылочной типизации.<br />
+                "Из коробки" поддержано взаимодействие с платформой >= 8.3.6. При необходимости, можно реализовать шлюз в 1С версий 7.7 или 8.2.
+            </td>
+        </tr>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-database fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Поддержка автономной работы. Приложение может работать при выключенном сервере, перебоях или полном отсутствии связи. Результаты сканирования сохраняются в базе данных браузера и отправляются на сервер, как только он становится доступен.
+            </td>
+        </tr>
+        <tr valign="top">
+            <td style="display: flex">
+                <i class="fa fa-tablet fa-fw"></i>
+                <i class="fa fa-volume-up fa-fw"></i>
+            </td>
+            <td>-</td>
+            <td>
+                Визуальная, звуковая и вибро обратная связь при сканировании. Система может контролировать корректность штрихкодов и информировать оператора о результатах сканирования.
+            </td>
+        </tr>
+    </table>
+
+    <p>&nbsp;</p>
+    <p>Использованы следующие библиотеки и инструменты:</p>
+
+    <h3>Серверная часть</h3>
+    <ul>
+        <li><a href="http://1c-dn.com/1c_enterprise/" target="_blank">1c_enterprise</a><span class="md_muted_color">, ORM сервер 1С:Предприятие</span></li>
+        <li><a href="http://www.postgresql.org/" target="_blank">postgreSQL</a><span class="md_muted_color">, мощная объектно-раляционная база данных</span></li>
+        <li><a href="https://nodejs.org/" target="_blank">node.js</a><span class="md_muted_color">, серверная программная платформа, основанная на движке V8 javascript</span></li>
+        <li><a href="http://nginx.org/ru/" target="_blank">nginx</a><span class="md_muted_color">, высокопроизводительный HTTP-сервер</span></li>
+    </ul>
+
+    <h3>Управление данными в памяти браузера</h3>
+    <ul>
+        <li><a href="https://github.com/agershun/alasql" target="_blank">alaSQL</a><span class="md_muted_color">, база данных SQL для браузера и Node.js с поддержкой как традиционных реляционных таблиц, так и вложенных JSON данных (NoSQL)</span></li>
+        <li><a href="https://github.com/metatribal/xmlToJSON" target="_blank">xmlToJSON</a><span class="md_muted_color">, компактный javascript модуль для преобразования XML в JSON</span></li>
+        <li><a href="https://github.com/SheetJS/js-xlsx" target="_blank">xlsx</a><span class="md_muted_color">, библиотека для чтения и записи XLSX / XLSM / XLSB / XLS / ODS в браузере</span></li>
+    </ul>
+
+    <h3>UI библиотеки и компоненты интерфейса</h3>
+    <ul>
+        <li><a href="http://dhtmlx.com/" target="_blank">dhtmlx</a><span class="md_muted_color">, кроссбраузерная библиотека javascript для построения современных веб и мобильных приложений</span></li>
+        <li><a href="https://github.com/eligrey/FileSaver.js" target="_blank">filesaver.js</a><span class="md_muted_color">, HTML5 реализация метода saveAs</span></li>
+    </ul>
+
+    <h3>Графика</h3>
+    <ul>
+        <li><a href="https://fortawesome.github.io/Font-Awesome/" target="_blank">fontawesome</a><span class="md_muted_color">, набор иконок и стилей CSS</span></li>
+    </ul>
+
+    <p>&nbsp;</p>
+    <h2><i class="fa fa-question-circle"></i> Вопросы</h2>
+    <p>Если обнаружили ошибку, пожалуйста,
+        <a href="https://github.com/oknosoft/paperless/issues/new" target="_blank">зарегистрируйте вопрос в GitHub</a> или
+        <a href="http://www.oknosoft.ru/metadata/#page-118" target="_blank">свяжитесь с разработчиком</a> напрямую<br />&nbsp;</p>
+
+</div>

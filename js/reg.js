@@ -283,8 +283,6 @@ $p.iface.oninit = function() {
 
 	var hprm;       // параметры URL
 
-
-
 	// менеджеры закладок - их можно растащить по разным файлам
 	$p.iface.tabmgrs = {
 
@@ -375,20 +373,33 @@ $p.iface.oninit = function() {
 
 		orders: function(cell){
 
-				if($p.iface._orders)
-					return;
+			if($p.iface._orders)
+				return;
 
-				$p.iface._orders = {
-					dp: $p.dp.provider_orders.create()
-				};
-				$p.iface._orders.grid = cell.attachTabular({obj: $p.iface._orders.dp, ts: "orders"});
+			$p.iface._orders = {
+				dp: $p.dp.provider_orders.create()
+			};
+			$p.iface._orders.grid = cell.attachTabular({obj: $p.iface._orders.dp, ts: "orders"});
 
 
-			},
+		},
 
 		report: function(cell){
+			if($p.iface._report)
+				return;
+		},
 
-			},
+		about: function(cell){
+			if($p.iface._about)
+				return;
+
+			$p.iface._about = {};
+			$p.ajax.get("data/about_reg.html")
+				.then(function (req) {
+					cell.attachHTMLString(req.response);
+					cell.cell.querySelector(".dhx_cell_cont_tabbar").style.overflow = "auto";
+				});
+		},
 
 		settings: function(cell){
 
@@ -529,6 +540,10 @@ $p.iface.oninit = function() {
 			{
 				id:      "log",
 				text:    "Журнал"
+			},
+			{
+				id:      "about",
+				text:    "О программе"
 			}
 
 		]
@@ -572,8 +587,11 @@ $p.iface.oninit = function() {
 			if(hprm.hasOwnProperty("s"))
 				$p.job_prm._s = hprm.s;
 
-			if(hprm.view != "scan")
-				$p.iface.set_hash(hprm.obj, hprm.ref, hprm.frm, "scan");
+			if(!hprm.view)
+				hprm.view = "scan";
+			if(["scan", "orders", "settings", "log", "about"].indexOf(hprm.view) != -1)
+				$p.iface.set_hash(hprm.obj, hprm.ref, hprm.frm, hprm.view);
+
 			else
 				setTimeout($p.iface.hash_route, 40);
 
