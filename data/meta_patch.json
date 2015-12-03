@@ -41,7 +41,18 @@
       "group_hierarchy": true,
       "main_presentation_name": true,
       "code_length": 0,
-      "fields": {},
+      "fields": {
+        "ОшибкаШтрихкода": {
+          "synonym": "Ошибка расшифровки штрихкода",
+          "multiline_mode": false,
+          "tooltip": "",
+          "type": {
+            "types": [
+              "boolean"
+            ]
+          }
+        }
+      },
       "tabular_sections": {},
       "printing_plates": {},
       "async_write": "script",

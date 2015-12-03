@@ -221,19 +221,25 @@ $p.settings = function (prm, modifiers) {
 
 					register_code: {
 						value: function (code){
-							//http://paperless.oknosoft.local/#s=G00122086061701
 
+							var err = false;
+
+							//http://paperless.oknosoft.local/#s=G00122086061701
+							//if(code.length != 15 || code[0] != "G" || isNaN(parseInt(code.substr(1)))){
 							// защита от ложных срабатываний
-							if(code.length != 15 || code[0] != "G" || isNaN(parseInt(code.substr(1)))){
-								if(code.length > 6)
+							if(code.length < 13 || isNaN(parseInt(code))){
+								err = true;
+								if(code.length > 2)
 									$p.iface.beep.error();
-								return;
+								else
+									return;
 							}
 
 							_mgr.create()
 								.then(function (o) {
 									o.date = new Date();
 									o.number_doc = code;
+									o.ОшибкаШтрихкода = err;
 									o._set_loaded(o.ref);
 									o.save()
 										.then(function () {
@@ -243,7 +249,8 @@ $p.settings = function (prm, modifiers) {
 										.catch($p.record_log);
 								});
 
-							$p.iface.beep.ok();
+							if(!err)
+								$p.iface.beep.ok();
 						}
 					}
 
