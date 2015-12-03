@@ -3,6 +3,25 @@
     overflow: hidden;
 }
 
+.md_column1300 {
+	width: 92%;
+	max-width: 1300px;
+	position: relative;
+	left: 50%;
+	margin-left: -46%;
+	line-height: normal;
+}
+.md_column1300>ul {
+	padding-left: 20px;
+	margin: 0 0 0.5em 0;
+}
+.md_column1300>p, .md_column1300>h1 {
+	margin: 0.2em 0 0.4em 0;
+}
+.md_column1300>h2, .md_column1300>h3 {
+	margin: 0.8em 0 0.4em 0;
+}
+
 .dhxform_obj_dhx_web div.dhxform_base {
     margin-right: 22px !important;
 }
