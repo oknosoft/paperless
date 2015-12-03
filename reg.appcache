@@ -9,7 +9,7 @@ CACHE:
 //oknosoft.github.io/metadata.js/dist/dhtmlx.min.js
 //oknosoft.github.io/metadata.js/dist/metadata.min.js
 //oknosoft.github.io/metadata.js/dist/metadata.core.min.js
-lib/beep/beep.min.js
+//oknosoft.github.io/metadata.js/lib/beep/beep.min.js
 js/scan_driver.js
 
 # Эти позиции включаем только в продакшене
