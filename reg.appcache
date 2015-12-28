@@ -5,10 +5,8 @@ CACHE MANIFEST
 CACHE:
 
 # dhtmlx и metadata.js
-//cdn.jsdelivr.net/alasql/latest/alasql.min.js
-//oknosoft.github.io/metadata.js/dist/dhtmlx.min.js
-//oknosoft.github.io/metadata.js/dist/metadata.min.js
-//oknosoft.github.io/metadata.js/dist/metadata.core.min.js
+//cdn.jsdelivr.net/g/alasql,metadata@0.9.203(dhtmlx.min.js+metadata.min.js)
+//cdn.jsdelivr.net/metadata/0.9.203/metadata.core.min.js
 //oknosoft.github.io/metadata.js/lib/beep/beep.min.js
 js/scan_driver.js
 
@@ -23,52 +21,12 @@ data/zones/0/ireg.json?v=201510300000
 data/about_reg.html
 
 # css и картинки
-//oknosoft.github.io/metastore/templates/imgs/fav-md32.png
-//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css
-//oknosoft.github.io/metadata.js/dist/dhx_web.css
-//oknosoft.github.io/metadata.js/dist/metadata.css
+//cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css
+//cdn.jsdelivr.net/fontawesome/4.5/fonts/fontawesome-webfont.woff2?v=4.5.0
+//cdn.jsdelivr.net/g/metadata(dhx_web.css+metadata.css)
 data/paperless.css
 
-
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtabbar_web/dhxtabbar_arrows.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxlayout_web/dhxlayout_sep_h.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxlayout_web/dhxlayout_cell_btns.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/dhxtoolbar_arrow.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/print.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/tb_more_w.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/tb_new_dis.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/tb_edit_dis.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/tb_delete_dis.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/document_load.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/document_save.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtabbar_web/dhxtabbar_cell_progress.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/sort_desc.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtree_web/catelm.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/sort_asc.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/item_chk0.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/item_chk1.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/paging_pages.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/paging_rows.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/paging_page.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/ar_right_dis.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/ar_right_abs_dis.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/ar_left_dis.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_web/ar_left_abs_dis.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/execute.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/full_screen.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/close.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/tb_new.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/tb_delete.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_skyblue/tree/minus.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxgrid_skyblue/tree/blank.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxwins_web/dhxwins_icon.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxwins_web/dhxwins_buttons.gif
-//oknosoft.github.io/metadata.js/dist/imgs/custom_web/tb_delete.png
-//oknosoft.github.io/metadata.js/dist/imgs/custom_web/save.png
-//oknosoft.github.io/metadata.js/dist/imgs/dhxform_web/dhxform_chbxrd.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxpopup_web/dhxpopup_arrow_bottom.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxpopup_web/dhxpopup_arrow_top.gif
-//oknosoft.github.io/metadata.js/dist/imgs/dhxtoolbar_web/refresh.png
+//oknosoft.github.io/metastore/templates/imgs/fav-md32.png
 
 
 # offline.html will be displayed if the user is offline
