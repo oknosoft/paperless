@@ -343,9 +343,9 @@ $p.iface.oninit = function() {
 							$p.iface._scan.wnd.elmnts.toolbar.removeListOption("bs_more", "btn_import");
 							$p.iface._scan.wnd.elmnts.toolbar.removeListOption("bs_more", "btn_export");
 
-							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "sync", "~", "button", "Выгрузить 1С", "execute.png");
-							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "full_screen", "~", "button", "Полный экран", "full_screen.png");
-							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "clear", "~", "button", "Удалить устаревшие данные", "close.png");
+							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "sync", "~", "button", "<i class='fa fa-cloud-upload fa-lg'></i> Выгрузить 1С");
+							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "full_screen", "~", "button", "<i class='fa fa-expand fa-lg'></i> Полный экран");
+							$p.iface._scan.wnd.elmnts.toolbar.addListOption("bs_more", "clear", "~", "button", "<i class='fa fa-times fa-lg'></i> Удалить устаревшие данные");
 							$p.iface._scan.wnd.elmnts.toolbar.attachEvent("onclick", function(btn_id){
 								if(btn_id=="full_screen"){
 									if(document.documentElement.webkitRequestFullScreen)

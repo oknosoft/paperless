@@ -5,8 +5,8 @@ CACHE MANIFEST
 CACHE:
 
 # dhtmlx и metadata.js
-//cdn.jsdelivr.net/g/alasql,metadata(dhtmlx.min.js+metadata.min.js)
-//cdn.jsdelivr.net/metadata/latest/metadata.core.min.js
+//cdn.jsdelivr.net/g/alasql,metadata@0.9.203(dhtmlx.min.js+metadata.min.js)
+//cdn.jsdelivr.net/metadata/0.9.203/metadata.core.min.js
 //oknosoft.github.io/metadata.js/lib/beep/beep.min.js
 js/scan_driver.js
 
