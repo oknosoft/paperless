@@ -1,0 +1,19 @@
+{
+  "lang": "ru",
+  "name": "Paperless for order dealer",
+  "short_name": "Paperless",
+  "icons": [
+    {
+      "src": "./favicon.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }],
+  "background_color": "#ffffff",
+  "splash_screens": [{
+    "src": "./splash.gif",
+    "sizes": "256x64"
+  }],
+  "scope": "/",
+  "start_url": "./index.html",
+  "display": "standalone"
+}
