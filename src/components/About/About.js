@@ -7,14 +7,16 @@ import Helmet from 'react-helmet';
 import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 
-const styleSheet = {
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    marginLeft: 12,
-    marginRight: 16,
+    marginTop: theme.spacing.unit * 8,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 8,
     overflow: 'hidden',
   },
-};
+});
 
 class About extends Component {
 
@@ -61,7 +63,7 @@ class About extends Component {
               <br />
             </p>
 
-            <h3>Назначение и возможности</h3>
+            <Typography variant="title" component="h3" color="inherit">Назначение и возможности</Typography>
             <ul>
               <li>Построение и редактирование эскизов изделий в графическом 2D редакторе</li>
               <li>Экстремальная поддержка нестандартных изделий (многоугольники, сложные перегибы профиля)</li>
@@ -73,7 +75,7 @@ class About extends Component {
 
             <p>Использованы следующие библиотеки и инструменты:</p>
 
-            <h3>Серверная часть</h3>
+            <Typography variant="title" component="h3" color="inherit">Серверная часть</Typography>
             <ul>
               <li><a href="http://couchdb.apache.org/" target="_blank"
                      rel="noopener noreferrer">CouchDB</a>, NoSQL база данных с поддержкой master-master репликации</li>
@@ -87,7 +89,7 @@ class About extends Component {
             */}
             </ul>
 
-            <h3>Управление данными в памяти браузера</h3>
+            <Typography variant="title" component="h3" color="inherit">Управление данными в памяти браузера</Typography>
             <ul>
               <li><a href="http://www.oknosoft.ru/metadata/" target="_blank"
                      rel="noopener noreferrer">Metadata.js</a>, движок ссылочной типизации для браузера и Node.js</li>
@@ -101,7 +103,7 @@ class About extends Component {
                      rel="noopener noreferrer">Redux</a>, диспетчер состояния веб-приложения</li>
             </ul>
 
-            <h3>UI библиотеки и компоненты интерфейса</h3>
+            <Typography variant="title" component="h3" color="inherit">UI библиотеки и компоненты интерфейса</Typography>
             <ul>
               <li><a href="http://paperjs.org/" target="_blank"
                      rel="noopener noreferrer">Paper.js</a>, фреймворк векторной графики для HTML5 Canvas</li>
@@ -125,10 +127,10 @@ class About extends Component {
                      rel="noopener noreferrer">fontawesome</a>, набор шрифтовых иконок</li>
             </ul>
 
-            <h3><i className="fa fa-question-circle"></i> Вопросы</h3>
+            <Typography variant="title" component="h3" color="inherit"><i className="fa fa-question-circle"></i> Вопросы</Typography>
             <p>Если обнаружили ошибку, пожалуйста, <a href="https://github.com/oknosoft/windowbuilder/issues/new" target="_blank"
-              rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a href="http://www.oknosoft.ru/metadata/#page-118" target="_blank"
-              rel="noopener noreferrer">свяжитесь с разработчиком</a> напрямую<br /></p>
+              rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a href="mailto:info@oknosoft.ru?subject=paperless">
+              свяжитесь с авторами</a> напрямую</p>
 
           </Grid>
         </Grid>
@@ -144,4 +146,4 @@ About.propTypes = {
   handleIfaceState: PropTypes.func.isRequired,
 };
 
-export default withStyles(styleSheet)(withIface(About));
+export default withStyles(styles)(withIface(About));
