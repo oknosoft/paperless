@@ -1,77 +1,21 @@
 import React from 'react';
-import IconChart from '@material-ui/icons/InsertChart';
-import IconDoc from '@material-ui/icons/EventNote';
+
 import IconInfo from '@material-ui/icons/Info';
 import IconPerson from '@material-ui/icons/Person';
 import IconSettings from '@material-ui/icons/Settings';
-import LibraryBooks from '@material-ui/icons/LibraryBooks';
-import IconDownload from '@material-ui/icons/CloudDownload';
-import IconHelp from '@material-ui/icons/Help';
-// import IconDrafts from '@material-ui/icons/Drafts';
-// import IconList from '@material-ui/icons/List';
 
 const items = [
   {
-    text: 'Статьи',
-    icon: <LibraryBooks/>,
+    text: 'Фурнитура',
     id: 'articles',
-    //bold: true,
-    navigate: '/articles/',
+    navigate: '/furn',
     need_meta: true,
   },
   {
-    text: 'Файлы',
-    icon: <IconDownload/>,
+    text: 'Импосты',
     id: 'files',
-    //bold: true,
-    navigate: '/files/',
+    navigate: '/imposts',
     need_meta: true,
-  },
-  {
-    text: 'Flowcon',
-    icon: <Flask/>,
-    open: false,
-    id: 'flowcon',
-    items: [
-      {
-        text: 'Flowcon - что это',
-        id: 'readme',
-        navigate: '/articles/flowcon-readme',
-        need_meta: true,
-        icon: <IconHelp/>
-      },
-      {
-        text: 'Задачи',
-        id: 'issues',
-        navigate: '/doc.issue/list',
-        icon: <IconDoc/>,
-        need_meta: true,
-        need_user: true,
-      },
-      {
-        text: 'Отчеты',
-        icon: <IconChart/>,
-        open: false,
-        id: 'practice',
-        items: [
-          {
-            text: 'Диаграмма эффективности',
-            id: 'diagram',
-            navigate: '/flowcon/diagram',
-            need_meta: true,
-            need_user: true,
-          },
-          {
-            text: 'Таблица',
-            id: 'list',
-            navigate: '/flowcon/list',
-            need_meta: true,
-            need_user: true,
-          },
-        ],
-
-      },
-    ]
   },
   {
     divider: true,
@@ -89,7 +33,7 @@ const items = [
     icon: <IconSettings/>,
   },
   {
-    text: 'О сайте',
+    text: 'О программе',
     navigate: '/about',
     icon: <IconInfo/>
   }
@@ -129,6 +73,6 @@ export function item_props(path) {
   return res || {};
 }
 
-export const description = 'Сайт для владельцев и руководителей о решении проблем управления бизнесом';
+export const description = 'Безбумажное производство';
 
 export default items;

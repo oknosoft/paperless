@@ -73,7 +73,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "analyze": "webpack-bundle-analyzer scripts/stats.json",
-    "meta:link": "node scripts/meta.link.js"
+    "meta:link": "node scripts/meta.link.js",
+    "drawer:fetch": "node scripts/drawer.fetch.js"
   },
   "babel": {
     "presets": [

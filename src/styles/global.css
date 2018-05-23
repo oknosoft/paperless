@@ -19,7 +19,7 @@ html, body, input, textarea, select, button {
   left: 48%;
   margin-left: -255px;
   margin-top: 140px;
-  background-image: url(icons/splash.gif);
+  background-image: url(splash.gif);
 }
 .description {
   position: absolute;

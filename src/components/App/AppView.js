@@ -9,15 +9,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Snack from 'metadata-react/App/Snack';       // сообщения в верхней части страницы (например, обновить после первого запуска)
 import Alert from 'metadata-react/App/Alert';       // диалог сообщения пользователю
 import Confirm from 'metadata-react/App/Confirm';   // диалог вопросов пользователю (да, нет)
-import FrmLogin from 'metadata-react/FrmSuperLogin';// логин и свойства подключения
+import FrmLogin from 'metadata-react/FrmLogin';// логин и свойства подключения
 import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
 import DumbScreen from '../DumbScreen';             // заставка "загрузка занных"
 import DataRoute from './DataRoute';                // вложенный маршрутизатор страниц с данными
-
-
+import AboutPage from '../About';                   // информация о программе
 import HomeView from '../Home';                     // домашняя страница
 import Settings from '../Settings';                 // страница настроек приложения
 
@@ -25,6 +24,7 @@ import {withIfaceAndMeta} from 'metadata-redux';
 import withStyles from './styles';
 import withWindowSize from 'metadata-react/WindowSize';
 import compose from 'recompose/compose';
+
 
 import items, {item_props} from './menu';      // массив элементов меню и метод для вычисления need_meta, need_user по location.pathname
 
@@ -105,17 +105,11 @@ class AppView extends Component {
             meta_loaded} = props;
     const isHome = location.pathname === '/';
 
-    let disablePermanent = false;
-    let navIconClassName = '';
     let appBarClassName = classes.appBar;
 
     const mainContent = () => {
 
-      const dx = props.windowWidth > 1280 ? 280 : 0;
       const dstyle = {marginTop: 48};
-      if(dx && !disablePermanent) {
-        dstyle.marginLeft = dx;
-      }
 
       if(meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
         return (
@@ -147,7 +141,7 @@ class AppView extends Component {
         else if(routeProps.match.path === '/files') {
           mainProps.tagFilter = [$p.cat.tags_category.predefined('file')];
         }
-        return <Component {...mainProps} {...routeProps} disablePermanent={disablePermanent}/>;
+        return <Component {...mainProps} {...routeProps} disablePermanent/>;
       };
 
       return (
@@ -157,6 +151,7 @@ class AppView extends Component {
             <Route path="/:area(doc|cat|ireg|cch|rep).:name" render={(props) => wraper(DataRoute, props)}/>
             <Route path="/login" render={(props) => wraper(FrmLogin, props)}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
+            <Route path="/about" component={AboutPage} />
           </Switch>
         </div>
       );
@@ -164,27 +159,18 @@ class AppView extends Component {
 
     if(isHome) {
       // home route, don't shift app bar or dock drawer
-      disablePermanent = true;
       appBarClassName += ` ${classes.appBarHome}`;
-    }
-    else if (state.permanentClose) {
-      disablePermanent = true;
-    }
-    else {
-      navIconClassName = classes.navIconHide;
-      appBarClassName += ` ${classes.appBarShift}`;
     }
 
     return [
       // основной layout
       <div key="content" className={classes.root}>
-        <AppBar className={appBarClassName}>
+        <AppBar className={appBarClassName} color="default">
           <Toolbar disableGutters>
             <IconButton
               color="inherit"
               aria-label="open drawer"
               onClick={this.handleDrawerToggle}
-              className={navIconClassName}
             >
               <MenuIcon/>
             </IconButton>
@@ -198,13 +184,14 @@ class AppView extends Component {
               user={user}
               handleNavigate={handleNavigate}
               compact
+              barColor="default"
             />
 
           </Toolbar>
         </AppBar>
         <AppDrawer
           className={classes.drawer}
-          disablePermanent={disablePermanent}
+          disablePermanent={true}
           onClose={this.handleDrawerClose}
           onPermanentClose={this.handlepPermanentClose}
           mobileOpen={state.mobileOpen}

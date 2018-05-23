@@ -10,7 +10,12 @@ const localSrc = path.resolve(__dirname, '../src');
 
 fetch(github + 'public/dist/drawer.js')
   .then(res => {
-    const dest = fs.createWriteStream(path.resolve(localSrc, './public/lib/drawer.js'));
+    const dest = fs.createWriteStream(path.resolve(localSrc, './public/dist/drawer.js'));
+    res.body.pipe(dest);
+    return fetch(github + 'public/dist/paperjs-deep-diff.min.js')
+  })
+  .then(res => {
+    const dest = fs.createWriteStream(path.resolve(localSrc, './public/dist/paperjs-deep-diff.min.js'));
     res.body.pipe(dest);
     return fetch(github + 'src/metadata/init.js')
   })
