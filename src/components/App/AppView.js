@@ -9,16 +9,19 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Snack from 'metadata-react/App/Snack';       // сообщения в верхней части страницы (например, обновить после первого запуска)
 import Alert from 'metadata-react/App/Alert';       // диалог сообщения пользователю
 import Confirm from 'metadata-react/App/Confirm';   // диалог вопросов пользователю (да, нет)
-import FrmLogin from 'metadata-react/FrmLogin';// логин и свойства подключения
+import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойства подключения
 import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
-import DumbScreen from '../DumbScreen';             // заставка "загрузка занных"
-import DataRoute from './DataRoute';                // вложенный маршрутизатор страниц с данными
-import AboutPage from '../About';                   // информация о программе
-import HomeView from '../Home';                     // домашняя страница
-import Settings from '../Settings';                 // страница настроек приложения
+import DumbScreen from '../DumbScreen';       // заставка "загрузка занных"
+import DataRoute from './DataRoute';          // вложенный маршрутизатор страниц с данными
+import AboutPage from '../About';             // информация о программе
+import HomeView from '../Home';               // домашняя страница
+import Settings from '../Settings';           // страница настроек приложения
+import Furn from '../Furn';                   // фурнитурная станция
+import Imposts from '../Imposts';             // установка импостов
+
 
 import {withIfaceAndMeta} from 'metadata-redux';
 import withStyles from './styles';
@@ -26,7 +29,7 @@ import withWindowSize from 'metadata-react/WindowSize';
 import compose from 'recompose/compose';
 
 
-import items, {item_props} from './menu';      // массив элементов меню и метод для вычисления need_meta, need_user по location.pathname
+import items, {item_props} from './menu';
 
 const mainTitle = 'Безбумажка';
 
@@ -109,7 +112,7 @@ class AppView extends Component {
 
     const mainContent = () => {
 
-      const dstyle = {marginTop: 48};
+      const dstyle = {marginTop: 49};
 
       if(meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
         return (
@@ -149,6 +152,9 @@ class AppView extends Component {
           <Switch key="switch">
             <Route exact path="/" render={this.renderHome}/>
             <Route path="/:area(doc|cat|ireg|cch|rep).:name" render={(props) => wraper(DataRoute, props)}/>
+            <Route path="/furn" render={(props) => wraper(Furn, props)}/>
+            <Route path="/imposts" render={(props) => wraper(Imposts, props)}/>
+            <Route path="/login" render={(props) => wraper(FrmLogin, props)}/>
             <Route path="/login" render={(props) => wraper(FrmLogin, props)}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
             <Route path="/about" component={AboutPage} />

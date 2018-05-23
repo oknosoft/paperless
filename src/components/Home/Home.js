@@ -15,7 +15,7 @@ import styles from './styles';
 const ltitle = 'Заказ дилера';
 
 function PageHome(props) {
-  const {classes, handleNavigate, title} = props;
+  const {classes, title} = props;
 
   if(title != ltitle) {
     props.handleIfaceState({

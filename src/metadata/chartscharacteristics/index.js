@@ -1,5 +1,8 @@
 // модификаторы планов видов характеристик
 
+// предопределенные элементы обрабатывем в init()
+//import cch_predefined_elmnts from "./cch_predefined_elmnts";
+
 // дополнительные реквизиты и сведения
 //import cch_properties from "./cch_properties";
 

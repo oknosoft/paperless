@@ -13,13 +13,12 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import DialogActions from '@material-ui/core/DialogActions';
-
+import Helmet from 'react-helmet';
 import Confirm from 'metadata-react/App/Confirm';
 import withStyles from 'metadata-react/styles/paper600';
-
 import {withIface, withPrm} from 'metadata-redux';
-
 import compose from 'recompose/compose';
+import {item_props} from '../App/menu';
 
 class Settings extends Component {
 
@@ -81,19 +80,17 @@ class Settings extends Component {
       zone, couch_path, enable_save_pwd, couch_direct, hide_price,
       confirm_reset: false, surcharge_internal, discount_percent_internal, surcharge_disabled
     };
-  }
 
-  componentDidMount() {
     this.shouldComponentUpdate(this.props);
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
-    const ltitle = 'Настройки';
-    if(title != ltitle) {
+    const iprops = item_props();
+    if(iprops.text && title != iprops.text){
       handleIfaceState({
         component: '',
         name: 'title',
-        value: ltitle,
+        value: iprops.text,
       });
       return false;
     }
@@ -147,9 +144,14 @@ class Settings extends Component {
       zone, couch_path, enable_save_pwd, couch_direct, confirm_reset, hide_price,
       surcharge_internal, discount_percent_internal, surcharge_disabled
     } = this.state;
+    const iprops = item_props();
 
     return (
       <Paper className={classes.root} elevation={4}>
+
+        <Helmet title={iprops.text}>
+          <meta name="description" content={iprops.title} />
+        </Helmet>
 
         <Typography variant="title" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
 

@@ -19,9 +19,9 @@ class DumbScreen extends Component {
     return <div className='splash' style={{marginTop: top}}>
       <div className="description">
         <h1 itemProp="name">Безбумажка</h1>
-        <p>Категория: <span itemProp="applicationSubCategory">management</span></p>
+        <p><span itemProp="applicationSubCategory">Заказ дилера</span></p>
         <div itemProp="description">
-          <p>Безбумажное управление производством</p>
+          <p>Безбумажное производство</p>
         </div>
       </div>
 

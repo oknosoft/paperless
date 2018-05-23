@@ -7,15 +7,19 @@ import IconSettings from '@material-ui/icons/Settings';
 const items = [
   {
     text: 'Фурнитура',
+    title: 'Установка фурнитуры',
     id: 'articles',
     navigate: '/furn',
     need_meta: true,
+    need_user: true,
   },
   {
     text: 'Импосты',
+    title: 'Установка импостов',
     id: 'files',
     navigate: '/imposts',
     need_meta: true,
+    need_user: true,
   },
   {
     divider: true,
@@ -23,17 +27,20 @@ const items = [
   {
     text: 'Профиль',
     navigate: '/login',
+    title: 'Свойства пользователя',
     need_meta: true,
     icon: <IconPerson/>
   },
   {
     text: 'Настройки',
     navigate: '/settings',
+    title: 'Параметры программы',
     need_meta: true,
     icon: <IconSettings/>,
   },
   {
     text: 'О программе',
+    title: 'Безбумажное производство для Заказа дилера',
     navigate: '/about',
     icon: <IconInfo/>
   }

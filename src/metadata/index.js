@@ -36,7 +36,7 @@ const $p = global.$p = new MetaEngine();
 // параметры сеанса инициализируем сразу
 $p.wsql.init(patch_prm(settings));
 patch_cnn();
-
+$p.injected_data = {'$p.injected_data["toolbar_calc_order_production.xml"]': ''};
 
 // со скрипом инициализации метаданных, так же - не затягиваем
 meta_init($p);

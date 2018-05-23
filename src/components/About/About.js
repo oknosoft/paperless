@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-
+import Typography from '@material-ui/core/Typography';
+import Helmet from 'react-helmet';
 import {withIface} from 'metadata-redux';
+import {item_props} from '../App/menu';
 
 const styleSheet = {
   root: {
@@ -21,12 +23,12 @@ class About extends Component {
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
-    const ltitle = 'О программе...';
-    if(title != ltitle){
+    const iprops = item_props();
+    if(iprops.text && title != iprops.text){
       handleIfaceState({
         component: '',
         name: 'title',
-        value: ltitle,
+        value: iprops.text,
       });
       return false;
     }
@@ -35,14 +37,21 @@ class About extends Component {
 
   render() {
     const {classes} = this.props;
+    const iprops = item_props();
 
     return (
       <div className={classes.root}>
+
+        <Helmet title={iprops.text}>
+          <meta name="description" content={iprops.title} />
+        </Helmet>
+
         <Grid container spacing={24}>
           <Grid item md={1} lg={2} xl={3} />
           <Grid item xs={12} sm={12} md={11} lg={10} xl={8}>
 
-            <h1>Окнософт: Заказ дилера</h1>
+            <Typography variant="display1" component="h1" color="inherit">Окнософт: Заказ дилера</Typography>
+
             <p>Заказ дилера - это веб-приложение, разработанное компанией <a
               href="http://www.oknosoft.ru/" target="_blank" rel="noopener noreferrer">Окнософт</a> на базе фреймворка <a
               href="http://www.oknosoft.ru/metadata/" target="_blank" rel="noopener noreferrer">Metadata.js</a><br />
