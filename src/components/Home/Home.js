@@ -34,7 +34,7 @@ function PageHome(props) {
       <Grid container  className={classes.hero}>
 
         <Grid item sm={12} lg={12}>
-          <Typography variant="display1" component="h1" color="inherit" className={cn(classes.content, classes.text)}>Безбумажное производство</Typography>
+          <Typography variant="display1" component="h1" className={cn(classes.content, classes.text)}>Безбумажное производство</Typography>
         </Grid>
 
       </Grid>

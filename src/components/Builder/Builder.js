@@ -16,6 +16,14 @@ export default class Builder extends React.Component {
         this.props.registerChild(this.editor);
       }
     }
+    this.editor && this.props.registerChild(this.editor);
+  }
+
+  componentWillUnmount() {
+    if(this.editor) {
+      this.editor.unload();
+      this.props.registerChild(this.editor = null);
+    }
   }
 
   render() {

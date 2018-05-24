@@ -4,13 +4,8 @@
  */
 export default {
   'common': {
-    title: 'Программироване бизнеса',
-  },
-  Articles: {
-    tags: {
-      '/articles':  [],
-      '/files':  [],
-    },
+    title: 'Безбумажка',
+    barcode: '',
   },
   NavDrawer: {
     open: false,

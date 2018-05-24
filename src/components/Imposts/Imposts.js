@@ -9,7 +9,7 @@ import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 import Builder from '../Builder';
 
-function styles(theme) {
+function styles(/*theme*/) {
   return {
     workplace: {
       minHeight: 'calc(100vh - 50px)', // Makes the hero full height until we get some more content.
@@ -22,12 +22,13 @@ class Imposts extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.editor = null;
+    this.onBarcode = this.onBarcode.bind(this);
     this.shouldComponentUpdate(props);
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
     const iprops = item_props();
-    if(iprops.text && title != iprops.text){
+    if(iprops.text && title != iprops.text) {
       handleIfaceState({
         component: '',
         name: 'title',
@@ -36,6 +37,24 @@ class Imposts extends React.Component {
       return false;
     }
     return true;
+  }
+
+  componentDidMount() {
+    $p.md.on('barcode', this.onBarcode);
+  }
+
+  componentWillUnmount() {
+    $p.md.off('barcode', this.onBarcode);
+  }
+
+  onBarcode(barcode) {
+    if(this.editor && $p.utils.is_guid(barcode)) {
+      const {project} = this.editor;
+      project.load(barcode)
+        .then(() => {
+          project.draw_fragment({elm: -1});
+        });
+    }
   }
 
   render() {
@@ -58,5 +77,11 @@ class Imposts extends React.Component {
   </Grid>;
   }
 }
+
+Imposts.propTypes = {
+  handleIfaceState: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(withIface(Imposts));

@@ -14,6 +14,7 @@ import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "нео�
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
+import Barcode from '../Barcode';
 import DumbScreen from '../DumbScreen';       // заставка "загрузка занных"
 import DataRoute from './DataRoute';          // вложенный маршрутизатор страниц с данными
 import AboutPage from '../About';             // информация о программе
@@ -25,7 +26,6 @@ import Imposts from '../Imposts';             // установка импост
 
 import {withIfaceAndMeta} from 'metadata-redux';
 import withStyles from './styles';
-import withWindowSize from 'metadata-react/WindowSize';
 import compose from 'recompose/compose';
 
 
@@ -104,15 +104,15 @@ class AppView extends Component {
 
   render() {
     const {props, state} = this;
-    const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user, couch_direct, offline,
-            meta_loaded} = props;
+    const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user,
+      couch_direct, offline, meta_loaded, barcode} = props;
     const isHome = location.pathname === '/';
 
     let appBarClassName = classes.appBar;
 
     const mainContent = () => {
 
-      const dstyle = {marginTop: 49};
+      const dstyle = {marginTop: 48};
 
       if(meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
         return (
@@ -173,25 +173,38 @@ class AppView extends Component {
       <div key="content" className={classes.root}>
         <AppBar className={appBarClassName} color="default">
           <Toolbar disableGutters>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerToggle}
-            >
-              <MenuIcon/>
-            </IconButton>
+            {[
+              <IconButton
+                key="icon"
+                onClick={this.handleDrawerToggle}
+              >
+                <MenuIcon color="inherit"/>
+              </IconButton>,
 
-            <Typography className={classes.title} variant="title" color="inherit" noWrap>{title || mainTitle}</Typography>
+              <Typography
+                key="title"
+                className={classes.title}
+                variant="title"
+                color="textSecondary"
+                noWrap
+              >{title || mainTitle}
+              </Typography>,
 
-            <HeaderButtons
-              sync_started={sync_started}
-              fetch={fetch}
-              offline={offline}
-              user={user}
-              handleNavigate={handleNavigate}
-              compact
-              barColor="default"
-            />
+              <Barcode key="barcode" className={classes.barcode} barcode={barcode} />,
+              <div key="space" className={classes.title} />,
+
+              <HeaderButtons
+                key="buttons"
+                sync_started={sync_started}
+                fetch={fetch}
+                offline={offline}
+                user={user}
+                handleNavigate={handleNavigate}
+                compact
+                barColor="default"
+              />
+
+            ]}
 
           </Toolbar>
         </AppBar>
@@ -242,4 +255,4 @@ AppView.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default compose(withStyles, withWindowSize, withIfaceAndMeta)(AppView);
+export default compose(withStyles, withIfaceAndMeta)(AppView);

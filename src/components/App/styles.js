@@ -26,6 +26,10 @@ const styles = theme => ({
     flex: '1 1 auto',
     fontSize: '1.1rem',
   },
+  barcode: {
+    marginLeft: theme.spacing.unit * 2,
+    width: 240,
+  },
   appBar: {
     transition: theme.transitions.create('width'),
   },

@@ -28,6 +28,7 @@ MetaEngine
   .plugin(plugin_ui_tabulars) // подключаем методы экспорта табличной части
   .plugin(plugin_react);      // подключаем react-специфичные модификаторы к scheme_settings
 
+/* eslint-disable-next-line */
 require('pouchdb-authentication');
 
 // создаём экземпляр MetaEngine и экспортируем его глобально
@@ -36,7 +37,6 @@ const $p = global.$p = new MetaEngine();
 // параметры сеанса инициализируем сразу
 $p.wsql.init(patch_prm(settings));
 patch_cnn();
-$p.injected_data = {'$p.injected_data["toolbar_calc_order_production.xml"]': ''};
 
 // со скрипом инициализации метаданных, так же - не затягиваем
 meta_init($p);
@@ -62,6 +62,19 @@ export function init(store) {
       .then(() => {
         // выполняем модификаторы
         modifiers($p);
+
+        // затычки для совместимости
+        $p.injected_data = {'toolbar_calc_order_production.xml': ''};
+        $p.doc.calc_order.metadata()._mixin({
+          form: {
+            client_of_dealer: {
+              fields: [],
+              obj: {
+                items: [{items: []}]
+              }
+            }
+          }
+        });
 
         // информируем хранилище о готовности MetaEngine
         dispatch(metaActions.META_LOADED($p));
