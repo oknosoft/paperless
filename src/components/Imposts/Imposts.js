@@ -50,9 +50,21 @@ class Imposts extends React.Component {
   onBarcode(barcode) {
     if(this.editor && $p.utils.is_guid(barcode)) {
       const {project} = this.editor;
-      project.load(barcode)
+      const cnstr = 1;
+      project.load(barcode, true)
         .then(() => {
-          project.draw_fragment({elm: -1});
+
+          project.builder_props.auto_lines = false;
+          project.builder_props.custom_lines = false;
+
+          const contour = project.getItem({cnstr});
+          if(contour) {
+            project.draw_fragment({elm: -cnstr});
+            contour.glasses(true);
+            contour.l_dimensions.draw_by_imposts();
+            project.zoom_fit();
+          }
+
         });
     }
   }
