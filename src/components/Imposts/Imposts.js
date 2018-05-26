@@ -8,11 +8,15 @@ import Grid from '@material-ui/core/Grid';
 import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 import Builder from '../Builder';
+import Props from '../Props/Main';
 
-function styles(/*theme*/) {
+function styles(theme) {
   return {
     workplace: {
       minHeight: 'calc(100vh - 50px)', // Makes the hero full height until we get some more content.
+    },
+    props: {
+      paddingTop: theme.spacing.unit * 2,
     }
   };
 }
@@ -24,6 +28,10 @@ class Imposts extends React.Component {
     this.editor = null;
     this.onBarcode = this.onBarcode.bind(this);
     this.shouldComponentUpdate(props);
+    this.state = {
+      ox: {},
+      cnstr: 1,
+    }
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
@@ -63,6 +71,10 @@ class Imposts extends React.Component {
             contour.glasses(true);
             contour.l_dimensions.draw_by_imposts();
             project.zoom_fit();
+            this.setState({
+              ox: project.ox,
+              cnstr,
+            });
           }
 
         });
@@ -83,8 +95,8 @@ class Imposts extends React.Component {
           }}
         />
       </Grid>
-      <Grid item sm={12} lg={4}>
-        <div>свойства</div>
+      <Grid item sm={12} lg={4} className={classes.props}>
+        <Props {...this.state}/>
       </Grid>
   </Grid>;
   }
