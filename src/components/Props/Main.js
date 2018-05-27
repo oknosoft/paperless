@@ -16,19 +16,19 @@ export default function MainProps(props) {
     <Typography key="title" variant="title">Свойства</Typography>,
     <Table key="table">
       <TableBody>
-        <TableRow>
-          <TableCell component="th" scope="row">Изделие</TableCell>
-          <TableCell>{name || 'не выбрано'}</TableCell>
-        </TableRow>
         {
-          name && [
+          [
+            <TableRow key="name">
+              <TableCell component="th" scope="row">Изделие</TableCell>
+              <TableCell>{name || 'не выбрано'}</TableCell>
+            </TableRow>,
 
             note && <TableRow key="note">
               <TableCell component="th" scope="row">Инфо</TableCell>
               <TableCell>{note}</TableCell>
             </TableRow>,
 
-            <TableRow key="cnstr">
+            name && <TableRow key="cnstr">
               <TableCell component="th" scope="row">Контур</TableCell>
               <TableCell numeric>{cnstr}</TableCell>
             </TableRow>

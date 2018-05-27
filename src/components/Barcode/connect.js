@@ -15,10 +15,14 @@ const state = {
 
   keydown(evt, handleIfaceState) {
 
+    if(evt.target.tagName === 'INPUT' && !this.input){
+      return;
+    }
+
     if(evt.code == 'Enter' || evt.code == 'NumpadEnter') {
       this.s && $p.md.emit_async('barcode', this.s);
       this.s = '';
-      state.input && state.input.blur();
+      this.input && this.input.blur();
     }
     else if(evt.code == 'Escape' || evt.code == 'Backspace' || evt.code == 'Delete') {
       this.s = '';
@@ -32,17 +36,17 @@ const state = {
     }
     else if(evt.keyCode > 30) {
       // сравним время с предыдущим. если маленькое, добавляем в буфер. если большое - пишем последний элемент
-      if(evt.timeStamp - this.timeStamp > 100 && !state.input) {
+      if(evt.timeStamp - this.timeStamp > 100 && !this.input) {
         this.s = '';
       }
       this.timeStamp = evt.timeStamp;
       this.s += evt.key;
     }
 
-    state.input && handleIfaceState({
+    this.input && handleIfaceState({
       component: '',
       name: 'barcode',
-      value: state.s,
+      value: this.s,
     });
 
     evt.preventDefault();

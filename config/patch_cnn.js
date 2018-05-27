@@ -2,9 +2,10 @@
 function reset_replace(prm) {
 
   const {pouch} = $p.wsql;
-  const {local} = pouch;
-  const destroy_ram = local.ram && local.ram.destroy.bind(local.ram);
-  const destroy_doc = local.doc && local.doc.destroy.bind(local.doc);
+  const {local} = pouch || {};
+  const destroy_ram = pouch && local.ram && local.ram.destroy.bind(local.ram);
+  const destroy_doc = pouch && local.doc && local.doc.destroy.bind(local.doc);
+
   const do_reload = () => {
     setTimeout(() => {
       $p.eve.redirect = true;
@@ -34,8 +35,8 @@ function reset_replace(prm) {
  * предопределенные зоны
  */
 export const predefined = {
-  'eco.': {zone: 21, host: "https://eco-paperless.oknosoft.ru/"},
-  'ecookna.': {zone: 21, host: "https://paperless.ecookna.ru/"},
+  'eco-paperless.': {zone: 21, host: "https://eco-paperless.oknosoft.ru/"},
+  //'ecookna.': {zone: 21, host: "https://paperless.ecookna.ru/"},
 }
 
 /**

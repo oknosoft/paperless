@@ -31,7 +31,7 @@ class Imposts extends React.Component {
     this.state = {
       ox: {},
       cnstr: 1,
-    }
+    };
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {

@@ -2,6 +2,7 @@
   "lang": "ru",
   "name": "Paperless for order dealer",
   "short_name": "Paperless",
+  "kiosk_enabled": true,
   "icons": [
     {
       "src": "./favicon.png",
