@@ -9,6 +9,7 @@ import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 import Builder from '../Builder';
 import Props from '../Props/Main';
+import {decrypt} from '../Barcode/connect';
 
 function styles(theme) {
   return {
@@ -56,27 +57,32 @@ class Imposts extends React.Component {
   }
 
   onBarcode(barcode) {
-    if(this.editor && $p.utils.is_guid(barcode)) {
+    if(this.editor) {
       const {project} = this.editor;
-      const cnstr = 1;
-      project.load(barcode, true)
-        .then(() => {
+      decrypt(barcode)
+        .then(({ox, cnstr}) => {
+          project.load(ox, true)
+            .then(() => {
+              project.builder_props.auto_lines = false;
+              project.builder_props.custom_lines = false;
 
-          project.builder_props.auto_lines = false;
-          project.builder_props.custom_lines = false;
-
-          const contour = project.getItem({cnstr});
-          if(contour) {
-            project.draw_fragment({elm: -cnstr});
-            contour.glasses(true);
-            contour.l_dimensions.draw_by_imposts();
-            project.zoom_fit();
-            this.setState({
-              ox: project.ox,
-              cnstr,
+              const contour = project.getItem({cnstr});
+              if(contour) {
+                project.draw_fragment({elm: -cnstr});
+                contour.glasses(true);
+                contour.l_dimensions.draw_by_imposts();
+                project.zoom_fit();
+                this.setState({ox, cnstr});
+              }
             });
+        })
+        .catch(({message}) => {
+          const {ox} = this.state;
+          if(ox && ox.unload) {
+            ox.unload();
           }
-
+          project.clear();
+          this.setState({ox: {}});
         });
     }
   }

@@ -71,6 +71,51 @@ const state = {
 //
 // }
 
+/**
+ * Расшифровывает штрихкод
+ * @param barcode
+ */
+export function decrypt(barcode, cnstr = 1) {
+
+  return new Promise((resolve, reject) => {
+
+    const {utils, cat: {characteristics}} = $p;
+    const not_found = {
+      error: true,
+      message: 'not found',
+    };
+
+    if(utils.is_guid(barcode)) {
+      // если передали guid
+      characteristics.get(barcode, 'promise')
+        .then((ox) => {
+          if(ox.is_new()) {
+            reject(not_found);
+          }
+          else {
+            resolve({ox, cnstr});
+          }
+        })
+        .catch((err) => {
+          not_found.message = err.message;
+          reject(not_found);
+        });
+    }
+    else {
+      // ищем barcode в _local/bar
+      characteristics.pouch_db.get(`_local/bar|${barcode}`)
+        .then((doc) => {
+          resolve(decrypt(doc.characteristic, doc.cnstr || 1));
+        })
+        .catch((err) => {
+          not_found.message = err.message;
+          reject(not_found);
+        });
+    }
+
+  });
+}
+
 function mapDispatchToProps(dispatch) {
   const {handleIfaceState} = dispatchIface(dispatch);
   return {

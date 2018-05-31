@@ -35,8 +35,7 @@ function reset_replace(prm) {
  * предопределенные зоны
  */
 export const predefined = {
-  'eco-paperless.': {zone: 21, host: "https://eco-paperless.oknosoft.ru/"},
-  //'ecookna.': {zone: 21, host: "https://paperless.ecookna.ru/"},
+  'eco-paperless.': {zone: 21, host: 'https://eco-paperless.oknosoft.ru/', couch_path: 'https://zakaz.ecookna.ru/couchdb/wb_'},
 }
 
 /**
@@ -62,16 +61,25 @@ export function patch_cnn() {
 
   const {job_prm, wsql} = $p;
 
-  for(const elm in predefined){
+  for (const elm in predefined) {
     const prm = predefined[elm];
-    if(location.host.match(elm) && wsql.get_user_param("zone") != prm.zone){
-      wsql.set_user_param("zone", prm.zone);
+    if(location.host.match(elm)) {
+      if(wsql.get_user_param('zone') != prm.zone) {
+        wsql.set_user_param('zone', prm.zone);
+      }
+      if(prm.couch_path && job_prm.couch_path != prm.couch_path) {
+        job_prm.couch_path = prm.couch_path;
+        const couch_path = wsql.get_user_param('couch_path');
+        if(couch_path && couch_path.indexOf('http') == -1) {
+          wsql.set_user_param('couch_path', prm.couch_path);
+        }
+      }
     }
   }
-  if(!location.host.match("localhost")){
-    for(const elm in predefined){
+  if(!location.host.match('localhost')) {
+    for (const elm in predefined) {
       const prm = predefined[elm];
-      if(prm.host && wsql.get_user_param("zone") == prm.zone && !location.host.match(elm)){
+      if(prm.host && wsql.get_user_param('zone') == prm.zone && !location.host.match(elm)) {
         reset_replace(prm);
       }
     }

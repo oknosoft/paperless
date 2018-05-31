@@ -47,6 +47,9 @@ module.exports = function settings(prm) {
     // размер вложений 2Mb
     attachment_max_size: 2000000,
 
+    // по умолчанию, используем прямое обращение к couchdb, а не базы браузера
+    couch_direct: true,
+
     // размер реплицируемых данных. если больше - включаем direct
     data_size_sync_limit: 160000000,
 
