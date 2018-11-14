@@ -25,3 +25,4 @@ package-lock.json
 .vscode
 .nyc_output
 
+/src/public/ram/
