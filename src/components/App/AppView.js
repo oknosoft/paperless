@@ -105,7 +105,8 @@ class AppView extends Component {
   render() {
     const {props, state} = this;
     const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user,
-      couch_direct, offline, meta_loaded, barcode} = props;
+      couch_direct, offline, meta_loaded, barcode, nom_prices_step, page} = props;
+
     const isHome = location.pathname === '/';
 
     let appBarClassName = classes.appBar;
@@ -129,10 +130,10 @@ class AppView extends Component {
 
       if(!location.pathname.match(/\/login$/) && ((state.need_meta && !meta_loaded) || (state.need_user && !props.complete_loaded))) {
         return <DumbScreen
-          title={doc_ram_loaded ? 'Подготовка данных в памяти...' :
-            (user.try_log_in ? 'Авторизация на сервере CouchDB...' : 'Загрузка из IndexedDB...')}
-          page={{text: doc_ram_loaded ? 'Индексы в памяти...' : (user.logged_in ? 'Почти готово...' : 'Получение данных...')}}
-        />;
+          title={doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка из IndexedDB...'}
+          page={{text: doc_ram_loaded ? `Цены и характеристики${nom_prices_step ? ` (такт №${nom_prices_step})` : ''}...` :
+              `${(page && page.synonym) || 'Почти готово'}...`}}
+          />;
       }
 
       const wraper = (Component, routeProps) => {
@@ -184,7 +185,7 @@ class AppView extends Component {
               <Typography
                 key="title"
                 className={classes.title}
-                variant="title"
+                variant="h6"
                 color="textSecondary"
                 noWrap
               >{title || mainTitle}

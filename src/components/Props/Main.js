@@ -13,7 +13,7 @@ export default function MainProps(props) {
   const {ox: {name, note, calc_order}, cnstr} = props;
 
   return [
-    <Typography key="title" variant="title">Свойства</Typography>,
+    <Typography key="title" variant="h6">Свойства</Typography>,
     <Table key="table">
       <TableBody>
         {

@@ -13,7 +13,7 @@ export default class Furn extends React.Component {
         <meta name="description" content="Прмер диаграммы" />
       </Helmet>
       <div style={{marginTop: 16}}>
-        <Typography variant="display1" component="h1" color="primary">Это диаграмма</Typography>
+        <Typography variant="h4" component="h1" color="primary">Это диаграмма</Typography>
       </div>
     </AppContent>;
   }

@@ -153,7 +153,7 @@ class Settings extends Component {
           <meta name="description" content={iprops.title} />
         </Helmet>
 
-        <Typography variant="title" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
+        <Typography variant="h6" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
 
         <TextField
           fullWidth
@@ -195,7 +195,7 @@ class Settings extends Component {
           </FormControl>
         </FormGroup>
 
-        <Typography variant="title" style={{paddingTop: 16}}>Колонки цен</Typography>
+        <Typography variant="h6" style={{paddingTop: 16}}>Колонки цен</Typography>
         <Typography>Настройка видимости колонок в документе &quot;Расчет&quot; и графическом построителе</Typography>
 
         <RadioGroup
@@ -209,7 +209,7 @@ class Settings extends Component {
 
         </RadioGroup>
 
-        <Typography variant="title" style={{paddingTop: 16}}>Наценки и скидки</Typography>
+        <Typography variant="h6" style={{paddingTop: 16}}>Наценки и скидки</Typography>
         <Typography>Значения наценки и скидки по умолчанию, которые дилер предоставляет своим (конечным) покупателям</Typography>
 
         <TextField

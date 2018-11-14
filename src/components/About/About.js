@@ -2,35 +2,41 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Helmet from 'react-helmet';
-import {withIface} from 'metadata-redux';
-import {item_props} from '../App/menu';
 
-const styles = (theme) => ({
+import {withIface} from 'metadata-redux';
+
+const styleSheet = {
   root: {
     flexGrow: 1,
-    marginTop: theme.spacing.unit * 8,
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 8,
-    overflow: 'hidden',
+    marginLeft: 12,
+    marginRight: 16,
   },
-});
+  fn: {
+    fontWeight: 500,
+  }
+};
 
 class About extends Component {
 
+  state = {build: ''};
+
   componentDidMount() {
     this.shouldComponentUpdate(this.props);
+    fetch('/build.json')
+      .then(response => response.json())
+      .then(json => {
+        this.setState(json);
+      })
+      .catch(() => null);
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
-    const iprops = item_props();
-    if(iprops.text && title != iprops.text){
+    const ltitle = 'О программе...';
+    if(title != ltitle){
       handleIfaceState({
         component: '',
         name: 'title',
-        value: iprops.text,
+        value: ltitle,
       });
       return false;
     }
@@ -38,22 +44,16 @@ class About extends Component {
   }
 
   render() {
-    const {classes} = this.props;
-    const iprops = item_props();
+    const {props: {classes}, state: {build}} = this;
 
     return (
       <div className={classes.root}>
-
-        <Helmet title={iprops.text}>
-          <meta name="description" content={iprops.title} />
-        </Helmet>
-
         <Grid container spacing={24}>
           <Grid item md={1} lg={2} xl={3} />
           <Grid item xs={12} sm={12} md={11} lg={10} xl={8}>
 
-            <Typography variant="display1" component="h1" color="inherit">Окнософт: Заказ дилера</Typography>
-
+            <h1 className={classes.fn}>Окнософт: Заказ дилера</h1>
+            {build && <p>Версия: <i>{build}</i></p>}
             <p>Заказ дилера - это веб-приложение, разработанное компанией <a
               href="http://www.oknosoft.ru/" target="_blank" rel="noopener noreferrer">Окнософт</a> на базе фреймворка <a
               href="http://www.oknosoft.ru/metadata/" target="_blank" rel="noopener noreferrer">Metadata.js</a><br />
@@ -63,7 +63,7 @@ class About extends Component {
               <br />
             </p>
 
-            <Typography variant="title" component="h3" color="inherit">Назначение и возможности</Typography>
+            <h3 className={classes.fn}>Назначение и возможности</h3>
             <ul>
               <li>Построение и редактирование эскизов изделий в графическом 2D редакторе</li>
               <li>Экстремальная поддержка нестандартных изделий (многоугольники, сложные перегибы профиля)</li>
@@ -75,7 +75,7 @@ class About extends Component {
 
             <p>Использованы следующие библиотеки и инструменты:</p>
 
-            <Typography variant="title" component="h3" color="inherit">Серверная часть</Typography>
+            <h3 className={classes.fn}>Серверная часть</h3>
             <ul>
               <li><a href="http://couchdb.apache.org/" target="_blank"
                      rel="noopener noreferrer">CouchDB</a>, NoSQL база данных с поддержкой master-master репликации</li>
@@ -89,7 +89,7 @@ class About extends Component {
             */}
             </ul>
 
-            <Typography variant="title" component="h3" color="inherit">Управление данными в памяти браузера</Typography>
+            <h3 className={classes.fn}>Управление данными в памяти браузера</h3>
             <ul>
               <li><a href="http://www.oknosoft.ru/metadata/" target="_blank"
                      rel="noopener noreferrer">Metadata.js</a>, движок ссылочной типизации для браузера и Node.js</li>
@@ -103,7 +103,7 @@ class About extends Component {
                      rel="noopener noreferrer">Redux</a>, диспетчер состояния веб-приложения</li>
             </ul>
 
-            <Typography variant="title" component="h3" color="inherit">UI библиотеки и компоненты интерфейса</Typography>
+            <h3 className={classes.fn}>UI библиотеки и компоненты интерфейса</h3>
             <ul>
               <li><a href="http://paperjs.org/" target="_blank"
                      rel="noopener noreferrer">Paper.js</a>, фреймворк векторной графики для HTML5 Canvas</li>
@@ -113,8 +113,6 @@ class About extends Component {
                      rel="noopener noreferrer">React virtualized</a>, компоненты React для динамических списков</li>
               <li><a href="https://github.com/adazzle/react-data-grid" target="_blank"
                      rel="noopener noreferrer">React data grid</a>, React компонент табличной части</li>
-              <li><a href="http://dhtmlx.com/" target="_blank"
-                     rel="noopener noreferrer">Dhtmlx</a>, кроссбраузерная javascript библиотека компонентов ui</li>
               <li><a href="http://momentjs.com/" target="_blank"
                      rel="noopener noreferrer">Moment.js</a>, библиотека форматирования интервалов и дат</li>
               <li><a href="http://meritt.github.io/rubles/" target="_blank"
@@ -127,10 +125,16 @@ class About extends Component {
                      rel="noopener noreferrer">fontawesome</a>, набор шрифтовых иконок</li>
             </ul>
 
-            <Typography variant="title" component="h3" color="inherit"><i className="fa fa-question-circle"></i> Вопросы</Typography>
-            <p>Если обнаружили ошибку, пожалуйста, <a href="https://github.com/oknosoft/windowbuilder/issues/new" target="_blank"
-              rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a href="mailto:info@oknosoft.ru?subject=paperless">
-              свяжитесь с авторами</a> напрямую</p>
+            <h3 className={classes.fn}>Благодарность</h3>
+            <p><i className="fa fa-thumbs-o-up">
+            </i> Нашему спонсору, ЗСК «Гласспром» (<a href="https://www.ecookna.ru/partnerstvo/stante-dilerom/" target="_blank"
+                                                      rel="noopener noreferrer">Экоокна</a>)</p>
+
+            <h3 className={classes.fn}>Вопросы</h3>
+            <p><i className="fa fa-question-circle"></i> Если обнаружили ошибку, пожалуйста, <a
+              href="https://github.com/oknosoft/windowbuilder/issues/new" target="_blank"
+              rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a href="mailto:info@oknosoft.ru?subject=windowbuilder">
+              свяжитесь с разработчиком</a> напрямую<br /></p>
 
           </Grid>
         </Grid>
@@ -146,4 +150,4 @@ About.propTypes = {
   handleIfaceState: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(withIface(About));
+export default withStyles(styleSheet)(withIface(About));

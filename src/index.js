@@ -1,4 +1,6 @@
 // шрифты и стили подгрузим асинхронно
+import('font-awesome/css/font-awesome.min.css');
+import './styles/roboto/font.css';
 import './styles/global.css';
 
 import React, {Component} from 'react';
@@ -30,16 +32,6 @@ class RootProvider extends Component {
 
   componentDidMount() {
 
-    // шрифт Roboto грузим асинхронно
-    const s = document.createElement('link');
-    s.type = 'text/css';
-    s.rel = 'stylesheet';
-    s.href = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
-    document.head.appendChild(s);
-
-    // font-awesome грузим асинхронно
-    import('font-awesome/css/font-awesome.min.css');
-
     import('metadata-react/styles/react-data-grid.css');
 
     // скрипт инициализации структуры метаданных и модификаторы
@@ -55,7 +47,6 @@ class RootProvider extends Component {
         theme={theme}
         DumbScreen={DumbScreen}
         AppView={AppView}
-        ie11
         disableAutoLogin
       />
     </Provider>;

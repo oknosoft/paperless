@@ -2,10 +2,9 @@
 function reset_replace(prm) {
 
   const {pouch} = $p.wsql;
-  const {local} = pouch || {};
-  const destroy_ram = pouch && local.ram && local.ram.destroy.bind(local.ram);
-  const destroy_doc = pouch && local.doc && local.doc.destroy.bind(local.doc);
-
+  const {local} = pouch;
+  const destroy_ram = local.ram && local.ram.destroy.bind(local.ram);
+  const destroy_doc = local.doc && local.doc.destroy.bind(local.doc);
   const do_reload = () => {
     setTimeout(() => {
       $p.eve.redirect = true;
@@ -24,7 +23,7 @@ function reset_replace(prm) {
   setTimeout(do_replace, 10000);
 
   dhtmlx.confirm({
-    title: "Новый сервер",
+    title: 'Новый сервер',
     text: `Зона №${prm.zone} перемещена на выделенный сервер ${prm.host}`,
     cancel: $p.msg.cancel,
     callback: do_replace
@@ -35,7 +34,8 @@ function reset_replace(prm) {
  * предопределенные зоны
  */
 export const predefined = {
-  'eco-paperless.': {zone: 21, host: 'https://eco-paperless.oknosoft.ru/', couch_path: 'https://zakaz.ecookna.ru/couchdb/wb_'},
+  'eco-paperless.': {zone: 21, host: 'https://eco-paperless.oknosoft.ru/', templates: true},
+  'localhost': {zone: 21, templates: true}, //
 }
 
 /**
@@ -44,14 +44,14 @@ export const predefined = {
 export function patch_prm(settings) {
   return (prm) => {
     settings(prm);
-    for(const elm in predefined){
-      if(location.host.match(elm)){
+    for (const elm in predefined) {
+      if(location.host.match(elm)) {
         prm.zone = predefined[elm].zone;
         break;
       }
     }
     return prm;
-  }
+  };
 }
 
 /**
@@ -64,15 +64,15 @@ export function patch_cnn() {
   for (const elm in predefined) {
     const prm = predefined[elm];
     if(location.host.match(elm)) {
-      if(wsql.get_user_param('zone') != prm.zone) {
-        wsql.set_user_param('zone', prm.zone);
+      wsql.get_user_param('zone') != prm.zone && wsql.set_user_param('zone', prm.zone);
+      if(prm.log_level) {
+        job_prm.job_prm = prm.log_level;
       }
-      if(prm.couch_path && job_prm.couch_path != prm.couch_path) {
-        job_prm.couch_path = prm.couch_path;
-        const couch_path = wsql.get_user_param('couch_path');
-        if(couch_path && couch_path.indexOf('http') == -1) {
-          wsql.set_user_param('couch_path', prm.couch_path);
-        }
+      if(prm.splash) {
+        job_prm.splash = prm.splash;
+      }
+      if(prm.templates) {
+        job_prm.templates = prm.templates;
       }
     }
   }

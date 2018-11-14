@@ -14,6 +14,10 @@ const theme = createMuiTheme({
     }
   },
 
+  typography: {
+    useNextVariants: true,
+  },
+
   custom: {
     appbar: {
       position: 'fixed',
