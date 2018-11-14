@@ -61,11 +61,8 @@ class Imposts extends React.Component {
       const {project} = this.editor;
       decrypt(barcode)
         .then(({ox, cnstr}) => {
-          project.load(ox, true)
+          project.load(ox, {auto_lines: false, custom_lines: false, mosquito: false})
             .then(() => {
-              project.builder_props.auto_lines = false;
-              project.builder_props.custom_lines = false;
-
               const contour = project.getItem({cnstr});
               if(contour) {
                 project.draw_fragment({elm: -cnstr});

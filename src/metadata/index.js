@@ -87,7 +87,10 @@ export function init(store) {
         // информируем хранилище о готовности MetaEngine
         dispatch(metaActions.META_LOADED($p));
 
-        md.once('predefined_elmnts_inited', () => pouch.emit('pouch_complete_loaded'));
+        md.once('predefined_elmnts_inited', () => {
+          pouch.off('on_log_in');
+          pouch.emit('pouch_complete_loaded');
+        });
 
         // читаем локальные данные в ОЗУ
         return pouch.load_data();

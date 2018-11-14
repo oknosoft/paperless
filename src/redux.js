@@ -9,7 +9,8 @@ import {routerReducer as router, routerMiddleware} from 'react-router-redux';
 
 // асинхронные действия
 import thunk from 'redux-thunk';
-import {metaReducer, ifaceReducer} from 'metadata-redux';
+import {ifaceReducer} from 'metadata-redux';
+import {customPouchReducer as meta} from './metadata/reducers/pouchdb';
 import ifaceInitialState from './metadata/reducers/iface';
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -19,7 +20,7 @@ export default function configureStore(preloadedState) {
   return createStore(
     combineReducers({
       router,
-      meta: metaReducer,
+      meta,
       iface: ifaceReducer(ifaceInitialState),
     }),
     preloadedState,

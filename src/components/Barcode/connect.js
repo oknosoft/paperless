@@ -75,7 +75,7 @@ const state = {
  * Расшифровывает штрихкод
  * @param barcode
  */
-export function decrypt(barcode, cnstr = 1) {
+export function decrypt(barcode, doc = {}) {
 
   return new Promise((resolve, reject) => {
 
@@ -93,7 +93,11 @@ export function decrypt(barcode, cnstr = 1) {
             reject(not_found);
           }
           else {
-            resolve({ox, cnstr});
+            doc.ox = ox;
+            if(!doc.cnstr) {
+              doc.cnstr = 1
+            }
+            resolve(doc);
           }
         })
         .catch((err) => {
@@ -105,7 +109,7 @@ export function decrypt(barcode, cnstr = 1) {
       // ищем barcode в _local/bar
       characteristics.pouch_db.get(`_local/bar|${barcode}`)
         .then((doc) => {
-          resolve(decrypt(doc.characteristic, doc.cnstr || 1));
+          resolve(decrypt(doc.characteristic, doc));
         })
         .catch((err) => {
           not_found.message = err.message;

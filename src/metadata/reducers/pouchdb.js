@@ -46,15 +46,12 @@ export function customPouchMiddleware({adapters}) {
         attached = true;
         adapters.pouch.on({
 
-          nom_prices: (step) => dispatch({
-            type: NOM_PRICES,
-            payload: step,
-          }),
-
-          repl_state: (info) => dispatch({
-            type: REPL_STEP,
-            payload: info,
-          }),
+          repl_state: (info) => {
+            return dispatch({
+              type: REPL_STEP,
+              payload: info,
+            });
+          },
         });
 
         // TODO: здесь можно подписаться на online-offline, rotate и т.д.
