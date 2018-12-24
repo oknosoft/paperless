@@ -1754,7 +1754,6 @@ class Contour extends AbstractFilling(paper.Layer) {
     this.params.find_rows({
       cnstr,
       inset: $p.utils.blank.guid,
-      hide: {not: true},
     }, (prow) => {
       const {param} = prow;
       const links = param.params_links({grid: {selection: {cnstr}}, obj: prow});
@@ -1763,8 +1762,9 @@ class Contour extends AbstractFilling(paper.Layer) {
       if (links.length && param.linked_values(links, prow)) {
         notify = true;
       }
-      if (!notify) {
-        notify = hide;
+      if (prow.hide !== hide) {
+        prow.hide = hide;
+        notify = true;
       }
     });
 
@@ -3949,7 +3949,7 @@ class Filling extends AbstractFilling(BuilderElement) {
     const {path, imposts, _attr, is_rectangular} = this;
     const {elm_font_size, font_family} = consts;
     const fontSize = elm_font_size * (2 / 3);
-    const maxTextWidth = 490;
+    const maxTextWidth = 600;
     path.visible = true;
     imposts.forEach((elm) => elm.redraw());
 
@@ -3975,6 +3975,12 @@ class Filling extends AbstractFilling(BuilderElement) {
 
     if(is_rectangular){
       const turn = textBounds.width * 1.5 < textBounds.height;
+      if(turn){
+        textBounds.width = elm_font_size;
+      }
+      else{
+        textBounds.height = elm_font_size;
+      }
       _attr._text.fitBounds(textBounds);
       _attr._text.point = turn
         ? bounds.bottomRight.add([-fontSize, -fontSize * 0.6])
@@ -3982,13 +3988,16 @@ class Filling extends AbstractFilling(BuilderElement) {
       _attr._text.rotation = turn ? 270 : 0;
     }
     else{
-      _attr._text.fitBounds(textBounds.scale(0.8));
+      textBounds.height = elm_font_size;
+      _attr._text.rotation = 0;
+      _attr._text.fitBounds(textBounds);
       const maxCurve = path.curves.reduce((curv, item) => item.length > curv.length ? item : curv, path.curves[0]);
       const {angle, angleInRadians} = maxCurve.line.vector;
       const {PI} = Math;
       _attr._text.rotation = angle;
-      _attr._text.point = maxCurve.point1.add([Math.cos(angleInRadians + PI / 4) * 100, Math.sin(angleInRadians + PI / 4) * 100]);
-      if(Math.abs(angle) > 90 && Math.abs(angle) < 180){
+      const biasPoint = new paper.Point(Math.cos(angleInRadians + PI / 4), Math.sin(angleInRadians + PI / 4)).multiply(3 * elm_font_size);
+      _attr._text.point = maxCurve.point1.add(biasPoint);
+      if(Math.abs(angle) >= 85 && Math.abs(angle) <= 185){
         _attr._text.point = _attr._text.bounds.rightCenter;
         _attr._text.rotation += 180;
       }
@@ -14315,9 +14324,9 @@ $p.CatProduction_params.prototype.__define({
 			const auto_align = ox.calc_order.obj_delivery_state == $p.enm.obj_delivery_states.Шаблон && $p.job_prm.properties.auto_align;
 			const {params} = ox;
 
-			function add_prm(default_row) {
+			function add_prm(proto) {
         let row;
-        params.find_rows({cnstr: cnstr, param: default_row.param}, (_row) => {
+        params.find_rows({cnstr: cnstr, param: proto.param}, (_row) => {
           row = _row;
           return false;
         });
@@ -14326,15 +14335,17 @@ $p.CatProduction_params.prototype.__define({
           if(cnstr){
             return;
           }
-          row = params.add({cnstr: cnstr, param: default_row.param, value: default_row.value});
+          row = params.add({cnstr: cnstr, param: proto.param, value: proto.value});
         }
 
-        if(row.hide != default_row.hide){
-          row.hide = default_row.hide;
+        const links = proto.param.params_links({grid: {selection: {cnstr}}, obj: row});
+        const hide = proto.hide || links.some((link) => link.hide);
+        if(row.hide != hide){
+          row.hide = hide;
         }
 
-        if(default_row.forcibly && row.value != default_row.value){
-          row.value = default_row.value;
+        if(proto.forcibly && row.value != proto.value){
+          row.value = proto.value;
         }
       }
 

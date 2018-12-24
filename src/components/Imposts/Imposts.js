@@ -60,7 +60,8 @@ class Imposts extends React.Component {
     if(this.editor) {
       const {project} = this.editor;
       decrypt(barcode)
-        .then(({ox, cnstr}) => {
+        .then((bar) => {
+          const {cnstr, ox} = bar;
           project.load(ox, {auto_lines: false, custom_lines: false, mosquito: false})
             .then(() => {
               const contour = project.getItem({cnstr});
@@ -69,7 +70,7 @@ class Imposts extends React.Component {
                 contour.glasses(true);
                 contour.l_dimensions.draw_by_imposts();
                 project.zoom_fit();
-                this.setState({ox, cnstr});
+                this.setState(bar);
               }
             });
         })

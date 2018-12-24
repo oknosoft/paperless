@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 import {withIface} from 'metadata-redux';
 
-const styleSheet = {
+const styles = {
   root: {
     flexGrow: 1,
     marginLeft: 12,
@@ -150,4 +150,4 @@ About.propTypes = {
   handleIfaceState: PropTypes.func.isRequired,
 };
 
-export default withStyles(styleSheet)(withIface(About));
+export default withStyles(styles)(withIface(About));

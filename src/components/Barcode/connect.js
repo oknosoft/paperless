@@ -95,7 +95,7 @@ export function decrypt(barcode, doc = {}) {
           else {
             doc.ox = ox;
             if(!doc.cnstr) {
-              doc.cnstr = 1
+              doc.cnstr = 1;
             }
             resolve(doc);
           }
