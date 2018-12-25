@@ -7,7 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from './TableRow';
 import Params from './Params';
-
+import CompleteListSorting from './CompleteListSorting';
 
 export default function MainProps(props) {
 
@@ -50,6 +50,9 @@ export default function MainProps(props) {
 
             // свойства фурнитуры
             name && cnstr && <Params key="furn_props" ox={ox} cnstr={cnstr}/>,
+
+            // свойства по сортировке в комплектации
+            name && <CompleteListSorting key="furn_props" ox={ox} cnstr={cnstr}/>,
 
             note && <TableRow key="note">
               <TableCell component="th" scope="row">Инфо</TableCell>

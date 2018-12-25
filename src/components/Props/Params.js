@@ -1,4 +1,10 @@
-// @flow
+/**
+ * Допсвойства по табчасти параметров
+ *
+ * @module Params
+ *
+ * Created by Evgeniy Malyarov on 24.12.2018.
+ */
 
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
