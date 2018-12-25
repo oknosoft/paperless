@@ -17,51 +17,45 @@ export default function MainProps(props) {
     note = calc_order_row.note;
   }
 
+  const rows = [
+    task && name && <TableRow key="task">
+      <TableCell component="th" scope="row">Задание</TableCell>
+      <TableCell>{task}</TableCell>
+    </TableRow>,
+
+    name && <TableRow key="calc_order">
+      <TableCell component="th" scope="row">Расчет</TableCell>
+      <TableCell>{calc_order.number_doc}</TableCell>
+    </TableRow>,
+
+    <TableRow key="name">
+      <TableCell component="th" scope="row">Изделие</TableCell>
+      <TableCell>{name || 'не выбрано'}</TableCell>
+    </TableRow>,
+
+    block && <TableRow key="cnstr">
+      <TableCell component="th" scope="row">Блок</TableCell>
+      <TableCell>{block}</TableCell>
+    </TableRow>,
+
+    name && <TableRow key="divider"><TableCell /><TableCell /></TableRow>,
+
+  ].filter((v) => v);
+
+  if(name) {
+    rows.push(...Params({ox, cnstr: 0}));
+    cnstr && rows.push(...Params({ox, cnstr}));
+    rows.push(...CompleteListSorting({ox, cnstr}));
+    note && rows.push(<TableRow key="note">
+      <TableCell component="th" scope="row">Инфо</TableCell>
+      <TableCell>{note}</TableCell>
+    </TableRow>);
+  }
+
   return [
     //<Typography key="title" variant="h6">Свойства</Typography>,
     <Table key="table">
-      <TableBody>
-        {
-          [
-            task && name && <TableRow key="task">
-              <TableCell component="th" scope="row">Задание</TableCell>
-              <TableCell>{task}</TableCell>
-            </TableRow>,
-
-            name && <TableRow key="calc_order">
-              <TableCell component="th" scope="row">Расчет</TableCell>
-              <TableCell>{calc_order.number_doc}</TableCell>
-            </TableRow>,
-
-            <TableRow key="name">
-              <TableCell component="th" scope="row">Изделие</TableCell>
-              <TableCell>{name || 'не выбрано'}</TableCell>
-            </TableRow>,
-
-            block && <TableRow key="cnstr">
-              <TableCell component="th" scope="row">Блок</TableCell>
-              <TableCell>{block}</TableCell>
-            </TableRow>,
-
-            name && <TableRow key="divider"><TableCell /><TableCell /></TableRow>,
-
-            // свойства изделия
-            name && <Params key="prod_props" ox={ox} cnstr={0}/>,
-
-            // свойства фурнитуры
-            name && cnstr && <Params key="furn_props" ox={ox} cnstr={cnstr}/>,
-
-            // свойства по сортировке в комплектации
-            name && <CompleteListSorting key="furn_props" ox={ox} cnstr={cnstr}/>,
-
-            note && <TableRow key="note">
-              <TableCell component="th" scope="row">Инфо</TableCell>
-              <TableCell>{note}</TableCell>
-            </TableRow>,
-
-          ]
-        }
-      </TableBody>
+      <TableBody>{rows}</TableBody>
     </Table>
   ];
 }

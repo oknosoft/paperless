@@ -77,6 +77,10 @@ const state = {
  */
 export function decrypt(barcode, doc = {}) {
 
+  if(typeof barcode === 'string') {
+    barcode = barcode.trim();
+  }
+
   return new Promise((resolve, reject) => {
 
     const {utils, cat: {characteristics}} = $p;
