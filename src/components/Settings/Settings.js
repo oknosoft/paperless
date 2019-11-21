@@ -17,7 +17,7 @@ import Helmet from 'react-helmet';
 import Confirm from 'metadata-react/App/Confirm';
 import withStyles from 'metadata-react/styles/paper600';
 import {withIface, withPrm} from 'metadata-redux';
-import compose from 'recompose/compose';
+import {compose} from 'redux';
 import {item_props} from '../App/menu';
 
 class Settings extends Component {

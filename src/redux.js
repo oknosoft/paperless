@@ -4,7 +4,7 @@ import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
 import dynamicMiddlewares from 'redux-dynamic-middlewares';
 
 // маршрутизация url
-import createHistory from 'history/createBrowserHistory';
+import {createBrowserHistory} from 'history';
 import {routerReducer as router, routerMiddleware} from 'react-router-redux';
 
 // асинхронные действия
@@ -14,7 +14,7 @@ import {customPouchReducer as meta} from './metadata/reducers/pouchdb';
 import ifaceInitialState from './metadata/reducers/iface';
 
 // Create a history of your choosing (we're using a browser history in this case)
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 export default function configureStore(preloadedState) {
   return createStore(

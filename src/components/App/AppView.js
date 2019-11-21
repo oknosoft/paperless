@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Snack from 'metadata-react/App/Snack';       // сообщения в верхней части страницы (например, обновить после первого запуска)
 import Alert from 'metadata-react/App/Alert';       // диалог сообщения пользователю
 import Confirm from 'metadata-react/App/Confirm';   // диалог вопросов пользователю (да, нет)
-import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойства подключения
+import Login, {FrmLogin} from 'metadata-react/FrmLogin/Proxy';  // логин и свойства подключения
 import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
@@ -26,7 +26,7 @@ import Imposts from '../Imposts';             // установка импост
 
 import {withIfaceAndMeta} from 'metadata-redux';
 import withStyles from './styles';
-import compose from 'recompose/compose';
+import {compose} from 'redux';
 
 
 import items, {item_props} from './menu';
@@ -105,7 +105,7 @@ class AppView extends Component {
   render() {
     const {props, state} = this;
     const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user,
-      couch_direct, offline, meta_loaded, barcode, nom_prices_step, page} = props;
+      couch_direct, offline, meta_loaded, barcode, nom_prices_step, page, idle} = props;
 
     const isHome = location.pathname === '/';
 
@@ -115,15 +115,22 @@ class AppView extends Component {
 
       const dstyle = {marginTop: 48};
 
+      const auth_props = {
+        key: 'auth',
+        handleNavigate: props.handleNavigate,
+        handleIfaceState: props.handleIfaceState,
+        offline: couch_direct && offline,
+        user,
+        title,
+        idle,
+        disable: ['google'],
+        //ret_url: path(''),
+      };
+
       if(meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
         return (
           <div style={dstyle}>
-            <NeedAuth
-              handleNavigate={handleNavigate}
-              handleIfaceState={props.handleIfaceState}
-              title={title}
-              offline={couch_direct && offline}
-            />
+            <NeedAuth {...auth_props} ComponentLogin={FrmLogin}/>
           </div>
         );
       }
@@ -155,8 +162,7 @@ class AppView extends Component {
             <Route path="/:area(doc|cat|ireg|cch|rep).:name" render={(props) => wraper(DataRoute, props)}/>
             <Route path="/furn" render={(props) => wraper(Furn, props)}/>
             <Route path="/imposts" render={(props) => wraper(Imposts, props)}/>
-            <Route path="/login" render={(props) => wraper(FrmLogin, props)}/>
-            <Route path="/login" render={(props) => wraper(FrmLogin, props)}/>
+            <Route path="/login" render={(props) => <Login {...props} {...auth_props} />}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
             <Route path="/about" component={AboutPage} />
           </Switch>
@@ -254,6 +260,12 @@ AppView.propTypes = {
   classes: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
+  idle: PropTypes.bool,
+  snack: PropTypes.object,
+  alert: PropTypes.object,
+  confirm: PropTypes.object,
+  user: PropTypes.object,
+  page: PropTypes.object,
 };
 
 export default compose(withStyles, withIfaceAndMeta)(AppView);

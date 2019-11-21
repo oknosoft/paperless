@@ -5,52 +5,36 @@ import Repl from './Repl';
 class DumbScreen extends Component {
 
   renderRepl(footer) {
-    let {repl} = this.props;
-    const res = [];
-    for (const dbs in repl) {
-      if(!repl[dbs].end_time) {
-        res.push(<Repl key={dbs} info={repl[dbs]}/>);
-      }
-    }
-    if(!res.length && footer) {
-      res.push(<div key="footer">{footer}</div>);
-    }
+    const {page} = this.props;
+    let text = 'Чтение справочников';
+    const res = [<Repl key="ram" info={{text}}/>];
+    footer && res.push(<div key="footer">{footer}</div>);
     return res;
   }
 
   render() {
 
-    let {title, page, top, first_run} = this.props;
+    let {title, page, top, repl} = this.props;
     const over = page && page.limit * page.page > page.total_rows;
 
-    if(!title) {
-      title = first_run ? 'Первый запуск требует дополнительного времени...' : 'Загрузка модулей...';
+    if(!title && repl && repl.root) {
+      title = repl.root.title;
     }
-
-    let splash;
-    if(global.$p) {
-      splash = $p.job_prm.splash;
-      if(!splash) {
-        import('./splash.css');
-        $p.job_prm.splash = splash = {loaded: true, title: true};
-      }
-      // else if(!splash.loaded) {
-      //   import('./splash21.css');
-      //   splash.loaded = true;
-      // }
+    if(!title) {
+      title = 'Загрузка модулей...';
     }
 
     const footer = page ? (over ?
       <div>{`Такт №${page.page}, загружено ${page.total_rows} объектов - чтение изменений `} <i className="fa fa-spinner fa-pulse"></i></div>
       :
-      page.text || `Такт №${page.page}, загружено ${Math.min(page.page * page.limit, page.total_rows)} из ${page.total_rows} объектов`)
+      page.text || `Такт №${page.page}, загружено ${page.docs_written} из ${page.total_rows} объектов`)
       : '';
 
-    return <div className='splash' style={{marginTop: top, opacity: splash ? 1 : 0.15}}>
+    return <div className='splash' style={{marginTop: top}}>
       <div className="description">
         {[
-          (!splash || splash.title) && <h1 key="name" itemProp="name">Заказ дилера - безбумажка</h1>,
-          (!splash || splash.title) && <p key="category">Категория: <span itemProp="applicationSubCategory">CRM, CAD, E-Commerce</span></p>,
+          <h1 key="name" itemProp="name">Заказ дилера - безбумажка</h1>,
+          <p key="category">Категория: <span itemProp="applicationSubCategory">CRM, CAD, E-Commerce</span></p>,
           <p key="platform">Платформа: <i className="fa fa-chrome" aria-hidden="true"></i> браузер Chrome для <span
             itemProp="operatingSystem">Windows 8, 10 | Android | Mac | iOS</span>
           </p>,
@@ -82,14 +66,12 @@ DumbScreen.propTypes = {
   step_size: PropTypes.number,
   count_all: PropTypes.number,
   top: PropTypes.number,
-  first_run: PropTypes.bool,
   title: PropTypes.string,
   processed: PropTypes.string,
   current: PropTypes.string,
   bottom: PropTypes.string,
   page: PropTypes.object,
   repl: PropTypes.object,
-  splash: PropTypes.object,
 };
 
 export default DumbScreen;

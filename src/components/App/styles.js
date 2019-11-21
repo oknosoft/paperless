@@ -22,12 +22,12 @@ const styles = theme => ({
     width: '100%',
   },
   title: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(),
     flex: '1 1 auto',
     fontSize: '1.1rem',
   },
   barcode: {
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
     width: 240,
   },
   appBar: {

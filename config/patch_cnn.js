@@ -1,13 +1,12 @@
 
 function reset_replace(prm) {
 
-  const {pouch} = $p.wsql;
+  const {pouch} = $p.adapters;
   const {local} = pouch;
   const destroy_ram = local.ram && local.ram.destroy.bind(local.ram);
   const destroy_doc = local.doc && local.doc.destroy.bind(local.doc);
   const do_reload = () => {
     setTimeout(() => {
-      $p.eve.redirect = true;
       location.replace(prm.host);
     }, 1000);
   };
@@ -20,22 +19,21 @@ function reset_replace(prm) {
     :
     do_reload;
 
-  setTimeout(do_replace, 10000);
-
-  dhtmlx.confirm({
-    title: 'Новый сервер',
-    text: `Зона №${prm.zone} перемещена на выделенный сервер ${prm.host}`,
-    cancel: $p.msg.cancel,
-    callback: do_replace
-  });
+  alert(`Новый сервер. Зона №${prm.zone} перемещена на выделенный сервер ${prm.host}`);
+  setTimeout(do_replace, 1000);
 }
 
 /**
  * предопределенные зоны
  */
 export const predefined = {
-  'eco-paperless.': {zone: 21, host: 'https://eco-paperless.oknosoft.ru/', templates: true},
-  'localhost': {zone: 21, templates: true}, //
+  'localhost': {
+    zone: 21,
+    log_level: 'warn',
+    //keys: {google: ''},
+    crazy_ram: false,
+  },
+  'tmk.': {zone: 23, host: 'https://tmk-online.ru/'},
 }
 
 /**
@@ -65,18 +63,19 @@ export function patch_cnn() {
     const prm = predefined[elm];
     if(location.host.match(elm)) {
       wsql.get_user_param('zone') != prm.zone && wsql.set_user_param('zone', prm.zone);
-      if(prm.log_level) {
-        job_prm.job_prm = prm.log_level;
-      }
-      if(prm.splash) {
-        job_prm.splash = prm.splash;
-      }
-      if(prm.templates) {
-        job_prm.templates = prm.templates;
-      }
+      'log_level,splash,templates,keys,crazy_ram'.split(',').forEach((name) => {
+        if(prm.hasOwnProperty(name)) {
+          if(typeof job_prm[name] === 'object') {
+            Object.assign(job_prm[name], prm[name]);
+          }
+          else {
+            job_prm[name] = prm[name];
+          }
+        }
+      });
     }
   }
-  if(!location.host.match('localhost')) {
+  if(!location.host.match(/localhost|192.168.9.160/)) {
     for (const elm in predefined) {
       const prm = predefined[elm];
       if(prm.host && wsql.get_user_param('zone') == prm.zone && !location.host.match(elm)) {

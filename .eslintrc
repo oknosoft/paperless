@@ -12,21 +12,27 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "plugins": [
-    "babel",
     "react"
   ],
+  "settings": {
+    "react": {
+      "pragma": "React",  // Pragma to use, default to "React"
+      "version": "16.0", // React version, default to the latest React stable release
+    },
+  },
   "globals": {
     "$p": true,
     "global": true,
+    "moment": true,
+    "alasql": true,
     "process": true,
-    "__DEV__"      : false,
-    "__PROD__"     : false,
-    "__DEBUG__"    : false,
-    "__COVERAGE__" : false,
-    "__BASENAME__" : false
+    "paper": true,
+    "expect": true,
+    "sinon": true,
+    "__DEV__": true
   },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
     "strict": [2, "global"],
     "max-len": [1, 160, 2],
@@ -36,8 +42,9 @@
     "semi": [1, "always"],
     "semi-spacing": [1, {"before": false, "after": true}],
     "no-case-declarations": 1,
-    "no-console": 1,
+    "no-console": 0,
     "no-extra-semi": 1,
+    "no-prototype-builtins": 0,
     "no-unexpected-multiline": 1,
     "no-useless-escape": 1,
     "no-mixed-spaces-and-tabs": 1,
@@ -46,7 +53,6 @@
     "react/prop-types": 1,
     "react/display-name": 1,
     "react/no-find-dom-node": 1,
-    "generator-star-spacing": 0,
-    "jsx-a11y/href-no-hash": 0
+    "react/jsx-key": 1,
   }
 }

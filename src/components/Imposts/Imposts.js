@@ -17,7 +17,7 @@ function styles(theme) {
       minHeight: 'calc(100vh - 50px)', // Makes the hero full height until we get some more content.
     },
     props: {
-      paddingTop: theme.spacing.unit * 2,
+      paddingTop: theme.spacing(2),
     }
   };
 }

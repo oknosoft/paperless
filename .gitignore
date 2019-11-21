@@ -1,13 +1,15 @@
+
+# Editor files
+.idea
+.vscode
+
 # Exclude compiled files
-build
-coverage
-/lib
+build/
 /.eslintcache
 /tmp
+coverage
 /scripts/stats.json
 
-# Private config files
-config/superlogin.config.server.js
 
 # TODO
 .github
@@ -19,10 +21,3 @@ config/superlogin.config.server.js
 node_modules
 package-lock.json
 *.log
-
-# Editor files
-.idea
-.vscode
-.nyc_output
-
-/src/public/ram/

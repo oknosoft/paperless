@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route} from 'react-router';
 
 import {withObj} from 'metadata-redux';
-import NeedAuth, {ltitle} from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
+import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необходима авторизация"
 
-//import MetaObjPage from '../../components/MetaObjPage';
 import NotFound from './NotFound';
 
 const stub = () => null;
@@ -18,38 +17,23 @@ import(/* webpackChunkName: "metadata-react" */ 'metadata-react/DataList').then(
 import(/* webpackChunkName: "metadata-react" */ 'metadata-react/FrmObj').then(module => lazy.DataObj = module.default);
 import(/* webpackChunkName: "metadata-react" */ 'metadata-react/FrmReport').then(module => lazy.FrmReport = module.default);
 
-class DataRoute extends Component {
-
-  static propTypes = {
-    match: PropTypes.object.isRequired,
-    handlers: PropTypes.object.isRequired,
-    windowHeight: PropTypes.number.isRequired,
-    windowWidth: PropTypes.number.isRequired,
-    disablePermanent: PropTypes.bool,
-    couch_direct: PropTypes.bool,
-    offline: PropTypes.bool,
-  };
-
-  static childContextTypes = {
-    components: PropTypes.object,
-  };
+class DataRoute extends React.Component {
 
   render() {
-    const {match, handlers, windowHeight, windowWidth, disablePermanent, couch_direct, offline} = this.props;
+    const {match, handlers, windowHeight, windowWidth, disablePermanent, couch_direct, offline, user} = this.props;
     const {area, name} = match.params;
-    const _mgr = $p[area][name];
+    let _mgr = global.$p && $p[area][name];
 
     if(!_mgr) {
       return <NotFound/>;
     }
 
     // если нет текущего пользователя, считаем, что нет прав на просмотр
-    if(!$p.current_user) {
+    if(!user.logged_in || !$p.current_user) {
       return (
         <NeedAuth
           handleNavigate={handlers.handleNavigate}
           handleIfaceState={handlers.handleIfaceState}
-          title={ltitle}
           offline={couch_direct && offline}
         />
       );
@@ -91,6 +75,21 @@ class DataRoute extends Component {
     return {components: lazy};
   }
 }
+
+DataRoute.propTypes = {
+  match: PropTypes.object.isRequired,
+  handlers: PropTypes.object.isRequired,
+  windowHeight: PropTypes.number.isRequired,
+  windowWidth: PropTypes.number.isRequired,
+  disablePermanent: PropTypes.bool,
+  couch_direct: PropTypes.bool,
+  offline: PropTypes.bool,
+  user: PropTypes.object,
+};
+
+DataRoute.childContextTypes = {
+  components: PropTypes.object,
+};
 
 export default withObj(DataRoute);
 

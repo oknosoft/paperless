@@ -1,9 +1,8 @@
 // шрифты и стили подгрузим асинхронно
-import('font-awesome/css/font-awesome.min.css');
-import './styles/roboto/font.css';
 import './styles/global.css';
 
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 
@@ -20,7 +19,7 @@ import DumbScreen from './components/DumbScreen';
 import AppView from './components/App';
 
 // дополняем-переопределяем тему оформления
-import theme from './styles/muiTheme';
+import muiTheme from './styles/muiTheme';
 
 // типовой RootView, в котором подключается Router и основной макет приложения
 import RootView from 'metadata-react/App/RootView';
@@ -28,15 +27,20 @@ import RootView from 'metadata-react/App/RootView';
 // создаём redux-store
 const store = configureStore();
 
-class RootProvider extends Component {
+class RootProvider extends React.Component {
 
   componentDidMount() {
-
-    import('metadata-react/styles/react-data-grid.css');
+    // font-awesome, roboto и стили metadata подгрузим асинхронно
+    import('metadata-react/styles/roboto/font.css');
+    import('font-awesome/css/font-awesome.min.css');
 
     // скрипт инициализации структуры метаданных и модификаторы
     import('./metadata')
       .then((module) => module.init(store));
+  }
+
+  getChildContext() {
+    return {store};
   }
 
   render() {
@@ -44,13 +48,17 @@ class RootProvider extends Component {
       <RootView
         history={history}
         item_props={item_props}
-        theme={theme}
-        DumbScreen={DumbScreen}
+        theme={muiTheme}
         AppView={AppView}
+        DumbScreen={DumbScreen}
         disableAutoLogin
       />
     </Provider>;
   }
 }
+
+RootProvider.childContextTypes = {
+  store: PropTypes.object,
+};
 
 render(<RootProvider/>, document.getElementById('root'));

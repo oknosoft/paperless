@@ -1,4 +1,14 @@
-node_modules
+.DS_Store
+.idea
+build
+config
+data
+doc
 localstorage
-src/metadata-react
-dist
+node_modules
+public
+scripts
+zarchive
+
+/package-lock.json
+*.log

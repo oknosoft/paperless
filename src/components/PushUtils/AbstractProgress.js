@@ -25,23 +25,8 @@ class AbstractProgress extends React.Component {
   }
 
   componentDidMount() {
-
-    const {local, remote, authorized} = $p.adapters.pouch;
-
-    if(local.doc === remote.doc) {
-      this.setState({error: `В режиме 'direct', синхронизация заказов не требуется`});
-      return;
-    }
-
-    if(!authorized) {
-      this.setState({error: `Пользователь должен быть авторизован на сервере`});
-      return;
-    }
-
     this.timer = setInterval(this.progress, 700);
-
     this.init && this.init();
-
   }
 
   componentWillUnmount() {
