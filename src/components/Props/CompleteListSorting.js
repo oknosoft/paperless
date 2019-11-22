@@ -7,8 +7,7 @@
  */
 
 import React from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from './TableRow';
+import {TableRow, TableCell} from './TableRow';
 
 export default function CompleteListSorting(props) {
 

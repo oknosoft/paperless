@@ -7,18 +7,16 @@
  */
 
 import React from 'react';
-import TableRow from '@material-ui/core/TableRow';
+import Row from '@material-ui/core/TableRow';
+import Cell from '@material-ui/core/TableCell';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const styles = {
-  row: {
-    height: 'auto',
-  },
-};
-
-const Row = withStyles(styles)(({classes, children, ...props}) =>
-  <TableRow className={classes.row} {...props}>
+export const TableRow = withStyles({row: {height: 'auto'}})(({classes, children, ...props}) =>
+  <Row className={classes.row} {...props}>
     {children}
-  </TableRow>);
+  </Row>);
 
-export default Row;
+export const TableCell = withStyles({root: {padding: 4}})(({classes, children, ...props}) =>
+  <Cell classes={{root: classes.root}} {...props}>
+    {children}
+  </Cell>);

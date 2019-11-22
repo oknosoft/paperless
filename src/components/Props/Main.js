@@ -1,59 +1,90 @@
 // @flow
 
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from './TableRow';
+
+import {TableRow, TableCell} from './TableRow';
 import Params from './Params';
 import CompleteListSorting from './CompleteListSorting';
+
+import scale_svg from '../../metadata/common/scale_svg';
 
 export default function MainProps(props) {
 
   const {ox, cnstr, block, task} = props;
-  let {name, note, calc_order, calc_order_row} = ox;
+  let {note, calc_order, calc_order_row} = ox;
   if(calc_order_row && calc_order_row.note && !note) {
     note = calc_order_row.note;
   }
+  const name = ox.prod_name && ox.prod_name(true);
 
-  const rows = [
-    task && name && <TableRow key="task">
-      <TableCell component="th" scope="row">Задание</TableCell>
-      <TableCell>{task}</TableCell>
-    </TableRow>,
+  const rows = [];
 
-    name && <TableRow key="calc_order">
-      <TableCell component="th" scope="row">Расчет</TableCell>
-      <TableCell>{calc_order.number_doc}</TableCell>
-    </TableRow>,
+  if(!name) {
+    rows.push(<TableRow key="name">
+      <TableCell>Изделие</TableCell>
+      <TableCell>не выбрано</TableCell>
+    </TableRow>);
+  }
+  else {
+    rows.push(<TableRow key="sub">
+      <TableCell>
+        <div ref={(el) => {
+          if(el){
+            el.innerHTML = ox.svg ? scale_svg(ox.svg, {width: 130, height: 110, zoom: 0.2}, 0) : "нет эскиза";
+          }
+        }}/>
+      </TableCell>
+      <TableCell>
+        <Table>
+          <TableBody>
 
-    <TableRow key="name">
-      <TableCell component="th" scope="row">Изделие</TableCell>
-      <TableCell>{name || 'не выбрано'}</TableCell>
-    </TableRow>,
+            {task && <TableRow>
+              <TableCell>Задание</TableCell>
+              <TableCell>{task}</TableCell>
+            </TableRow>}
 
-    block && <TableRow key="cnstr">
-      <TableCell component="th" scope="row">Блок</TableCell>
-      <TableCell>{block}</TableCell>
-    </TableRow>,
+            <TableRow>
+              <TableCell>Расчет</TableCell>
+              <TableCell>{calc_order.number_doc}</TableCell>
+            </TableRow>
 
-    name && <TableRow key="divider"><TableCell /><TableCell /></TableRow>,
+            <TableRow>
+              <TableCell>Изделие</TableCell>
+              <TableCell>{name}</TableCell>
+            </TableRow>
 
-  ].filter((v) => v);
+            <TableRow>
+              <TableCell>Габарит</TableCell>
+              <TableCell>{`${ox.x}x${ox.y} S:${ox.s.toFixed(3)}`}</TableCell>
+            </TableRow>
 
-  if(name) {
+            {block && <TableRow>
+              <TableCell>Блок</TableCell>
+              <TableCell>{block}</TableCell>
+            </TableRow>}
+
+          </TableBody>
+        </Table>
+      </TableCell>
+    </TableRow>);
+
+    rows.push(<TableRow key="divider"><TableCell /><TableCell /></TableRow>);
+
     rows.push(...Params({ox, cnstr: 0}));
+
     cnstr && rows.push(...Params({ox, cnstr}));
+
     rows.push(...CompleteListSorting({ox, cnstr}));
+
     note && rows.push(<TableRow key="note">
-      <TableCell component="th" scope="row">Инфо</TableCell>
+      <TableCell>Инфо</TableCell>
       <TableCell>{note}</TableCell>
     </TableRow>);
   }
 
   return [
-    //<Typography key="title" variant="h6">Свойства</Typography>,
     <Table key="table">
       <TableBody>{rows}</TableBody>
     </Table>
