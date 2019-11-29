@@ -12,7 +12,7 @@ import scale_svg from '../../metadata/common/scale_svg';
 
 export default function MainProps(props) {
 
-  const {ox, cnstr, block, task} = props;
+  const {ox, cnstr, block, task, show_spec} = props;
   let {note, calc_order, calc_order_row} = ox;
   if(calc_order_row && calc_order_row.note && !note) {
     note = calc_order_row.note;
@@ -28,6 +28,10 @@ export default function MainProps(props) {
     </TableRow>);
   }
   else {
+    const clrs = new Set();
+    ox.coordinates.forEach(({clr, elm_type}) => {
+      elm_type._manager.profiles.includes(elm_type) && !clr.empty() && clrs.add(clr);
+    });
     rows.push(<TableRow key="sub">
       <TableCell>
         <div ref={(el) => {
@@ -56,6 +60,11 @@ export default function MainProps(props) {
             </TableRow>
 
             <TableRow>
+              <TableCell>Цвет</TableCell>
+              <TableCell>{Array.from(clrs).join(',')}</TableCell>
+            </TableRow>
+
+            <TableRow>
               <TableCell>Габарит</TableCell>
               <TableCell>{`${ox.x}x${ox.y} S:${ox.s.toFixed(3)}`}</TableCell>
             </TableRow>
@@ -70,13 +79,13 @@ export default function MainProps(props) {
       </TableCell>
     </TableRow>);
 
-    rows.push(<TableRow key="divider"><TableCell /><TableCell /></TableRow>);
+    //rows.push(<TableRow key="divider"><TableCell /><TableCell /></TableRow>);
 
     rows.push(...Params({ox, cnstr: 0}));
 
     cnstr && rows.push(...Params({ox, cnstr}));
 
-    rows.push(...CompleteListSorting({ox, cnstr}));
+    show_spec && rows.push(...CompleteListSorting({ox, cnstr, show_spec}));
 
     note && rows.push(<TableRow key="note">
       <TableCell>Инфо</TableCell>

@@ -100,7 +100,7 @@ class Imposts extends React.Component {
         />
       </Grid>
       <Grid item sm={12} lg={4} className={classes.props}>
-        <Props {...this.state}/>
+        <Props {...this.state} show_spec={false}/>
       </Grid>
   </Grid>;
   }

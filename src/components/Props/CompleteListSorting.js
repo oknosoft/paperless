@@ -11,13 +11,21 @@ import {TableRow, TableCell} from './TableRow';
 
 export default function CompleteListSorting(props) {
 
-  const {ox: {specification, constructions}, cnstr} = props;
+  const {ox: {specification, constructions}, cnstr, show_spec} = props;
   const tmp = new Set();
   const data = new Map();
   const res = [];
 
   specification.forEach(({nom, elm}) => {
-    if(nom.complete_list_sorting && !tmp.has(nom)) {
+    if(!tmp.has(nom)) {
+      if(typeof show_spec === 'function') {
+        if(!show_spec(nom)) {
+          return;
+        }
+      }
+      else if(!nom.complete_list_sorting) {
+        return;
+      }
       const ccnstr = elm > 0 ? (constructions.find({elm}) || {cnstr: 0}).cnstr : -elm;
       if(cnstr && ccnstr && cnstr !== ccnstr) {
         return;
