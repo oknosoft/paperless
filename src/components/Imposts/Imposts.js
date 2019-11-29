@@ -66,9 +66,15 @@ class Imposts extends React.Component {
             .then(() => {
               const contour = project.getItem({cnstr});
               if(contour) {
+                // рисуем текущий слой
                 project.draw_fragment({elm: -cnstr});
+                // прячем заполнения
                 contour.glasses(true);
+                // рисуем спецразмеры импостов
                 contour.l_dimensions.draw_by_imposts();
+                // подкрашиваем штульпы
+                this.editor.color_shtulps(contour);
+                // вписываем в размер экрана
                 project.zoom_fit();
                 this.setState(bar);
               }
