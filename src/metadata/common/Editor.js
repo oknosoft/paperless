@@ -37,8 +37,9 @@ export default function ($p) {
       const imposts = new Set();
       for(const profile of profiles) {
         const joined = profile.joined_imposts();
-        for(const impost of joined.inner.concat(joined.outer)) {
-          imposts.add(impost.profile);
+        for(const {profile} of joined.inner.concat(joined.outer)) {
+          const {orientation} = profile;
+          orientation._manager.vert === orientation && imposts.add(profile);
         }
       }
       for(const flap of contours) {
