@@ -21,9 +21,9 @@ class Barcode extends Component {
       <TextField
         className={props.className}
         value={props.barcode}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onPaste={this.props.onPaste}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
+        onPaste={props.onPaste}
         inputProps={{placeholder: 'Штрихкод'}}
       />
     );

@@ -4,16 +4,18 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Typography from '@material-ui/core/Typography';
 import AppContent from 'metadata-react/App/AppContent';
+import {item_props} from '../App/menu';
 
-export default class Furn extends React.Component {
+export default class Furn1 extends React.Component {
 
   render() {
+    const iprops = item_props();
     return <AppContent >
-      <Helmet title="Диаграмма эффективности">
-        <meta name="description" content="Прмер диаграммы" />
+      <Helmet title={iprops.text}>
+        <meta name="description" content={iprops.title} />
       </Helmet>
       <div style={{marginTop: 16}}>
-        <Typography variant="h4" component="h1" color="primary">Это диаграмма</Typography>
+        <Typography variant="h4" component="h1" color="primary">{iprops.title}</Typography>
       </div>
     </AppContent>;
   }

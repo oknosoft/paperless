@@ -20,8 +20,11 @@ import DataRoute from './DataRoute';          // вложенный маршру
 import AboutPage from '../About';             // информация о программе
 import HomeView from '../Home';               // домашняя страница
 import Settings from '../Settings';           // страница настроек приложения
-import Furn from '../Furn';                   // фурнитурная станция
+import Furn1 from '../Furn1';                 // фурнитурная станция
+import Furn2 from '../Furn2';                 // фурнитурная станция
 import Imposts from '../Imposts';             // установка импостов
+import Glass from '../Glass';                 // остеклание
+import Welding from '../Welding';             // сварка
 
 
 import {withIfaceAndMeta} from 'metadata-redux';
@@ -160,8 +163,11 @@ class AppView extends Component {
           <Switch key="switch">
             <Route exact path="/" render={this.renderHome}/>
             <Route path="/:area(doc|cat|ireg|cch|rep).:name" render={(props) => wraper(DataRoute, props)}/>
-            <Route path="/furn" render={(props) => wraper(Furn, props)}/>
             <Route path="/imposts" render={(props) => wraper(Imposts, props)}/>
+            <Route path="/furn1" render={(props) => wraper(Furn1, props)}/>
+            <Route path="/furn2" render={(props) => wraper(Furn2, props)}/>
+            <Route path="/glass" render={(props) => wraper(Glass, props)}/>
+            <Route path="/welding" render={(props) => wraper(Welding, props)}/>
             <Route path="/login" render={(props) => <Login {...props} {...auth_props} />}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
             <Route path="/about" component={AboutPage} />
@@ -261,6 +267,12 @@ AppView.propTypes = {
   location: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   idle: PropTypes.bool,
+  offline: PropTypes.bool,
+  couch_direct: PropTypes.bool,
+  sync_started: PropTypes.bool,
+  doc_ram_loaded: PropTypes.bool,
+  meta_loaded: PropTypes.bool,
+  complete_loaded: PropTypes.bool,
   snack: PropTypes.object,
   alert: PropTypes.object,
   confirm: PropTypes.object,

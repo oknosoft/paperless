@@ -1,6 +1,6 @@
 {
   "name": "paperless",
-  "version": "2.1.249",
+  "version": "2.1.250",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "metadata-redux": "2.0.21-beta.3",
     "metadata-superlogin": "2.0.21-beta.3",
     "paper-jsdom-canvas": "^0.12.3",
-    "windowbuilder": "github:oknosoft/windowbuilder#836e13b0dc412ca5faf99ba88ee5498a4565a921"
+    "windowbuilder": "github:oknosoft/windowbuilder#84a6c625990fe6e884c37cd73300f6cd7ae47f1b"
   },
   "devDependencies": {
     "@babel/core": "7.6.0",
@@ -45,7 +45,7 @@
     "css-loader": "2.1.1",
     "dotenv": "6.2.0",
     "dotenv-expand": "5.1.0",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.0",
     "eslint-config-react-app": "^5.0.2",
     "eslint-loader": "3.0.2",
     "eslint-plugin-flowtype": "3.13.0",

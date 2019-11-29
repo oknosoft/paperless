@@ -83,7 +83,6 @@ export function init(store) {
     dispatch(metaActions.META_LOADED($p));
 
     md.once('predefined_elmnts_inited', () => {
-      //pouch.off('on_log_in');
       pouch.emit('pouch_complete_loaded');
     });
 
