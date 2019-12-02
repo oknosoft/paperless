@@ -10,6 +10,7 @@ import {item_props} from '../App/menu';
 import Builder from '../Builder';
 import Props from '../Props/Main';
 import {decrypt} from '../Barcode/connect';
+import settings from '../../../config/app.settings';
 
 function styles(theme) {
   return {
@@ -94,6 +95,7 @@ class Imposts extends React.Component {
   render() {
     const {classes} = this.props;
     const iprops = item_props();
+    const {visualization_priority: {imposts}} = settings();
     return <Grid container>
       <Helmet title={iprops.text}>
         <meta name="description" content={iprops.title} />
@@ -106,7 +108,7 @@ class Imposts extends React.Component {
         />
       </Grid>
       <Grid item sm={12} lg={4} className={classes.props}>
-        <Props {...this.state} show_spec={false}/>
+        <Props {...this.state} show_spec={(nom) => imposts.includes(nom.visualization.priority)}/>
       </Grid>
   </Grid>;
   }
