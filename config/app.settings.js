@@ -66,6 +66,11 @@ module.exports = function settings(prm = {}) {
     // карты google не используем
     use_google_geo: '',
 
+    // визуализация по приоритету для рабочих мест
+    visualization_priority: {
+      imposts: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    },
+
   }, is_node && {
     // авторизация couchdb
     user_node: {
