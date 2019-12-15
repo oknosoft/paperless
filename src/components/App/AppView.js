@@ -25,6 +25,9 @@ import Furn2 from '../Furn2';                 // фурнитурная стан
 import Imposts from '../Imposts';             // установка импостов
 import Glass from '../Glass';                 // остеклание
 import Welding from '../Welding';             // сварка
+import Falsebinding from '../Falsebinding';   // фальшпереплёты
+import Facing from '../Facing';               // раскладка
+import Arc from '../Arc';                     // арки, трапеции
 
 
 import {withIfaceAndMeta} from 'metadata-redux';
@@ -168,6 +171,9 @@ class AppView extends Component {
             <Route path="/furn2" render={(props) => wraper(Furn2, props)}/>
             <Route path="/glass" render={(props) => wraper(Glass, props)}/>
             <Route path="/welding" render={(props) => wraper(Welding, props)}/>
+            <Route path="/falsebinding" render={(props) => wraper(Falsebinding, props)}/>
+            <Route path="/facing" render={(props) => wraper(Facing, props)}/>
+            <Route path="/arc" render={(props) => wraper(Arc, props)}/>
             <Route path="/login" render={(props) => <Login {...props} {...auth_props} />}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
             <Route path="/about" component={AboutPage} />

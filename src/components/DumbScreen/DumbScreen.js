@@ -5,7 +5,6 @@ import Repl from './Repl';
 class DumbScreen extends Component {
 
   renderRepl(footer) {
-    const {page} = this.props;
     let text = 'Чтение справочников';
     const res = [<Repl key="ram" info={{text}}/>];
     footer && res.push(<div key="footer">{footer}</div>);

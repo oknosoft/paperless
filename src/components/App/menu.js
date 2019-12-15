@@ -46,6 +46,30 @@ const items = [
     need_user: true,
   },
   {
+    text: 'Фальш-переплет',
+    title: 'Поклейка фальш-переплета',
+    id: 'falsebinding',
+    navigate: '/falsebinding',
+    need_meta: true,
+    need_user: true,
+  },
+  {
+    text: 'Раскладка',
+    title: 'Установка раскладки',
+    id: 'facing',
+    navigate: '/facing',
+    need_meta: true,
+    need_user: true,
+  },
+  {
+    text: 'Арки/Трапеции',
+    title: 'Арки, трапеции',
+    id: 'arc',
+    navigate: '/arc',
+    need_meta: true,
+    need_user: true,
+  },
+  {
     divider: true,
   },
   {

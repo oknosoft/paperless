@@ -1,60 +1,16 @@
-// @flow
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 import Builder from '../Builder';
 import Props from '../Props/Main';
 import {decrypt} from '../Barcode/connect';
+import withStyles, {WorkPlace} from '../App/WorkPlace';
 
-function styles(theme) {
-  return {
-    workplace: {
-      minHeight: 'calc(100vh - 50px)', // Makes the hero full height until we get some more content.
-    },
-    props: {
-      paddingTop: theme.spacing(2),
-    }
-  };
-}
 
-class Imposts extends React.Component {
-
-  constructor(props, context) {
-    super(props, context);
-    this.editor = null;
-    this.onBarcode = this.onBarcode.bind(this);
-    this.shouldComponentUpdate(props);
-    this.state = {
-      ox: {},
-      cnstr: 1,
-    };
-  }
-
-  shouldComponentUpdate({handleIfaceState, title}) {
-    const iprops = item_props();
-    if(iprops.text && title != iprops.text) {
-      handleIfaceState({
-        component: '',
-        name: 'title',
-        value: iprops.text,
-      });
-      return false;
-    }
-    return true;
-  }
-
-  componentDidMount() {
-    $p.md.on('barcode', this.onBarcode);
-  }
-
-  componentWillUnmount() {
-    $p.md.off('barcode', this.onBarcode);
-  }
+class Imposts extends WorkPlace {
 
   onBarcode(barcode) {
     if(this.editor) {
@@ -96,19 +52,15 @@ class Imposts extends React.Component {
     const iprops = item_props();
     return <Grid container>
       <Helmet title={iprops.text}>
-        <meta name="description" content={iprops.title} />
+        <meta name="description" content={iprops.title}/>
       </Helmet>
       <Grid item sm={12} lg={8} className={classes.workplace}>
-        <Builder
-          registerChild={(el) => {
-            this.editor = el;
-          }}
-        />
+        <Builder registerChild={this.registerEditor}/>
       </Grid>
       <Grid item sm={12} lg={4} className={classes.props}>
         <Props {...this.state} show_spec={false}/>
       </Grid>
-  </Grid>;
+    </Grid>;
   }
 }
 
@@ -118,4 +70,4 @@ Imposts.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withIface(Imposts));
+export default withStyles(withIface(Imposts));

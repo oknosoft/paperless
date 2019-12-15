@@ -1,12 +1,11 @@
-// @flow
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import Typography from '@material-ui/core/Typography';
 import AppContent from 'metadata-react/App/AppContent';
 import {item_props} from '../App/menu';
+import withStyles, {WorkPlace} from '../App/WorkPlace';
 
-export default class Glass extends React.Component {
+class Glass extends WorkPlace {
 
   render() {
     const iprops = item_props();
@@ -20,3 +19,5 @@ export default class Glass extends React.Component {
     </AppContent>;
   }
 }
+
+export default withStyles(Glass);

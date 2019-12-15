@@ -5,7 +5,7 @@ import AppContent from 'metadata-react/App/AppContent';
 import {item_props} from '../App/menu';
 import withStyles, {WorkPlace} from '../App/WorkPlace';
 
-class Welding extends WorkPlace {
+class Arc extends WorkPlace {
 
   render() {
     const iprops = item_props();
@@ -20,4 +20,4 @@ class Welding extends WorkPlace {
   }
 }
 
-export default withStyles(Welding);
+export default withStyles(Arc);
