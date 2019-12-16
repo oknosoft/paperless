@@ -9,6 +9,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {item_props} from './menu';
+import {decrypt} from '../Barcode/connect';
 
 export class WorkPlace extends React.Component {
 
@@ -24,7 +25,7 @@ export class WorkPlace extends React.Component {
   }
 
   onBarcode(barcode) {
-    console.log(barcode);
+    return this.editor ? decrypt(barcode) : Promise.resolve();
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
