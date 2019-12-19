@@ -6,6 +6,8 @@ import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 import Builder from '../Builder';
 import Props from '../Props/Main';
+import Flap from './Flap';
+import Nom from './Nom';
 import withStyles, {WorkPlace} from '../App/WorkPlace';
 
 class Furn1 extends WorkPlace {
@@ -28,7 +30,9 @@ class Furn1 extends WorkPlace {
               contour.glasses(true);
               // вписываем в размер экрана
               project.zoom_fit();
-              this.setState(bar);
+              this.setState(bar, () => {
+                this.rep && Promise.resolve().then(() => this.rep.handleSave());
+              });
             }
           });
       })
@@ -42,9 +46,14 @@ class Furn1 extends WorkPlace {
       });
   }
 
+  registerRep = (el) => {
+    this.rep = el;
+  }
+
   render() {
-    const {classes} = this.props;
+    const {state: {ox}, props: {classes}, editor} = this;
     const iprops = item_props();
+    const has_ox = editor && ox && ox.empty && !ox.empty();
     return <Grid container>
       <Helmet title={iprops.text}>
         <meta name="description" content={iprops.title}/>
@@ -54,6 +63,8 @@ class Furn1 extends WorkPlace {
       </Grid>
       <Grid item sm={12} lg={4} className={classes.props}>
         <Props {...this.state} show_spec={false}/>
+        {has_ox && <Flap {...this.state}/>}
+        {has_ox && <Nom {...this.state} registerRep={this.registerRep}/>}
       </Grid>
     </Grid>;
   }

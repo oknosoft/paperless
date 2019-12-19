@@ -8,14 +8,31 @@ import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "нео�
 import NotFound from './NotFound';
 
 const stub = () => null;
+
 const lazy = {
   DataList: stub,
+  DataTree: stub,
   DataObj: stub,
   FrmReport: stub,
 };
-import(/* webpackChunkName: "metadata-react" */ 'metadata-react/DataList').then(module => lazy.DataList = module.default);
-import(/* webpackChunkName: "metadata-react" */ 'metadata-react/FrmObj').then(module => lazy.DataObj = module.default);
-import(/* webpackChunkName: "metadata-react" */ 'metadata-react/FrmReport').then(module => lazy.FrmReport = module.default);
+
+import('metadata-react/DynList')
+  .then(module => {
+    lazy.DataList = module.default;
+    //return import('metadata-react/DataTree');
+  })
+  .then(module => {
+    //lazy.DataTree = module.default;
+    return import('metadata-react/FrmObj');
+  })
+  .then(module => {
+    lazy.DataObj = module.default;
+    return import('metadata-react/FrmReport');
+  })
+  .then(module => {
+    lazy.FrmReport = module.default;
+    import('metadata-react/styles/react-data-grid.css');
+  });
 
 class DataRoute extends React.Component {
 

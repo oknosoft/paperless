@@ -274,6 +274,7 @@ AppView.propTypes = {
   title: PropTypes.string.isRequired,
   idle: PropTypes.bool,
   offline: PropTypes.bool,
+  fetch: PropTypes.bool,
   couch_direct: PropTypes.bool,
   sync_started: PropTypes.bool,
   doc_ram_loaded: PropTypes.bool,
