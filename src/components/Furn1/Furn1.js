@@ -18,12 +18,28 @@ class Furn1 extends WorkPlace {
         if(!bar) {
           return;
         }
-        const {project} = this.editor;
+        const {project, constructor} = this.editor;
         const {cnstr, ox} = bar;
         project.load(ox, {custom_lines: false, mosquito: false})
           .then(() => {
             const contour = project.getItem({cnstr});
             if(contour) {
+
+              // добавляем размерную линию ручки
+              const {h_ruch, furn: {furn_set, handle_side}} = contour;
+              if(h_ruch && handle_side && !furn_set.empty()) {
+                const elm1 = contour.profile_by_furn_side(handle_side);
+                const right = elm1.pos === elm1.pos._manager.right;
+                new constructor.DimensionLineCustom({
+                  elm1,
+                  elm2: elm1,
+                  p1: right ? 2 : 1,
+                  p2: 'hho',
+                  parent: contour.l_dimensions,
+                  offset: right ? -100 : 100,
+                });
+              }
+
               // рисуем текущий слой
               project.draw_fragment({elm: -cnstr, faltz: 'faltz'});
               // прячем заполнения
@@ -31,7 +47,13 @@ class Furn1 extends WorkPlace {
               // вписываем в размер экрана
               project.zoom_fit();
               this.setState(bar, () => {
-                this.rep && Promise.resolve().then(() => this.rep.handleSave());
+                this.rep && Promise.resolve().then(() => {
+                  const {_obj} = this.rep.props;
+                  const row = _obj.production.get(0);
+                  row.characteristic = bar.ox;
+                  row.elm = bar.cnstr;
+                  this.rep.handleSave();
+                });
               });
             }
           });
