@@ -80,13 +80,15 @@ class Furn1 extends WorkPlace {
       <Helmet title={iprops.text}>
         <meta name="description" content={iprops.title}/>
       </Helmet>
-      <Grid item sm={12} lg={8} className={classes.workplace}>
+      <Grid item sm={12} lg={6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      <Grid item sm={12} lg={4} className={classes.props}>
-        <Props {...this.state} show_spec={false}/>
+      <Grid item sm={12} lg={3} className={classes.props}>
+        {has_ox && <Nom {...this.state} registerRep={this.registerRep} complete_list_sorting={[11,20]}/>}
+      </Grid>
+      <Grid item sm={12} lg={3} className={classes.props}>
+        <Props ox={ox} cnstr={0} show_spec={false}/>
         {has_ox && <Flap {...this.state}/>}
-        {has_ox && <Nom {...this.state} registerRep={this.registerRep}/>}
       </Grid>
     </Grid>;
   }

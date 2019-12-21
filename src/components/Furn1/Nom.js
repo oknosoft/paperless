@@ -21,6 +21,7 @@ class Nom extends React.Component {
     this.rep.resources = ['qty'];
     this.rep.prepare = this.prepare;
     this.rep.calculate = this.calculate;
+    this.rep.complete_list_sorting = props.complete_list_sorting;
 
     $p.cat.scheme_settings.find_rows({obj: 'rep.materials_demand.specification'}, (scheme) => {
       if(scheme.name.endsWith('furn1')) {
@@ -31,13 +32,13 @@ class Nom extends React.Component {
   }
 
   prepare(scheme) {
-    const {specification: data, production} = this;
+    const {specification: data, production, complete_list_sorting} = this;
     return Promise.resolve()
       .then(() => {
         const {characteristic: {specification, coordinates}, elm: cnstr} = this.production.get(0);
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр, передав в компонент массив чисел complete_list_sorting
-          if(!row.len && row.nom.complete_list_sorting) {
+          if(!row.len && row.nom.complete_list_sorting >= complete_list_sorting[0] && row.nom.complete_list_sorting <= complete_list_sorting[1]) {
             if(row.elm === -cnstr || coordinates.find({elm: row.elm, cnstr})) {
               data.add(row);
             }
@@ -82,18 +83,28 @@ class Nom extends React.Component {
   }
 
   render() {
+    const {cnstr, registerRep} = this.props;
     return this.scheme ?
-      <FrmReport
-        _mgr={this.rep._manager}
-        _obj={this.rep}
-        _tabular="specification"
-        scheme={this.scheme}
-        _acl={'r'}
-        //autoexec
-        ignoreTitle
-        hideToolbar
-        registerRep={this.props.registerRep}
-      />
+      [
+        <Typography key="flap" variant="h6">
+          {`Створка №${cnstr}`}
+        </Typography>,
+        <FrmReport
+          key="report"
+          _mgr={this.rep._manager}
+          _obj={this.rep}
+          _tabular="specification"
+          scheme={this.scheme}
+          _acl={'r'}
+          //autoexec
+          ignoreTitle
+          hideToolbar
+          hideHeader
+          registerRep={registerRep}
+          cnstr={cnstr}
+          minHeight={430}
+        />
+      ]
       :
       <Typography key="err-nom" color="error">
         {`Не найден элемент scheme_settings {obj: "rep.materials_demand.specification", name: "materials_demand.specification.furn1"}`}
@@ -105,6 +116,7 @@ class Nom extends React.Component {
 Nom.propTypes = {
   ox: PropTypes.object.isRequired,
   cnstr: PropTypes.number.isRequired,
+  complete_list_sorting: PropTypes.array.isRequired,
 };
 
 export default Nom;

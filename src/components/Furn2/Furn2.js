@@ -6,7 +6,10 @@ import {withIface} from 'metadata-redux';
 import {item_props} from '../App/menu';
 import Builder from '../Builder';
 import Props from '../Props/Main';
+import Flaps from './Flaps';
+import Noms from './Noms';
 import withStyles, {WorkPlace} from '../App/WorkPlace';
+import Flap from '../Furn1/Flap';
 
 class Furn2 extends WorkPlace {
 
@@ -16,7 +19,7 @@ class Furn2 extends WorkPlace {
         if(!bar) {
           return;
         }
-        const {project} = this.editor;
+        const {project, PointText, consts} = this.editor;
         let {cnstr, ox} = bar;
         project.load(ox, {custom_lines: false, mosquito: false})
           .then(() => {
@@ -36,9 +39,26 @@ class Furn2 extends WorkPlace {
               for(const glass of contour.fillings) {
                 glass.visible = false;
               };
+              // рисуем номер слоя
+              for(const cnt of contour.contours) {
+                new PointText({
+                  parent: cnt,
+                  guide: true,
+                  justification: 'center',
+                  fillColor: 'darkblue',
+                  fontFamily: consts.font_family,
+                  fontSize: consts.font_size * 2,
+                  fontWeight: 'bold',
+                  content: cnt.cnstr,
+                  position: cnt.bounds.center,
+                });
+              }
               // вписываем в размер экрана
               project.zoom_fit();
-              this.setState(bar);
+              bar.cnstr = cnstr;
+              this.setState(bar, () => {
+                this.rep && Promise.resolve().then(() => this.rep.handleSave());
+              });
             }
           });
       })
@@ -52,18 +72,29 @@ class Furn2 extends WorkPlace {
       });
   }
 
+  registerRep = (el) => {
+    this.rep = el;
+  }
+
   render() {
-    const {classes} = this.props;
+    const {state: {ox}, props: {classes}, editor} = this;
     const iprops = item_props();
+    const has_ox = editor && ox && ox.empty && !ox.empty();
     return <Grid container>
       <Helmet title={iprops.text}>
         <meta name="description" content={iprops.title}/>
       </Helmet>
-      <Grid item sm={12} lg={8} className={classes.workplace}>
+      <Grid item sm={12} lg={6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      <Grid item sm={12} lg={4} className={classes.props}>
-        <Props {...this.state} show_spec={false}/>
+      <Grid item sm={12} lg={3} className={classes.props}>
+        {has_ox && <Noms {...this.state} ref={this.registerRep} classes={classes}/>}
+      </Grid>
+      <Grid item sm={12} lg={3} className={classes.props}>
+        <div className={classes.workheight}>
+          <Props {...this.state} show_spec={false}/>
+          {has_ox && <Flaps {...this.state}/>}
+        </div>
       </Grid>
     </Grid>;
   }

@@ -59,6 +59,10 @@ function styles(theme) {
     workplace: {
       minHeight: 'calc(100vh - 50px)', // Makes the hero full height until we get some more content.
     },
+    workheight: {
+      height: 'calc(100vh - 72px)',
+      overflow: 'auto'
+    },
     props: {
       paddingTop: theme.spacing(2),
     }
