@@ -12,7 +12,7 @@ export default class Builder extends React.Component {
         this.editor.project.resize_canvas(width, height);
       }
       else {
-        this.editor = new $p.Editor(el);
+        this.editor = window.paper = new $p.Editor(el);
         this.props.registerChild(this.editor);
       }
     }
@@ -21,6 +21,7 @@ export default class Builder extends React.Component {
 
   componentWillUnmount() {
     if(this.editor) {
+      window.paper = null;
       this.editor.unload();
       this.props.registerChild(this.editor = null);
     }

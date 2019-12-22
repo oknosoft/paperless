@@ -7,6 +7,8 @@
  */
 
 import React from 'react';
+import Helmet from 'react-helmet';
+import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {item_props} from './menu';
 import {decrypt} from '../Barcode/connect';
@@ -54,6 +56,16 @@ export class WorkPlace extends React.Component {
   };
 }
 
+export function WorkPlaceFrame({children}) {
+  const iprops = item_props();
+  return <Grid container>
+    <Helmet title={iprops.text}>
+      <meta name="description" content={iprops.title}/>
+    </Helmet>
+    {children}
+  </Grid>;
+}
+
 function styles(theme) {
   return {
     workplace: {
@@ -67,6 +79,6 @@ function styles(theme) {
       paddingTop: theme.spacing(2),
     }
   };
-};
+}
 
 export default withStyles(styles);

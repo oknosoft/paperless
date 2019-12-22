@@ -83,12 +83,12 @@ class Nom extends React.Component {
   }
 
   render() {
-    const {cnstr, registerRep} = this.props;
+    const {ox, cnstr, registerRep} = this.props;
+    const row = ox && cnstr && ox.constructions.find({cnstr});
     return this.scheme ?
       [
-        <Typography key="flap" variant="h6">
-          {`Створка №${cnstr}`}
-        </Typography>,
+        <Typography key="cnstr" variant="h6" component="span">{`№${cnstr} `}</Typography>,
+        <Typography key="flap" variant="subtitle2" component="span">{row && row.furn.name}</Typography>,
         <FrmReport
           key="report"
           _mgr={this.rep._manager}

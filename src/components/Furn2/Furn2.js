@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
 import {withIface} from 'metadata-redux';
-import {item_props} from '../App/menu';
 import Builder from '../Builder';
 import Props from '../Props/Main';
 import Flaps from './Flaps';
 import Noms from './Noms';
-import withStyles, {WorkPlace} from '../App/WorkPlace';
-import Flap from '../Furn1/Flap';
+import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
 class Furn2 extends WorkPlace {
 
@@ -78,12 +75,8 @@ class Furn2 extends WorkPlace {
 
   render() {
     const {state: {ox}, props: {classes}, editor} = this;
-    const iprops = item_props();
     const has_ox = editor && ox && ox.empty && !ox.empty();
-    return <Grid container>
-      <Helmet title={iprops.text}>
-        <meta name="description" content={iprops.title}/>
-      </Helmet>
+    return <WorkPlaceFrame>
       <Grid item sm={12} lg={6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
@@ -96,7 +89,7 @@ class Furn2 extends WorkPlace {
           {has_ox && <Flaps {...this.state}/>}
         </div>
       </Grid>
-    </Grid>;
+    </WorkPlaceFrame>;
   }
 }
 

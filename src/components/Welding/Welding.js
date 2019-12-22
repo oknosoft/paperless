@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import AppContent from 'metadata-react/App/AppContent';
-import {item_props} from '../App/menu';
-import withStyles, {WorkPlace} from '../App/WorkPlace';
+import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
 import {withIface} from 'metadata-redux';
 import Builder from '../Builder';
@@ -40,7 +38,8 @@ class Welding extends WorkPlace {
                   profile.show_number();
                 }
               }
-
+              // подкрашиваем штульпы
+              this.editor.color_shtulps(contour);
               // вписываем в размер экрана
               project.zoom_fit();
               this.setState(bar);
@@ -60,12 +59,8 @@ class Welding extends WorkPlace {
 
   render() {
     const {state: {ox, cnstr}, props: {classes}, editor} = this;
-    const iprops = item_props();
     const contour = editor && ox && ox.empty && !ox.empty() && editor.project.getItem({cnstr});
-    return <Grid container>
-      <Helmet title={iprops.text}>
-        <meta name="description" content={iprops.title}/>
-      </Helmet>
+    return <WorkPlaceFrame>
       <Grid item sm={12} lg={8} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
@@ -73,7 +68,7 @@ class Welding extends WorkPlace {
         <Props {...this.state} show_spec={false}/>
         {contour && <Profiles {...this.state} contour={contour}/>}
       </Grid>
-    </Grid>;
+    </WorkPlaceFrame>;
   }
 }
 
