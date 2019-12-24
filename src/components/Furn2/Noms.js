@@ -32,7 +32,7 @@ class Noms extends React.Component {
             key={`nom-${row.cnstr}`}
             ox={ox} cnstr={row.cnstr}
             registerRep={this.registerRep}
-            complete_list_sorting={[21,30]}
+            complete_list_sorting={[19,30]}
           />
         ))}
     </div>;
