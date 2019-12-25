@@ -10,26 +10,15 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
 class Glass extends WorkPlace {
 
-  onBarcode(barcode) {
-    super.onBarcode(barcode)
-      .then((bar) => (
-        bar && this.barcodeFin(bar)
-      ))
-      .catch(({message}) => {
-        const {ox} = this.state;
-        if(ox && ox.unload) {
-          ox.unload();
-        }
-        this.editor.project.clear();
-        this.setState({ox: {}});
-      });
-  }
-
   barcodeFin(bar) {
-    const {project, PointText, consts} = this.editor;
+    const {state: {full_picture}, editor: {project, PointText, consts}} = this;
     let {cnstr, ox} = bar;
-    project.load(ox, {custom_lines: false, mosquito: false /*, visualization: false */})
+    project.load(ox, {custom_lines: full_picture, mosquito: full_picture /*, visualization: false */})
       .then(() => {
+        if(full_picture) {
+          return;
+        }
+
         let contour = project.getItem({cnstr});
         if(contour) {
           if(contour.layer) {
@@ -80,18 +69,18 @@ class Glass extends WorkPlace {
   }
 
   render() {
-    const {state: {ox}, props: {classes}, editor} = this;
-    const has_ox = editor && ox && ox.empty && !ox.empty();
+    const {state: {ox, full_picture}, props: {classes}, editor} = this;
+    const has_ox = !full_picture && editor && ox && ox.empty && !ox.empty();
     return <WorkPlaceFrame>
-      <Grid item sm={12} lg={6} className={classes.workplace}>
+      <Grid item sm={12} lg={full_picture ? 9 : 6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      <Grid item sm={12} lg={3} className={classes.props}>
+      {!full_picture && <Grid item sm={12} lg={3} className={classes.props}>
         {has_ox && <Locks {...this.state}/>}
-      </Grid>
+      </Grid>}
       <Grid item sm={12} lg={3} className={classes.props}>
         <div className={classes.workheight}>
-          <Props {...this.state} show_spec={false}/>
+          <Props {...this.state} show_spec={false} changeFull={this.changeFull}/>
           {has_ox && <Fillings {...this.state}/>}
         </div>
       </Grid>

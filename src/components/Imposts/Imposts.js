@@ -8,50 +8,40 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
 class Imposts extends WorkPlace {
 
-  onBarcode(barcode) {
-    super.onBarcode(barcode)
-      .then((bar) => {
-        if(!bar) {
+  barcodeFin(bar) {
+    const {state: {full_picture}, editor: {project}} = this;
+    const {cnstr, ox} = bar;
+    project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
+      .then(() => {
+        if(full_picture) {
           return;
         }
-        const {project} = this.editor;
-        const {cnstr, ox} = bar;
-        project.load(ox, {auto_lines: false, custom_lines: false, mosquito: false})
-          .then(() => {
-            const contour = project.getItem({cnstr});
-            if(contour) {
-              // рисуем текущий слой
-              project.draw_fragment({elm: -cnstr});
-              // прячем заполнения
-              contour.glasses(true);
-              // рисуем спецразмеры импостов
-              contour.l_dimensions.draw_by_imposts();
-              // подкрашиваем штульпы
-              this.editor.color_shtulps(contour);
-              // вписываем в размер экрана
-              project.zoom_fit();
-              this.setState(bar);
-            }
-          });
-      })
-      .catch(({message}) => {
-        const {ox} = this.state;
-        if(ox && ox.unload) {
-          ox.unload();
+
+        const contour = project.getItem({cnstr});
+        if(contour) {
+          // рисуем текущий слой
+          project.draw_fragment({elm: -cnstr});
+          // прячем заполнения
+          contour.glasses(true);
+          // рисуем спецразмеры импостов
+          contour.l_dimensions.draw_by_imposts();
+          // подкрашиваем штульпы
+          this.editor.color_shtulps(contour);
+          // вписываем в размер экрана
+          project.zoom_fit();
+          this.setState(bar);
         }
-        this.editor.project.clear();
-        this.setState({ox: {}});
       });
   }
 
   render() {
-    const {classes} = this.props;
+    const {state: {full_picture}, props: {classes}} = this;
     return <WorkPlaceFrame>
-      <Grid item sm={12} lg={8} className={classes.workplace}>
+      <Grid item sm={12} lg={full_picture ? 9 : 8} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      <Grid item sm={12} lg={4} className={classes.props}>
-        <Props {...this.state} show_spec={false}/>
+      <Grid item sm={12} lg={full_picture ? 3 : 4} className={classes.props}>
+        <Props {...this.state} show_spec={false} changeFull={this.changeFull}/>
       </Grid>
     </WorkPlaceFrame>;
   }

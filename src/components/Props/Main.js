@@ -12,7 +12,7 @@ import scale_svg from '../../metadata/common/scale_svg';
 
 export default function MainProps(props) {
 
-  const {ox, cnstr, block, task, show_spec} = props;
+  const {ox, cnstr, block, task, show_spec, changeFull} = props;
   let {note, calc_order, calc_order_row} = ox;
   if(calc_order_row && calc_order_row.note && !note) {
     note = calc_order_row.note;
@@ -33,12 +33,8 @@ export default function MainProps(props) {
       elm_type._manager.profiles.includes(elm_type) && !clr.empty() && clrs.add(clr);
     });
     rows.push(<TableRow key="sub">
-      <TableCell>
-        <div ref={(el) => {
-          if(el){
-            el.innerHTML = ox.svg ? scale_svg(ox.svg, {width: 130, height: 110, zoom: 0.2}, 0) : "нет эскиза";
-          }
-        }}/>
+      <TableCell onClick={changeFull}>
+        <div dangerouslySetInnerHTML={{__html: ox.svg ? scale_svg(ox.svg, {width: 130, height: 110, zoom: 0.2}, 0) : 'нет эскиза'}}/>
       </TableCell>
       <TableCell>
         <Table>

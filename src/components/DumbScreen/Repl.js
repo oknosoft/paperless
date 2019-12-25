@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Progress from '../PushUtils/AbstractProgress';
+import Progress from './AbstractProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 class Repl extends Progress {

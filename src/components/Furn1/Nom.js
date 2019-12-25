@@ -15,15 +15,19 @@ class Nom extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    this.rep = $p.rep.materials_demand.create();
+    const {cat, rep, utils} = $p;
+    this.rep = rep.materials_demand.create();
     this.rep.production.add({characteristic: props.ox, elm: props.cnstr});
     this.rep.resources = ['qty'];
     this.rep.prepare = this.prepare;
     this.rep.calculate = this.calculate;
     this.rep.complete_list_sorting = props.complete_list_sorting;
 
-    $p.cat.scheme_settings.find_rows({obj: 'rep.materials_demand.specification'}, (scheme) => {
+    this._meta = utils._clone(this.rep._metadata('specification'));
+    this._meta.fields.qty.type.fraction = 0;
+    this._meta.fields.totqty.type.fraction = 0;
+
+    cat.scheme_settings.find_rows({obj: 'rep.materials_demand.specification'}, (scheme) => {
       if(scheme.name.endsWith('furn1')) {
         this.scheme = scheme;
         return false;
@@ -31,11 +35,11 @@ class Nom extends React.Component {
     });
   }
 
-  prepare(scheme) {
+  prepare(/*scheme*/) {
     const {specification: data, production, complete_list_sorting} = this;
     return Promise.resolve()
       .then(() => {
-        const {characteristic: {specification, coordinates}, elm: cnstr} = this.production.get(0);
+        const {characteristic: {specification, coordinates}, elm: cnstr} = production.get(0);
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр, передав в компонент массив чисел complete_list_sorting
           if(!row.len && row.nom.complete_list_sorting >= complete_list_sorting[0] && row.nom.complete_list_sorting <= complete_list_sorting[1]) {
@@ -48,10 +52,16 @@ class Nom extends React.Component {
         const nmgr = $p.cat.nom;
         data._obj.sort((a, b) => {
           const na = nmgr.get(a.nom), nb = nmgr.get(b.nom);
+          if (na.complete_list_sorting < nb.complete_list_sorting){
+            return -1;
+          }
+          if (na.complete_list_sorting > nb.complete_list_sorting){
+            return 1;
+          }
           if (na.name < nb.name){
             return -1;
           }
-          else if (na.name > nb.name){
+          if (na.name > nb.name){
             return 1;
           }
           return 0;
@@ -60,7 +70,7 @@ class Nom extends React.Component {
   }
 
   calculate() {
-    const {specification: data, scheme, _manager} = this;
+    const {specification: data, scheme} = this;
     // чистим таблицу результата
     data.clear();
     if(!data._rows) {
@@ -91,9 +101,10 @@ class Nom extends React.Component {
         <Typography key="flap" variant="subtitle2" component="span">{row && row.furn.name}</Typography>,
         <FrmReport
           key="report"
+          _tabular="specification"
           _mgr={this.rep._manager}
           _obj={this.rep}
-          _tabular="specification"
+          _meta={this._meta}
           scheme={this.scheme}
           _acl={'r'}
           //autoexec
@@ -117,6 +128,7 @@ Nom.propTypes = {
   ox: PropTypes.object.isRequired,
   cnstr: PropTypes.number.isRequired,
   complete_list_sorting: PropTypes.array.isRequired,
+  registerRep: PropTypes.func.isRequired,
 };
 
 export default Nom;

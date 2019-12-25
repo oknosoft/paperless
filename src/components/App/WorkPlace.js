@@ -7,11 +7,13 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {item_props} from './menu';
 import {decrypt} from '../Barcode/connect';
+
 
 export class WorkPlace extends React.Component {
 
@@ -23,11 +25,34 @@ export class WorkPlace extends React.Component {
     this.state = {
       ox: {},
       cnstr: 1,
+      full_picture: false,
     };
   }
 
+  changeFull = () => {
+    const {cnstr, ox, full_picture} = this.state;
+    this.setState({full_picture: !full_picture}, () => {
+      this.barcodeFin({cnstr, ox});
+    });
+  };
+
   onBarcode(barcode) {
-    return this.editor ? decrypt(barcode) : Promise.resolve();
+    return new Promise((resolve) => this.setState({full_picture: false}, resolve))
+      .then(() => this.editor && decrypt(barcode))
+      .then((bar) => (
+        bar && this.barcodeFin(bar)
+      ))
+      .catch(({message}) => {
+        const {ox} = this.state;
+        if(ox && ox.unload) {
+          ox.unload();
+        }
+        this.editor.project.clear();
+        this.setState({ox: {}});
+      });
+  }
+
+  barcodeFin() {
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {
@@ -56,6 +81,11 @@ export class WorkPlace extends React.Component {
   };
 }
 
+WorkPlace.propTypes = {
+  title: PropTypes.string,
+  handleIfaceState: PropTypes.func.isRequired,
+};
+
 export function WorkPlaceFrame({children}) {
   const iprops = item_props();
   return <Grid container>
@@ -65,6 +95,10 @@ export function WorkPlaceFrame({children}) {
     {children}
   </Grid>;
 }
+
+WorkPlaceFrame.propTypes = {
+  children: PropTypes.object.isRequired,
+};
 
 function styles(theme) {
   return {

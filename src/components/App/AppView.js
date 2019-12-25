@@ -111,7 +111,7 @@ class AppView extends Component {
   render() {
     const {props, state} = this;
     const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user,
-      couch_direct, offline, meta_loaded, barcode, nom_prices_step, page, idle} = props;
+      couch_direct, offline, meta_loaded, barcode, page, idle} = props;
 
     const isHome = location.pathname === '/';
 
@@ -143,9 +143,8 @@ class AppView extends Component {
 
       if(!location.pathname.match(/\/login$/) && ((state.need_meta && !meta_loaded) || (state.need_user && !props.complete_loaded))) {
         return <DumbScreen
-          title={doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка из IndexedDB...'}
-          page={{text: doc_ram_loaded ? `Цены и характеристики${nom_prices_step ? ` (такт №${nom_prices_step})` : ''}...` :
-              `${(page && page.synonym) || 'Почти готово'}...`}}
+          title={doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка справочников...'}
+          page={page && page.docs_written < page.total_rows ? page : {text: `${(page && page.synonym) || 'Почти готово'}...`}}
           />;
       }
 
@@ -285,6 +284,7 @@ AppView.propTypes = {
   confirm: PropTypes.object,
   user: PropTypes.object,
   page: PropTypes.object,
+  barcode: PropTypes.string,
 };
 
 export default compose(withStyles, withIfaceAndMeta)(AppView);

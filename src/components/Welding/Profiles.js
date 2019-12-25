@@ -15,11 +15,14 @@ class Profiles extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    $p.cat.scheme_settings.find_rows({obj: 'cat.characteristics.coordinates'}, (scheme) => {
+    const {cat, utils} = $p;
+    cat.scheme_settings.find_rows({obj: 'cat.characteristics.coordinates'}, (scheme) => {
       if(scheme.name.endsWith('welding')) {
         this.scheme = scheme;
         scheme.filter = this.filter.bind(this);
-        this.ox = $p.cat.characteristics.get();
+        this.ox = cat.characteristics.get();
+        this._meta = utils._clone(this.ox._metadata('coordinates'));
+        this._meta.fields.len.type.fraction = 0;
       }
     });
   }
@@ -27,8 +30,7 @@ class Profiles extends React.Component {
   filter(collection) {
     const res = [];
     collection.clear();
-    const {cnstr, ox: {coordinates, specification}, contour: {profiles}} = this.props;
-    const {elm_types} = $p.enm;
+    const {ox: {coordinates, specification}, contour: {profiles}} = this.props;
     coordinates.forEach((row) => {
       if(profiles.some((profile) => profile.elm === row.elm && !profile.elm_type._manager.impost_lay.includes(profile.elm_type))) {
         const nrow = collection.add(row);
@@ -47,6 +49,7 @@ class Profiles extends React.Component {
       <div style={{maxHeight: 600}}>
         <TabularSection
           _obj={this.ox}
+          _meta={this._meta}
           _tabular="coordinates"
           scheme={this.scheme}
           denyReorder
@@ -63,6 +66,7 @@ class Profiles extends React.Component {
 
 Profiles.propTypes = {
   ox: PropTypes.object.isRequired,
+  contour: PropTypes.object.isRequired,
   cnstr: PropTypes.number.isRequired,
 };
 

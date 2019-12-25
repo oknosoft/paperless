@@ -7,7 +7,7 @@ import common from './common';
 //import enums from "./enums";
 
 // модификаторы справочников
-//import catalogs from "./catalogs";
+import catalogs from "./catalogs";
 
 // модификаторы документов
 //import documents from "./documents";
@@ -22,7 +22,7 @@ import common from './common';
 export default function ($p) {
   common($p);
   //enums($p);
-  //catalogs($p);
+  catalogs($p);
   //chartscharacteristics($p);
   //documents($p);
   //reports($p);

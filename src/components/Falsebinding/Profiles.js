@@ -15,10 +15,13 @@ class Profiles extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    $p.cat.scheme_settings.find_rows({obj: 'cat.characteristics.coordinates'}, (scheme) => {
+    const {cat, utils} = $p;
+    cat.scheme_settings.find_rows({obj: 'cat.characteristics.coordinates'}, (scheme) => {
       if(scheme.name.endsWith('falsebinding')) {
         this.scheme = scheme;
-        this.ox = $p.cat.characteristics.get();
+        this.ox = cat.characteristics.get();
+        this._meta = utils._clone(this.ox._metadata('coordinates'));
+        this._meta.fields.len.type.fraction = 0;
       }
     });
   }
@@ -33,7 +36,7 @@ class Profiles extends React.Component {
         continue;
       }
       for(const onlay of filling.imposts) {
-        const nrow = collection.add({
+        collection.add({
           nom: onlay.nom,
           len: onlay.length.round(),
           elm: 1,
@@ -51,9 +54,10 @@ class Profiles extends React.Component {
   render() {
     const {ox, scheme, filter} = this;
     return scheme ?
-      <div style={{maxHeight: 600}}>
+      <div style={{maxHeight: 600, minHeight: 400}}>
         <TabularSection
           _obj={ox}
+          _meta={this._meta}
           _tabular="coordinates"
           scheme={scheme}
           filter={filter}
