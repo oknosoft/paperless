@@ -52,7 +52,7 @@ class Profiles extends React.Component {
           _meta={this._meta}
           _tabular="coordinates"
           scheme={this.scheme}
-          denyReorder
+          read_only
           hideToolbar
         />
       </div>

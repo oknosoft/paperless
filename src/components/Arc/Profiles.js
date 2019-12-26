@@ -34,8 +34,7 @@ class Profiles extends React.Component {
   filter(collection) {
     const res = [];
     collection.clear();
-    const {cnstr, ox: {coordinates, specification}, contour: {profiles}} = this.props;
-    const {elm_types} = $p.enm;
+    const {ox: {coordinates, specification}, contour: {profiles}} = this.props;
     coordinates.forEach((row) => {
       if(profiles.some((profile) => profile.elm === row.elm)) {
         const nrow = collection.add(row);
@@ -71,6 +70,7 @@ class Profiles extends React.Component {
 
 Profiles.propTypes = {
   ox: PropTypes.object.isRequired,
+  contour: PropTypes.object.isRequired,
   cnstr: PropTypes.number.isRequired,
 };
 

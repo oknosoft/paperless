@@ -48,7 +48,7 @@ class Flap extends React.Component {
             scheme={this.scheme}
             filter={this.filter}
             minHeight={minHeight}
-            denyReorder
+            read_only
             hideToolbar
           />
         </div>

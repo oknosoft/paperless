@@ -38,12 +38,13 @@ class Profiles extends React.Component {
       for(const onlay of filling.imposts) {
         collection.add({
           nom: onlay.nom,
+          clr: onlay.clr,
           len: onlay.length.round(),
           elm: 1,
         });
       }
     }
-    collection.group_by(['nom', 'len'], ['elm']);
+    collection.group_by(['nom', 'clr', 'len'], ['elm']);
     collection.sort('len');
     collection.forEach((row) => {
       res.push(row);
@@ -61,7 +62,7 @@ class Profiles extends React.Component {
           _tabular="coordinates"
           scheme={scheme}
           filter={filter}
-          denyReorder
+          read_only
           hideToolbar
         />
       </div>

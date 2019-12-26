@@ -10,8 +10,10 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Arc extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project}} = this;
+    const {state: {full_picture}, editor: {project, constructor: {DimensionRadius}}} = this;
     const {cnstr, ox} = bar;
+    ox.coordinates.clear({elm_type: ''});
+
     project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
       .then(() => {
         if(full_picture) {
@@ -31,14 +33,38 @@ class Arc extends WorkPlace {
 
           // подкрашиваем штульпы
           this.editor.color_shtulps(contour);
+          const {_by_spec, _opening} = contour.l_visualization;
+          _by_spec.opacity = 0.4;
+          if(_opening) {
+            _opening.opacity = 0.4;
+          }
+
+          // расставляем радиусы на гнутых элементах
+          contour.l_dimensions.children
+            .filter((dim) => dim instanceof DimensionRadius)
+            .forEach((dim) => {
+              dim.remove();
+            });
 
           // показываем номера элементов на палках
           for(const profile of contour.profiles) {
             if(!profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
               profile.show_number();
             }
+            if(!profile.is_linear()) {
+              const {generatrix: gen, rays: {outer}, path} = profile;
+              const p0 = gen.getPointAt(gen.length * 0.7);
+              const p1 = path.getNearestPoint(outer.getNearestPoint(p0));
+              const dr = new DimensionRadius({
+                elm1: profile,
+                p1: path.getOffsetOf(p1).round(),
+                parent: contour.l_dimensions,
+                by_curve: false,
+                ref: `r-${profile.elm}`,
+              });
+              dr.redraw();
+            }
           }
-          contour.l_visualization._by_spec.opacity = 0.4;
 
           // вписываем в размер экрана
           project.zoom_fit();

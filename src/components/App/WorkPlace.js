@@ -97,7 +97,7 @@ export function WorkPlaceFrame({children}) {
 }
 
 WorkPlaceFrame.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 function styles(theme) {

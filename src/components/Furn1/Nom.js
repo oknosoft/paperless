@@ -102,12 +102,12 @@ class Nom extends React.Component {
         <FrmReport
           key="report"
           _tabular="specification"
+          _acl="r"
           _mgr={this.rep._manager}
           _obj={this.rep}
           _meta={this._meta}
           scheme={this.scheme}
-          _acl={'r'}
-          //autoexec
+          read_only
           ignoreTitle
           hideToolbar
           hideHeader
