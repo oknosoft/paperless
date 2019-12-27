@@ -14,7 +14,6 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Params from '../Props/Params';
 import furnClr from './furnClr';
-import cn from 'classnames';
 
 class Flap extends React.Component {
 

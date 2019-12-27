@@ -16,7 +16,7 @@ import catalogs from "./catalogs";
 //import chartscharacteristics from "./chartscharacteristics";
 
 // модификаторы отчетов
-//import reports from "./reports";
+import reports from "./reports";
 
 
 export default function ($p) {
@@ -25,5 +25,5 @@ export default function ($p) {
   catalogs($p);
   //chartscharacteristics($p);
   //documents($p);
-  //reports($p);
+  reports($p);
 }

@@ -37,7 +37,7 @@ import('metadata-react/DynList')
 class DataRoute extends React.Component {
 
   render() {
-    const {match, handlers, windowHeight, windowWidth, disablePermanent, couch_direct, offline, user} = this.props;
+    const {match, handlers, couch_direct, offline, user} = this.props;
     const {area, name} = match.params;
     let _mgr = global.$p && $p[area][name];
 
@@ -58,13 +58,6 @@ class DataRoute extends React.Component {
 
     const _acl = $p.current_user.get_acl(_mgr.class_name);
 
-    const dx = (windowWidth > 1280 && !disablePermanent) ? 280 : 0;
-
-    const sizes = {
-      height: windowHeight > 480 ? windowHeight - 52 : 428,
-      width: windowWidth > 800 ? windowWidth - (windowHeight < 480 ? 20 : dx) : 800
-    };
-
     const wraper = (Component, props, type) => {
       if(type === 'obj' && _mgr.FrmObj) {
         Component = _mgr.FrmObj;
@@ -72,12 +65,12 @@ class DataRoute extends React.Component {
       else if(type === 'list' && _mgr.FrmList) {
         Component = _mgr.FrmList;
       }
-      return <Component _mgr={_mgr} _acl={_acl} handlers={handlers} {...props} {...sizes} />;
+      return <Component _mgr={_mgr} _acl={_acl} handlers={handlers} {...props} />;
     };
 
     if(area === 'rep') {
       const Component = _mgr.FrmObj || lazy.FrmReport;
-      return <Component _mgr={_mgr} _acl={_acl} match={match} {...sizes} />;
+      return <Component _mgr={_mgr} _acl={_acl} match={match} />;
     }
 
     return <Switch>
@@ -96,9 +89,6 @@ class DataRoute extends React.Component {
 DataRoute.propTypes = {
   match: PropTypes.object.isRequired,
   handlers: PropTypes.object.isRequired,
-  windowHeight: PropTypes.number.isRequired,
-  windowWidth: PropTypes.number.isRequired,
-  disablePermanent: PropTypes.bool,
   couch_direct: PropTypes.bool,
   offline: PropTypes.bool,
   user: PropTypes.object,

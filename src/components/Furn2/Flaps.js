@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Flap from '../Furn1/Flap';
-import Params from '../Props/Params';
 
 class Flaps extends React.Component {
   render() {

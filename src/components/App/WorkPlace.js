@@ -43,6 +43,7 @@ export class WorkPlace extends React.Component {
         bar && this.barcodeFin(bar)
       ))
       .catch(({message}) => {
+        $p.record_log(message);
         const {ox} = this.state;
         if(ox && ox.unload) {
           ox.unload();
