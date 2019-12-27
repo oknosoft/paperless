@@ -61,7 +61,7 @@ class Furn1 extends WorkPlace {
   }
 
   render() {
-    const {state: {ox, full_picture}, props: {classes}, editor} = this;
+    const {state: {ox, cnstr, full_picture}, props: {classes}, editor} = this;
     const has_ox = !full_picture && editor && ox && ox.empty && !ox.empty();
     return <WorkPlaceFrame>
       <Grid item sm={12} lg={full_picture ? 9 : 6} className={classes.workplace}>

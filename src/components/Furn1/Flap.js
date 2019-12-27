@@ -13,12 +13,19 @@ import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Params from '../Props/Params';
+import furnClr from './furnClr';
+import cn from 'classnames';
 
 class Flap extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    $p.cat.scheme_settings.find_rows({obj: 'cat.characteristics.constructions'}, (scheme) => {
+    const {cat, utils} = $p;
+    this._meta = utils._clone(cat.characteristics.metadata('constructions'));
+    this._meta.fields.w.type.fraction = 0;
+    this._meta.fields.h.type.fraction = 0;
+
+    cat.scheme_settings.find_rows({obj: 'cat.characteristics.constructions'}, (scheme) => {
       if(scheme.name.endsWith('furn1')) {
         this.scheme = scheme;
       }
@@ -39,11 +46,17 @@ class Flap extends React.Component {
   render() {
     const {ox, cnstr} = this.props;
     const minHeight = 70;
+    const row = ox.constructions.find({cnstr});
+    let fcn = 'pb8';
+    if(row) {
+      fcn += ` f${furnClr(row.furn)}`;
+    }
     return this.scheme ?
-      <div style={{paddingBottom: 8}}>
+      <div className={fcn}>
         <div style={{height: minHeight}}>
           <TabularSection
             _obj={ox}
+            _meta={this._meta}
             _tabular="constructions"
             scheme={this.scheme}
             filter={this.filter}

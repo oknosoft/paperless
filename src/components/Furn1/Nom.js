@@ -10,6 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FrmReport from 'metadata-react/FrmReport';
 import Typography from '@material-ui/core/Typography';
+import furnClr from './furnClr';
 
 class Nom extends React.Component {
 
@@ -95,10 +96,10 @@ class Nom extends React.Component {
   render() {
     const {ox, cnstr, registerRep} = this.props;
     const row = ox && cnstr && ox.constructions.find({cnstr});
+    const classes = row ? {root: furnClr(row.furn)} : {};
     return this.scheme ?
       [
-        <Typography key="cnstr" variant="h6" component="span">{`№${cnstr} `}</Typography>,
-        <Typography key="flap" variant="subtitle2" component="span">{row && row.furn.name}</Typography>,
+        <Typography key="cnstr" variant="h6" classes={classes}>{`№${cnstr} (${row && row.furn.name})`}</Typography>,
         <FrmReport
           key="report"
           _tabular="specification"

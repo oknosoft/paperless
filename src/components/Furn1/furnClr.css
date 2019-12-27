@@ -1,0 +1,48 @@
+[class*="fclr-"] {
+  color: white;
+  padding-left: 4px;
+}
+
+.pb8 {
+  padding-bottom: 8px;
+}
+
+.fclr-accado {
+  background-color: #6A93B0;
+}
+
+.fclr-guuj {
+  background-color: #48A43F;
+}
+
+.fclr-guej {
+  background-color: #992572;
+}
+
+.fclr-maco {
+  background-color: #3481B8;
+}
+
+.fclr-roto {
+  background-color: #C1121C;
+}
+
+.ffclr-accado {
+  color: #6A93B0;
+}
+
+.ffclr-guuj {
+  color: #48A43F;
+}
+
+.ffclr-guej {
+  color: #992572;
+}
+
+.ffclr-maco {
+  color: #3481B8;
+}
+
+.ffclr-roto {
+  color: #C1121C;
+}

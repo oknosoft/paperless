@@ -16,7 +16,14 @@ export const TableRow = withStyles({row: {height: 'auto'}})(({classes, children,
     {children}
   </Row>);
 
-export const TableCell = withStyles({root: {padding: 4}})(({classes, children, ...props}) =>
-  <Cell classes={{root: classes.root}} {...props}>
+export const TableCell = withStyles({
+  root: {
+    padding: 4
+  },
+  body: {
+    color: 'inherit',
+  }
+})(({classes, children, ...props}) =>
+  <Cell classes={classes} {...props}>
     {children}
   </Cell>);
