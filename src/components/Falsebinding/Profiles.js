@@ -29,12 +29,9 @@ class Profiles extends React.Component {
   filter = (collection) => {
     const res = [];
     collection.clear();
-    const {contour: {fillings}} = this.props;
+    const {contour: {fillings}, filling} = this.props;
 
-    for(const filling of fillings) {
-      if(!filling.visible) {
-        continue;
-      }
+    if(filling) {
       for(const onlay of filling.imposts) {
         collection.add({
           nom: onlay.nom,
@@ -42,6 +39,21 @@ class Profiles extends React.Component {
           len: onlay.length.round(),
           elm: 1,
         });
+      }
+    }
+    else {
+      for(const filling of fillings) {
+        if(!filling.visible) {
+          continue;
+        }
+        for(const onlay of filling.imposts) {
+          collection.add({
+            nom: onlay.nom,
+            clr: onlay.clr,
+            len: onlay.length.round(),
+            elm: 1,
+          });
+        }
       }
     }
     collection.group_by(['nom', 'clr', 'len'], ['elm']);
@@ -76,8 +88,8 @@ class Profiles extends React.Component {
 
 Profiles.propTypes = {
   ox: PropTypes.object.isRequired,
-  cnstr: PropTypes.number.isRequired,
   contour: PropTypes.object.isRequired,
+  filling: PropTypes.object,
 };
 
 export default Profiles;

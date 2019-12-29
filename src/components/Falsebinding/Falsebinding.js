@@ -5,6 +5,7 @@ import {withIface} from 'metadata-redux';
 import Builder from '../Builder';
 import Props from '../Props/Main';
 import Profiles from './Profiles';
+import onlay_sizes from './onlay_sizes';
 import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
 class Falsebinding extends WorkPlace {
@@ -34,24 +35,7 @@ class Falsebinding extends WorkPlace {
               continue;
             }
             filling._attr._text.visible = false;
-            for(const onlay of imposts) {
-              const {generatrix: gen} = onlay;
-              const position = gen.getNearestPoint(onlay.interiorPoint());
-              const offset = gen.getOffsetOf(position);
-
-              const text = new PointText({
-                parent: onlay,
-                guide: true,
-                justification: 'center',
-                fillColor: 'black',
-                fontFamily: consts.font_family,
-                fontSize: consts.font_size,
-                content: onlay.length.round(),
-                position,
-              });
-              text.translate(gen.getNormalAt(offset).multiply((consts.font_size + onlay.nom.width) / 2));
-              text.rotate(gen.getTangentAt(offset).angle);
-            }
+            onlay_sizes({imposts, consts, PointText});
           }
 
           // прячем направление открывания и пользовательские размерные линии

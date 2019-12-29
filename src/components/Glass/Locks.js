@@ -11,9 +11,16 @@ import PropTypes from 'prop-types';
 import FrmReport from 'metadata-react/FrmReport';
 import Typography from '@material-ui/core/Typography';
 
-const originFormatters = {
-
-};
+function numberFormatter(digits) {
+  return ({value}) => {
+    if(!value) return '';
+    if(typeof value !== 'number') {
+      value = parseFloat(value, 10);
+    }
+    const text = value.toFixed(digits);
+    return <div title={text} style={{textAlign: 'right'}}>{text}</div>;
+  }
+}
 
 class Locks extends React.Component {
 
@@ -96,26 +103,10 @@ class Locks extends React.Component {
 
     for(const column of columns) {
       if(column.key === 'len') {
-        if(!originFormatters.len) {
-          originFormatters.len = column.formatter;
-        }
-        column.formatter = (v) => {
-          if(v.value) {
-            return originFormatters.len(v);
-          }
-          return '';
-        };
+        column.formatter = numberFormatter(1);
       }
       else if(column.key === 'qty') {
-        if(!originFormatters.qty) {
-          originFormatters.qty = column.formatter;
-        }
-        column.formatter = (v) => {
-          if(v.value) {
-            return originFormatters.qty(v);
-          }
-          return '';
-        };
+        column.formatter = numberFormatter(0);
       }
     }
   };
