@@ -20,11 +20,12 @@ import('metadata-react/DynList')
   .then(module => {
     lazy.DataList = module.default;
     //return import('metadata-react/DataTree');
-  })
-  .then(module => {
-    //lazy.DataTree = module.default;
     return import('metadata-react/FrmObj');
   })
+  // .then(module => {
+  //   lazy.DataTree = module.default;
+  //   return import('metadata-react/FrmObj');
+  // })
   .then(module => {
     lazy.DataObj = module.default;
     return import('metadata-react/FrmReport');

@@ -1,6 +1,6 @@
 {
   "name": "paperless",
-  "version": "2.1.250",
+  "version": "2.1.251",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
@@ -21,14 +21,14 @@
   "license": "SEE LICENSE IN LICENSE.en.md",
   "proxy": "http://localhost:3016/",
   "dependencies": {
-    "metadata-abstract-ui": "2.0.21-beta.4",
-    "metadata-core": "2.0.21-beta.4",
-    "metadata-pouchdb": "2.0.21-beta.4",
-    "metadata-react": "2.0.21-beta.4",
-    "metadata-redux": "2.0.21-beta.4",
-    "metadata-superlogin": "2.0.21-beta.4",
+    "metadata-abstract-ui": "2.0.21-beta.5",
+    "metadata-core": "2.0.21-beta.5",
+    "metadata-pouchdb": "2.0.21-beta.5",
+    "metadata-react": "2.0.21-beta.5",
+    "metadata-redux": "2.0.21-beta.5",
+    "metadata-superlogin": "2.0.21-beta.5",
     "paper-jsdom-canvas": "^0.12.4",
-    "windowbuilder": "github:oknosoft/windowbuilder#c0e8b81e09780225d1756bf77bd4160b0de465ad"
+    "windowbuilder": "github:oknosoft/windowbuilder#951c27ad67cd8dd6fd9fe4ec4cb0f9d927fbb838"
   },
   "devDependencies": {
     "@babel/core": "7.6.0",

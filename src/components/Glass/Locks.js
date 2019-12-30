@@ -12,7 +12,7 @@ import FrmReport from 'metadata-react/FrmReport';
 import Typography from '@material-ui/core/Typography';
 
 function numberFormatter(digits) {
-  return ({value}) => {
+  function NFormatter ({value}) {
     if(!value) return '';
     if(typeof value !== 'number') {
       value = parseFloat(value, 10);
@@ -20,6 +20,10 @@ function numberFormatter(digits) {
     const text = value.toFixed(digits);
     return <div title={text} style={{textAlign: 'right'}}>{text}</div>;
   }
+  NFormatter.propTypes = {
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  };
+  return NFormatter;
 }
 
 class Locks extends React.Component {
@@ -49,7 +53,7 @@ class Locks extends React.Component {
     const {specification: data, production} = this;
     return Promise.resolve()
       .then(() => {
-        const {characteristic: {specification, coordinates, constructions}, elm: cnstr} = production.get(0);
+        const {characteristic: {specification, coordinates, constructions}} = production.get(0);
         const {Штапик} = $p.enm.elm_types;
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр
@@ -140,7 +144,6 @@ class Locks extends React.Component {
 Locks.propTypes = {
   ox: PropTypes.object.isRequired,
   cnstr: PropTypes.number.isRequired,
-  contour: PropTypes.object.isRequired,
   registerRep: PropTypes.func.isRequired,
 };
 
