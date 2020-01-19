@@ -21,7 +21,7 @@ import {metaActions, metaMiddleware} from 'metadata-redux';
 import {customPouchMiddleware} from './reducers/pouchdb';
 
 // читаем скрипт инициализации метаданных, полученный в результате выполнения meta:prebuild
-import meta_init from 'windowbuilder/public/dist/init';
+import meta_init from 'windowbuilder/dist/init';
 import modifiers from './modifiers';
 import {load_ram, load_common} from './common/load_ram';
 

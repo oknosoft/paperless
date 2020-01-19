@@ -7,7 +7,7 @@
  */
 
 import paper from 'paper/dist/paper-core';
-import drawer from 'windowbuilder/public/dist/drawer';
+import drawer from 'windowbuilder/dist/drawer';
 
 export default function ($p) {
 

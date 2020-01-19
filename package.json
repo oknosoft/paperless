@@ -28,7 +28,7 @@
     "metadata-redux": "2.0.22-beta.1",
     "metadata-superlogin": "2.0.22-beta.1",
     "paper-jsdom-canvas": "^0.12.4",
-    "windowbuilder": "github:oknosoft/windowbuilder#b0789ff24cc035016e6407e2e0c47ee310449c39"
+    "windowbuilder": "github:oknosoft/windowbuilder-core#695c2a11f46af0084335bc28d70883606511dff3"
   },
   "devDependencies": {
     "@babel/core": "7.6.0",
