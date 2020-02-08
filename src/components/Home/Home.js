@@ -33,7 +33,7 @@ function PageHome(props) {
 
       <Grid container  className={classes.hero}>
 
-        <Grid item sm={12} lg={12}>
+        <Grid item xs={12}>
           <Typography variant="h4" component="h1" className={cn(classes.content, classes.text)}>Безбумажное производство</Typography>
         </Grid>
 

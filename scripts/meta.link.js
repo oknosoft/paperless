@@ -6,8 +6,8 @@ const path = require('path');
 const fs = require('fs');
 const md5File = require('md5-file');
 
-const localWbModules = path.resolve(__dirname, '../node_modules/windowbuilder/public/dist');
-const remoteWbModules = 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\windowbuilder\\public\\dist';
+const localWbModules = path.resolve(__dirname, '../node_modules/windowbuilder/dist');
+const remoteWbModules = 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\windowbuilder-core\\dist';
 const wbLibs = ['drawer.js', 'init.js'];
 
 const localNodeModules = path.resolve(__dirname, '../node_modules');
@@ -56,7 +56,7 @@ for (const lib of libs) {
   const lpath = path.resolve(localNodeModules, lib);
   const rpath = path.resolve(remoteNodeModules, lib);
   let i = 0;
-  fromDir(rpath, /\.(css|js|mjs|md|map)$/, (rname, isDir) => {
+  fromDir(rpath, /\.(css|js|mjs|md|map|gif|png)$/, (rname, isDir) => {
     const name = rname.replace(rpath, '');
     const lame = path.join(lpath, name);
     if(isDir) {

@@ -64,13 +64,13 @@ class Furn1 extends WorkPlace {
     const {state: {ox, full_picture}, props: {classes}, editor} = this;
     const has_ox = !full_picture && editor && ox && ox.empty && !ox.empty();
     return <WorkPlaceFrame>
-      <Grid item sm={12} lg={full_picture ? 9 : 6} className={classes.workplace}>
+      <Grid item sm={12} md={full_picture ? 8 : 5} xl={full_picture ? 9 : 6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      {!full_picture && <Grid item sm={12} lg={3} className={classes.props}>
+      {!full_picture && <Grid item sm={12} md={3} className={classes.props}>
         {has_ox && <Nom {...this.state} registerRep={this.registerRep} complete_list_sorting={[11,20]}/>}
       </Grid>}
-      <Grid item sm={12} lg={3} className={classes.props}>
+      <Grid item sm={12} md={4} xl={3} className={classes.props}>
         <Props ox={ox} cnstr={0} show_spec={false} changeFull={this.changeFull}/>
         {has_ox && <Flap {...this.state}/>}
       </Grid>

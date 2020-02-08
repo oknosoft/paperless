@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Params from '../Props/Params';
-import furnClr from './furnClr';
 
 class Flap extends React.Component {
 
@@ -45,13 +44,8 @@ class Flap extends React.Component {
   render() {
     const {ox, cnstr} = this.props;
     const minHeight = 70;
-    const row = ox.constructions.find({cnstr});
-    let fcn = 'pb8';
-    if(row) {
-      fcn += ` f${furnClr(row.furn)}`;
-    }
     return this.scheme ?
-      <div className={fcn}>
+      <div>
         <div style={{height: minHeight}}>
           <TabularSection
             _obj={ox}

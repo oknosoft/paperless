@@ -86,13 +86,13 @@ class Glass extends WorkPlace {
     const {state: {ox, cnstr, full_picture}, props: {classes}, editor} = this;
     const contour = !full_picture && editor && ox && ox.empty && !ox.empty() && editor.project.getItem({cnstr});
     return <WorkPlaceFrame>
-      <Grid item sm={12} lg={full_picture ? 9 : 6} className={classes.workplace}>
+      <Grid item sm={12} md={full_picture ? 8 : 5} xl={full_picture ? 9 : 6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      {!full_picture && <Grid item sm={12} lg={3} className={classes.props}>
+      {!full_picture && <Grid item sm={12} md={3} className={classes.props}>
         {contour && <Locks {...this.state} registerRep={this.registerRep}/>}
       </Grid>}
-      <Grid item sm={12} lg={3} className={classes.props}>
+      <Grid item sm={12} md={4} xl={3} className={classes.props}>
         <div className={classes.workheight}>
           <Props {...this.state} show_spec={false} changeFull={this.changeFull}/>
           {contour && <Flaps {...this.state} contour={contour}/>}

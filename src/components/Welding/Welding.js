@@ -51,10 +51,10 @@ class Welding extends WorkPlace {
     const {state: {ox, cnstr, full_picture}, props: {classes}, editor} = this;
     const contour = !full_picture && editor && ox && ox.empty && !ox.empty() && editor.project.getItem({cnstr});
     return <WorkPlaceFrame>
-      <Grid item sm={12} lg={full_picture ? 9 : 8} className={classes.workplace}>
+      <Grid item sm={12} md={full_picture ? 9 : 8} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      <Grid item sm={12} lg={full_picture ? 3 : 4} className={classes.props}>
+      <Grid item sm={12} md={full_picture ? 3 : 4} className={classes.props}>
         <Props {...this.state} show_spec={false} changeFull={this.changeFull}/>
         {contour && <Profiles {...this.state} contour={contour}/>}
       </Grid>
