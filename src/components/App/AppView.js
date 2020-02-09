@@ -15,6 +15,7 @@ import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
 import Barcode from '../Barcode';
+import ScanTotals from '../ScanStat/ScanTotals';
 import DumbScreen from '../DumbScreen';       // заставка "загрузка занных"
 import DataRoute from './DataRoute';          // вложенный маршрутизатор страниц с данными
 import AboutPage from '../About';             // информация о программе
@@ -151,12 +152,6 @@ class AppView extends Component {
       const wraper = (Component, routeProps) => {
         /* eslint-disable-next-line */
         const {classes, ...mainProps} = props;
-        if(routeProps.match.path === '/articles') {
-          mainProps.tagFilter = [$p.cat.tags_category.get(), $p.cat.tags_category.predefined('article')];
-        }
-        else if(routeProps.match.path === '/files') {
-          mainProps.tagFilter = [$p.cat.tags_category.predefined('file')];
-        }
         return <Component {...mainProps} {...routeProps} disablePermanent/>;
       };
 
@@ -191,39 +186,20 @@ class AppView extends Component {
       <div key="content" className={classes.root}>
         <AppBar className={appBarClassName} color="default">
           <Toolbar disableGutters>
-            {[
-              <IconButton
-                key="icon"
-                onClick={this.handleDrawerToggle}
-              >
-                <MenuIcon color="inherit"/>
-              </IconButton>,
-
-              <Typography
-                key="title"
-                className={classes.title}
-                variant="h6"
-                color="textSecondary"
-                noWrap
-              >{title || mainTitle}
-              </Typography>,
-
-              <Barcode key="barcode" className={classes.barcode} barcode={barcode} />,
-              <div key="space" className={classes.title} />,
-
-              <HeaderButtons
-                key="buttons"
-                sync_started={sync_started}
-                fetch={fetch}
-                offline={offline}
-                user={user}
-                handleNavigate={handleNavigate}
-                compact
-                barColor="default"
-              />
-
-            ]}
-
+            <IconButton onClick={this.handleDrawerToggle}><MenuIcon color="inherit"/></IconButton>
+            <Typography className={classes.title} variant="h6" color="textSecondary" noWrap>{title || mainTitle}</Typography>
+            <Barcode className={classes.barcode} barcode={barcode} />
+            <div className={classes.title} />
+            <ScanTotals />
+            <HeaderButtons
+              sync_started={sync_started}
+              fetch={fetch}
+              offline={offline}
+              user={user}
+              handleNavigate={handleNavigate}
+              compact
+              barColor="default"
+            />
           </Toolbar>
         </AppBar>
         <AppDrawer

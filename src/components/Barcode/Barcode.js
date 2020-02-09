@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import connect from './connect';
 
-
-class Barcode extends Component {
+class Barcode extends React.Component {
 
   componentDidMount() {
     document.body.addEventListener('keydown', this.props.bodyKeyDown, false);

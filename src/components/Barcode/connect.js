@@ -111,12 +111,19 @@ export function decrypt(barcode, doc = {}) {
     }
     else {
       // ищем barcode в _local/bar
-      const {adapters: {pouch}} = characteristics._owner.$p;
+      const {adapters: {pouch}, current_user, utils} = characteristics._owner.$p;
       const {pouch_db: db} = characteristics;
-      const authHeader = db.getBasicAuthHeaders({prefix: pouch.auth_prefix(), ...db.__opts.auth});
-      return fetch(`${db.name}/_local/bar|${barcode}`, {
-        headers: Object.assign({'Content-Type': 'application/json'}, authHeader),
-      })
+      const opts = {
+        method: 'post',
+        credentials: 'include',
+        headers: Object.assign({'Content-Type': 'application/json'}, db.getBasicAuthHeaders({prefix: pouch.auth_prefix(), ...db.__opts.auth})),
+        body: JSON.stringify({
+          _id: `${moment().format('YYYYMMDDHHmmssSSS')}|${barcode}`,
+          user: current_user ? current_user.ref : utils.blank.guid,
+          place: location.pathname.substr(1).split('/')[0],
+        })
+      };
+      return fetch(`/adm/api/scan`, opts)
         .then((res) => res.json())
         .then((doc) => {
           if(doc.error) {
