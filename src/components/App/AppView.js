@@ -190,7 +190,7 @@ class AppView extends Component {
             <Typography className={classes.title} variant="h6" color="textSecondary" noWrap>{title || mainTitle}</Typography>
             <Barcode className={classes.barcode} barcode={barcode} />
             <div className={classes.title} />
-            <ScanTotals />
+            {user.logged_in && <ScanTotals />}
             <HeaderButtons
               sync_started={sync_started}
               fetch={fetch}
