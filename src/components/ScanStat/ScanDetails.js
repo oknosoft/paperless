@@ -9,11 +9,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'metadata-react/App/Dialog';
+import Diagram from 'metadata-react/Diagrams/Diagram';
+import withStyles from 'metadata-react/Diagrams/styles';
+import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
 import {item_props} from '../App/menu';
 
 class Details extends React.Component {
 
-  state = {data: []};
+  state = {
+    data: {
+      kind: 'bar',
+      hideLegend: false,
+      points: [
+        {
+          name: 'date',
+          presentation: 'Дата'
+        }
+      ],
+      series: [
+        {
+          name: 'l',
+          presentation: 'Всего',
+          color: '#D02A35',
+          opacity: 0.5
+        },
+        {
+          name: 'd',
+          presentation: 'Уникальных',
+          color: '#1935A8',
+          opacity: 0.5
+        }
+      ],
+      rows: [
+        {
+          date: '01.01.2018',
+          l: {value: 1000, presentation: '1 000'},
+          d: {value: 200, presentation: '200'}
+        }
+      ]
+    }
+  };
 
   componentDidMount() {
     this.refresh();
@@ -34,13 +69,23 @@ class Details extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         if(Array.isArray(res)) {
-          this.setState({data: res});
+          const data = Object.assign({}, this.state.data);
+          data.rows.length = 0;
+          for(const row of res) {
+            data.rows.push({
+              date: row[2].pad(2), //`${row[2].toFixed(2)}.${row[1].toFixed(2)}`,
+              l: {value: row[5], presentation: row[5].toString()},
+              d: {value: row[6], presentation: row[6].toString()},
+            })
+          }
+          this.setState({data});
         }
       });
   };
 
   render() {
     const {current_user} = $p;
+    const {props: {classes}, state: {data}} = this;
     return <Dialog
       open
       initFullScreen
@@ -53,13 +98,26 @@ class Details extends React.Component {
       // ]}
       // toolbtns={<Toolbtn suggest_type={suggest_type} handleSuggestType={this.handleSuggestType}/>}
     >
-      Расшифровка пока не готова
+      <AutoSizer style={{overflow: 'hidden', width: '100%', height: '100%', paddingBottom: 48}}>
+        {({width, height}) => {
+          if(!height) {
+            height = 300;
+          }
+          return <Diagram
+            width={width}
+            height={height}
+            classes={classes}
+            data={data}
+          />;
+        }}
+    </AutoSizer>
     </Dialog>;
   }
 }
 
 Details.propTypes = {
   queryClose: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default Details;
+export default withStyles(Details);
