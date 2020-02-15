@@ -28,13 +28,13 @@
     "metadata-redux": "2.0.22-beta.2",
     "metadata-superlogin": "2.0.22-beta.2",
     "paper-jsdom-canvas": "^0.12.4",
-    "windowbuilder": "github:oknosoft/windowbuilder-core#1565eacdb6c7f24559b6e342cddf5b7aa58b26e2"
+    "windowbuilder": "github:oknosoft/windowbuilder-core#4f8928bd26e4e64c9b2b0ab095fe7db7e1064436"
   },
   "devDependencies": {
     "@babel/core": "7.6.0",
     "@svgr/webpack": "4.3.2",
-    "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.19.0",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
     "babel-eslint": "10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "8.0.6",

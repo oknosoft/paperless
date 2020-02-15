@@ -69,10 +69,10 @@ class Furn2 extends WorkPlace {
     const {state: {ox, full_picture}, props: {classes}, editor} = this;
     const has_ox = !full_picture && editor && ox && ox.empty && !ox.empty();
     return <WorkPlaceFrame>
-      <Grid item sm={12} md={full_picture ? 8 : 5} xl={full_picture ? 9 : 6} className={classes.workplace}>
+      <Grid item sm={12} md={full_picture ? 8 : 4} xl={full_picture ? 9 : 6} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      {!full_picture && <Grid item sm={12} md={3} className={classes.props}>
+      {!full_picture && <Grid item sm={12} md={4} xl={3} className={classes.props}>
         {has_ox && <Noms {...this.state} ref={this.registerRep} classes={classes}/>}
       </Grid>}
       <Grid item sm={12} md={4} xl={3} className={classes.props}>

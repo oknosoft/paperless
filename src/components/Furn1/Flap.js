@@ -14,6 +14,13 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Params from '../Props/Params';
 
+function ruch_formatter({row, value}) {
+  if(value === -1) {
+    return <b style={{opacity: 0.8}}>Ц</b>;
+  }
+  return <div style={{color: '#00f'}}>{row.h_ruch || ''}</div>;
+}
+
 class Flap extends React.Component {
 
   constructor(props, context) {
@@ -39,7 +46,15 @@ class Flap extends React.Component {
       }
     });
     return res;
-  }
+  };
+
+  columnsChange = ({scheme, columns}) => {
+    for(const column of columns) {
+      if(column.key === "fix_ruch") {
+        column.formatter = ruch_formatter;
+      }
+    }
+  };
 
   render() {
     const {ox, cnstr} = this.props;
@@ -53,6 +68,7 @@ class Flap extends React.Component {
             _tabular="constructions"
             scheme={this.scheme}
             filter={this.filter}
+            columnsChange={this.columnsChange}
             minHeight={minHeight}
             read_only
             hideToolbar
