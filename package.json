@@ -21,14 +21,14 @@
   "license": "SEE LICENSE IN LICENSE.en.md",
   "proxy": "http://localhost:3016/",
   "dependencies": {
-    "metadata-abstract-ui": "2.0.22-beta.2",
-    "metadata-core": "2.0.22-beta.2",
-    "metadata-pouchdb": "2.0.22-beta.2",
-    "metadata-react": "2.0.22-beta.2",
-    "metadata-redux": "2.0.22-beta.2",
-    "metadata-superlogin": "2.0.22-beta.2",
+    "metadata-abstract-ui": "2.0.22-beta.3",
+    "metadata-core": "2.0.22-beta.3",
+    "metadata-pouchdb": "2.0.22-beta.3",
+    "metadata-react": "2.0.22-beta.3",
+    "metadata-redux": "2.0.22-beta.3",
+    "metadata-superlogin": "2.0.22-beta.3",
     "paper-jsdom-canvas": "^0.12.4",
-    "windowbuilder": "github:oknosoft/windowbuilder-core#4f8928bd26e4e64c9b2b0ab095fe7db7e1064436"
+    "windowbuilder": "github:oknosoft/windowbuilder-core#3a4c42345261be02be6e5520331938a55e7669cc"
   },
   "devDependencies": {
     "@babel/core": "7.6.0",
