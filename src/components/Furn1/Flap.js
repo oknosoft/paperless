@@ -13,13 +13,37 @@ import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Params from '../Props/Params';
+import { makeStyles } from '@material-ui/core/styles';
 
-function ruch_formatter({row, value}) {
-  if(value === -1) {
-    return <b style={{opacity: 0.8}}>Ц</b>;
+const useStyles = makeStyles({
+  shift: {
+    backgroundColor: '#00c',
+    color: '#fff',
+    textAlign: 'center',
+    padding: 3,
+  },
+  centr: {
+    fontWeight: 500,
+    opacity: 0.9,
+    textAlign: 'center',
   }
-  return <div style={{color: '#00f'}}>{row.h_ruch || ''}</div>;
+});
+
+const ruch_formatter = ({row, value}) => {
+  const classes = useStyles();
+  if(value === -1) {
+    return <div className={classes.centr}>Ц</div>;
+  }
+  return <div className={classes.shift}>{row.h_ruch || ''}</div>;
 }
+
+export function columnsChange({scheme, columns}) {
+  for(const column of columns) {
+    if(column.key === "fix_ruch") {
+      column.formatter = ruch_formatter;
+    }
+  }
+};
 
 class Flap extends React.Component {
 
@@ -48,14 +72,6 @@ class Flap extends React.Component {
     return res;
   };
 
-  columnsChange = ({scheme, columns}) => {
-    for(const column of columns) {
-      if(column.key === "fix_ruch") {
-        column.formatter = ruch_formatter;
-      }
-    }
-  };
-
   render() {
     const {ox, cnstr} = this.props;
     const minHeight = 70;
@@ -68,7 +84,7 @@ class Flap extends React.Component {
             _tabular="constructions"
             scheme={this.scheme}
             filter={this.filter}
-            columnsChange={this.columnsChange}
+            columnsChange={columnsChange}
             minHeight={minHeight}
             read_only
             hideToolbar

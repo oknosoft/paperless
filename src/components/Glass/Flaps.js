@@ -7,6 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TabularSection from 'metadata-react/TabularSection';
 import Typography from '@material-ui/core/Typography';
+import {columnsChange} from '../Furn1/Flap';
 
 function hieracy(contours, cnstr) {
   return contours.some((flap) => {
@@ -61,6 +62,7 @@ class Flaps extends React.Component {
           _tabular="constructions"
           scheme={this.scheme}
           filter={this.filter}
+          columnsChange={columnsChange}
           minHeight={minHeight}
           read_only
           hideToolbar
