@@ -13,10 +13,6 @@ import scale_svg from '../../metadata/common/scale_svg';
 export default function MainProps(props) {
 
   const {ox, cnstr, block, task, show_spec, changeFull} = props;
-  let {note, calc_order, calc_order_row} = ox;
-  if(calc_order_row && calc_order_row.note && !note) {
-    note = calc_order_row.note;
-  }
   const name = ox.prod_name && ox.prod_name(true);
 
   const rows = [];
@@ -47,7 +43,7 @@ export default function MainProps(props) {
 
             <TableRow>
               <TableCell>Расчет</TableCell>
-              <TableCell>{calc_order.number_doc}</TableCell>
+              <TableCell>{ox.calc_order.number_doc}</TableCell>
             </TableRow>
 
             <TableRow>
@@ -83,10 +79,6 @@ export default function MainProps(props) {
 
     show_spec && rows.push(...CompleteListSorting({ox, cnstr, show_spec}));
 
-    note && rows.push(<TableRow key="note">
-      <TableCell>Инфо</TableCell>
-      <TableCell>{note}</TableCell>
-    </TableRow>);
   }
 
   return [

@@ -28,6 +28,12 @@ export default class Builder extends React.Component {
   }
 
   render() {
+    const {editor} = this;
+    let note;
+    if(editor) {
+      const {note: n, calc_order_row} = editor.project.ox;
+      note = n || (calc_order_row && calc_order_row.note);
+    }
     return <AutoSizer>
       {({width, height}) => {
         if(width < 400) {
@@ -42,11 +48,24 @@ export default class Builder extends React.Component {
         else {
           height -= 4;
         }
-        return <canvas
-          ref={(el) => this.createEditor(el, width, height)}
-          width={width}
-          height={height}
-        />;
+        if(note) {
+          height -= 32;
+        }
+        return [
+          <canvas
+            key="canvas"
+            ref={(el) => this.createEditor(el, width, height)}
+            width={width}
+            height={height}
+          />,
+          note && <div key="note" style={{
+            color: '#900',
+            width,
+            height: 32,
+            paddingLeft: 8,
+            fontSize: 'large',
+          }}>{note}</div>,
+        ];
       }}
     </AutoSizer>;
   }
