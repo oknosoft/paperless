@@ -58,13 +58,16 @@ export default class Builder extends React.Component {
             width={width}
             height={height}
           />,
-          note && <div key="note" style={{
-            color: '#900',
-            width,
-            height: 32,
-            paddingLeft: 8,
-            fontSize: 'large',
-          }}>{note}</div>,
+          note && <div key="note" style={{height: 32}}>
+            <div style={{
+              color: '#900',
+              width,
+              bottom: 4,
+              paddingLeft: 8,
+              fontSize: 'large',
+              position: 'absolute',
+            }}>{note}</div>
+          </div>,
         ];
       }}
     </AutoSizer>;
