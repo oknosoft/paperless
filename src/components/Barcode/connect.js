@@ -129,6 +129,9 @@ export function decrypt(barcode, doc = {}) {
           if(doc.error) {
             throw new Error(`${doc.error} ${doc.reason}`);
           }
+          else if(!doc.characteristic) {
+            throw new Error(`empty doc: ${JSON.stringify(doc)}`);
+          }
           resolve(decrypt(doc.characteristic, doc));
         })
         .catch((err) => {
