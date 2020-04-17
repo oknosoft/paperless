@@ -76,7 +76,7 @@ class Details extends React.Component {
               date: row[2].pad(2), //`${row[2].toFixed(2)}.${row[1].toFixed(2)}`,
               l: {value: row[5], presentation: row[5].toString()},
               d: {value: row[6], presentation: row[6].toString()},
-            })
+            });
           }
           this.setState({data});
         }

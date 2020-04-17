@@ -35,7 +35,7 @@ const ruch_formatter = ({row, value}) => {
     return <div className={classes.centr}>Ц</div>;
   }
   return <div className={classes.shift}>{row.h_ruch || ''}</div>;
-}
+};
 
 export function columnsChange({scheme, columns}) {
   for(const column of columns) {
@@ -43,7 +43,7 @@ export function columnsChange({scheme, columns}) {
       column.formatter = ruch_formatter;
     }
   }
-};
+}
 
 class Flap extends React.Component {
 

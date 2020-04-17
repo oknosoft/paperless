@@ -21,7 +21,7 @@ class Profiles extends React.Component {
         this.scheme = scheme;
         this.ox = cat.characteristics.get();
         this._meta = utils._clone(this.ox._metadata('coordinates'));
-        this._meta.fields.len.type.fraction = 0;
+        this._meta.fields.len.type.fraction = 1;
       }
     });
   }
@@ -34,9 +34,10 @@ class Profiles extends React.Component {
     if(filling) {
       for(const onlay of filling.imposts) {
         collection.add({
+          region: onlay.region,
           nom: onlay.nom,
           clr: onlay.clr,
-          len: onlay.length.round(),
+          len: onlay.length.round(1),
           elm: 1,
         });
       }
@@ -48,15 +49,16 @@ class Profiles extends React.Component {
         }
         for(const onlay of filling.imposts) {
           collection.add({
+            region: onlay.region,
             nom: onlay.nom,
             clr: onlay.clr,
-            len: onlay.length.round(),
+            len: onlay.length.round(1),
             elm: 1,
           });
         }
       }
     }
-    collection.group_by(['nom', 'clr', 'len'], ['elm']);
+    collection.group_by(['region', 'nom', 'clr', 'len'], ['elm']);
     collection.sort('len');
     collection.forEach((row) => {
       res.push(row);

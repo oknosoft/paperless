@@ -11,7 +11,7 @@ export default function onlay_sizes({imposts, consts, PointText}) {
       fillColor: 'black',
       fontFamily: consts.font_family,
       fontSize: consts.font_size,
-      content: onlay.length.round(),
+      content: onlay.length.round(1),
       position,
     });
     text.translate(gen.getNormalAt(offset).multiply((consts.font_size + onlay.nom.width) / 2));

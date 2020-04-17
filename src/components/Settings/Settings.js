@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import DialogActions from '@material-ui/core/DialogActions';
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet';
 import Confirm from 'metadata-react/App/Confirm';
 import withStyles from 'metadata-react/styles/paper600';
 import {withIface, withPrm} from 'metadata-redux';

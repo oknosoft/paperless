@@ -13,7 +13,7 @@ class Falsebinding extends WorkPlace {
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, PointText, consts, constructor: {DimensionLineCustom}}} = this;
     const {cnstr, ox} = bar;
-    project.load(ox, {custom_lines: full_picture, mosquito: full_picture})
+    project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
       .then(() => {
         if(full_picture) {
           return;
