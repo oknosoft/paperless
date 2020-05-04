@@ -42,7 +42,7 @@ class Details extends React.Component {
       ],
       rows: [
         {
-          date: '01.01.2018',
+          date: '01.01.2020',
           l: {value: 1000, presentation: '1 000'},
           d: {value: 200, presentation: '200'}
         }
@@ -73,7 +73,7 @@ class Details extends React.Component {
           data.rows.length = 0;
           for(const row of res) {
             data.rows.push({
-              date: row[2].pad(2), //`${row[2].toFixed(2)}.${row[1].toFixed(2)}`,
+              date: `${row[2].pad(2)}.${row[1].pad(2)}`,
               l: {value: row[5], presentation: row[5].toString()},
               d: {value: row[6], presentation: row[6].toString()},
             });

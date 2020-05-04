@@ -54,9 +54,9 @@ class Totals extends React.Component {
     };
     return fetch(`/adm/api/scan?user=${current_user.ref}&place=${location.pathname.substr(1).split('/')[0]}&totals_only=true`, opts)
       .then((res) => res.json())
-      .then(({distinct, length, error}) => {
+      .then(({d, l, error}) => {
         if(!error) {
-          this.setState({value: `${length}/${distinct}`});
+          this.setState({value: `${l}/${d}`});
         }
       });
   };
