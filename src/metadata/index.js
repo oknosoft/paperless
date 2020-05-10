@@ -16,7 +16,7 @@ import {patch_prm, patch_cnn} from '../../config/patch_cnn';
 // генератор события META_LOADED для redux
 import {addMiddleware} from 'redux-dynamic-middlewares';
 // стандартные события pouchdb и метаданных
-import {metaActions, metaMiddleware} from 'metadata-redux';
+import {metaActions, metaMiddleware, dispatchIface} from 'metadata-redux';
 // дополнительные события pouchdb
 import {customPouchMiddleware} from './reducers/pouchdb';
 
@@ -24,6 +24,7 @@ import {customPouchMiddleware} from './reducers/pouchdb';
 import meta_init from 'windowbuilder/dist/init';
 import modifiers from './modifiers';
 import {load_ram, load_common} from './common/load_ram';
+import {lazy} from '../components/App/DataRoute';
 
 // подключаем плагины к MetaEngine
 MetaEngine
@@ -57,11 +58,11 @@ export function init(store) {
     addMiddleware(customPouchMiddleware($p));
 
     // сообщяем адаптерам пути, суффиксы и префиксы
-    const {wsql, job_prm, classes, adapters: {pouch}, md} = $p;
-    classes.PouchDB.plugin(proxy_login());
+    const {wsql, job_prm, classes: {PouchDB}, adapters: {pouch}} = $p;
+    PouchDB.plugin(proxy_login());
     pouch.init(wsql, job_prm);
-    const opts = {auto_compaction: true, revs_limit: 3, owner: pouch};
-    pouch.remote.ram = new classes.PouchDB(pouch.dbpath('ram'), opts);
+    const opts = {auto_compaction: true, revs_limit: 3, owner: pouch, fetch: pouch.fetch};
+    pouch.remote.ram = new PouchDB(pouch.dbpath('ram'), opts);
 
     // выполняем модификаторы
     modifiers($p);
@@ -82,7 +83,10 @@ export function init(store) {
     // информируем хранилище о готовности MetaEngine
     dispatch(metaActions.META_LOADED($p));
 
-    md.once('predefined_elmnts_inited', () => {
+    // инициализируем ui.dialogs
+    $p.ui.dialogs.init(Object.assign({lazy}, dispatchIface(dispatch)));
+
+    $p.md.once('predefined_elmnts_inited', () => {
       pouch.emit('pouch_complete_loaded');
     });
 

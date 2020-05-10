@@ -1,4 +1,5 @@
-export default function (theme) {
+import withStyles from '@material-ui/core/styles/withStyles';
+export default withStyles((theme) => {
   return {
     root: {
       flex: '1 0 100%',
@@ -44,4 +45,4 @@ export default function (theme) {
       maxHeight: 120,
     },
   };
-}
+});

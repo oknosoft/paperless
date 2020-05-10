@@ -22,14 +22,14 @@
   "proxy": "http://localhost:3016/",
   "dependencies": {
     "md5-file": "^4.0.0",
-    "metadata-abstract-ui": "2.0.22-beta.6",
-    "metadata-core": "2.0.22-beta.6",
-    "metadata-pouchdb": "2.0.22-beta.6",
-    "metadata-react": "2.0.22-beta.6",
-    "metadata-redux": "2.0.22-beta.6",
-    "metadata-superlogin": "2.0.22-beta.6",
+    "metadata-abstract-ui": "2.0.22-beta.7",
+    "metadata-core": "2.0.22-beta.7",
+    "metadata-pouchdb": "2.0.22-beta.7",
+    "metadata-react": "2.0.22-beta.7",
+    "metadata-redux": "2.0.22-beta.7",
+    "metadata-superlogin": "2.0.22-beta.7",
     "paper-jsdom-canvas": "^0.12.4",
-    "windowbuilder": "github:oknosoft/windowbuilder-core#bec6c468dfe287f37edbb7e2a046fff2925abdbd"
+    "windowbuilder": "github:oknosoft/windowbuilder-core#6692734e65e61787699f81590e1c013965548d67"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -37,8 +37,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@typescript-eslint/eslint-plugin": "^2.28.0",
-    "@typescript-eslint/parser": "^2.28.0",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "8.1.0",

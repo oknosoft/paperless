@@ -37,6 +37,7 @@ import {compose} from 'redux';
 
 
 import items, {item_props} from './menu';
+import {control} from '../Barcode/connect';
 
 const mainTitle = 'Безбумажка';
 
@@ -72,6 +73,7 @@ class AppView extends Component {
     return res;
   }
 
+
   handleDialogClose(name) {
     this.props.handleIfaceState({component: '', name, value: {open: false}});
   }
@@ -98,13 +100,14 @@ class AppView extends Component {
   };
 
   renderHome = (routeProps) => {
-    const {classes, title, handleNavigate, handleIfaceState} = this.props;
+    const {classes, title, handleNavigate, handleIfaceState, meta_loaded} = this.props;
     const {root, hero, content, text, headline, button, logo} = classes;
     return <HomeView
       classes={{root, hero, content, text, headline, button, logo}}
       title={title}
       handleNavigate={handleNavigate}
       handleIfaceState={handleIfaceState}
+      meta_loaded={meta_loaded}
       {...routeProps}
     />;
   };
@@ -188,7 +191,7 @@ class AppView extends Component {
           <Toolbar disableGutters>
             <IconButton onClick={this.handleDrawerToggle}><MenuIcon color="inherit"/></IconButton>
             <Typography className={classes.title} variant="h6" color="textSecondary" noWrap>{title || mainTitle}</Typography>
-            <Barcode className={classes.barcode} barcode={barcode} />
+            <Barcode className={classes.barcode} barcode={barcode} handleNavigate={handleNavigate} />
             <div className={classes.title} />
             {user.logged_in && <ScanTotals />}
             <HeaderButtons

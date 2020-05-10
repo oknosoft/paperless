@@ -34,6 +34,7 @@ Barcode.propTypes = {
   onBlur: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   onPaste: PropTypes.func.isRequired,
+  handleNavigate: PropTypes.func.isRequired,
   className: PropTypes.string,
   barcode: PropTypes.string,
 };

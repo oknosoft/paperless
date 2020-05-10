@@ -9,7 +9,7 @@ import NotFound from './NotFound';
 
 const stub = () => null;
 
-const lazy = {
+export const lazy = {
   DataList: stub,
   DataTree: stub,
   DataObj: stub,

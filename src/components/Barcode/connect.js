@@ -20,7 +20,7 @@ const state = {
     }
 
     if(evt.code == 'Enter' || evt.code == 'NumpadEnter') {
-      this.s && $p.md.emit_async('barcode', this.s);
+      this.s && control(this.s);
       this.s = '';
       this.input && this.input.blur();
     }
@@ -67,9 +67,10 @@ const state = {
   }
 };
 
-// function mapStateToProps(state, props) {
-//
-// }
+// для снэка
+const timeout = 4000;
+
+const wpaths = 'imposts,furn1,furn2,glass,welding,falsebinding,facing,arc'.split(',');
 
 /**
  * Расшифровывает штрихкод
@@ -143,6 +144,67 @@ export function decrypt(barcode, doc = {}) {
   });
 }
 
+/**
+ * Анализирует штрихкод перед излучением события
+ * Выполняет служебные команды
+ * @param barcode
+ */
+export function control(barcode) {
+  const auth = barcode.split('@');
+  const {current_user, ui: {dialogs}, adapters: {pouch}} = $p;
+  if(auth.length === 2 && ['ldap', 'couchdb'].includes(auth[1])) {
+    if(current_user) {
+      dialogs.snack({message: `Для повторной авторизации завершите сеанс текущего пользователя`, timeout});
+    }
+    const [login, password] = auth[0].split(':');
+    if(!login || !password) {
+      dialogs.snack({message: `Не найдено имя или пароль в штрихкоде`, timeout});
+    }
+    else {
+      pouch.props._auth_provider = auth[1];
+      dialogs.snack({message: `Авторизация '${login}'`, timeout: timeout / 2});
+      pouch.log_in(login, password)
+        .then(() => {
+          pouch.authorized ?
+            dialogs.snack({message: `Успешный вход '${login}'`, timeout: timeout / 2})
+            :
+            dialogs.snack({message: `Ошибка входа '${login}'`, timeout})
+        })
+        .catch((err) => dialogs.snack({message: `Ошибка входа '${err.message || err}'`, timeout}));
+    }
+    return;
+  }
+
+  barcode = barcode.trim().toLowerCase();
+  if(barcode === 'logout') {
+    if(!current_user) {
+      dialogs.snack({message: `Неоткуда выходить - пользователь не авторизован`, timeout});
+    }
+    else {
+      pouch.log_out()
+        .then(() => location.reload());
+    }
+    return;
+  }
+  if(wpaths.includes(barcode)) {
+    return dialogs.handleNavigate(`/${barcode}`);
+  }
+  if(barcode.length > 20) {
+    return dialogs.snack({message: `Подозрительно длинный штрихкод '${barcode}'`, timeout});
+  }
+  if(barcode.length < 3) {
+    return dialogs.snack({message: `Подозрительно короткий штрихкод '${barcode}'`, timeout});
+  }
+  const {pathname} = location;
+  if(wpaths.some((path) => pathname.includes(path))) {
+    $p.md.emit_async('barcode', barcode);
+  }
+  else {
+    dialogs.snack({message: `Не выбрано рабочее место (заполнения, импосты, раскладка...)`, timeout});
+  }
+
+}
+
 function mapDispatchToProps(dispatch) {
   const {handleIfaceState} = dispatchIface(dispatch);
   return {
@@ -161,7 +223,7 @@ function mapDispatchToProps(dispatch) {
 
     onPaste(evt) {
       const str = evt.clipboardData.getData('text/plain');
-      str && $p.md.emit_async('barcode', str);
+      str && control(str);
       evt.target.blur();
     }
   };

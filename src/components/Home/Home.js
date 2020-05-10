@@ -2,29 +2,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import {Helmet} from 'react-helmet';
 import cn from 'classnames';
 
+import {WorkPlace} from '../App/WorkPlace';
 import {description} from '../App/menu';
+import {control} from '../Barcode/connect';
 
-import styles from './styles';
+import withStyles from './styles';
 
 const ltitle = 'Заказ дилера';
 
-function PageHome(props) {
-  const {classes, title} = props;
-
-  if(title != ltitle) {
-    props.handleIfaceState({
-      component: '',
-      name: 'title',
-      value: ltitle,
-    });
-  }
-
+function PageHome({classes, title}) {
   return (
     <div className={classes.root}>
       <Helmet title={ltitle}>
@@ -34,7 +25,7 @@ function PageHome(props) {
       <Grid container  className={classes.hero}>
 
         <Grid item xs={12}>
-          <Typography variant="h4" component="h1" className={cn(classes.content, classes.text)}>Безбумажное производство</Typography>
+          <Typography variant="h4" component="h1" className={cn(classes.content, classes.text)}>{description}</Typography>
         </Grid>
 
       </Grid>
@@ -50,4 +41,5 @@ PageHome.propTypes = {
   handleIfaceState: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(PageHome);
+
+export default withStyles(PageHome);

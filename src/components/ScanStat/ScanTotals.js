@@ -25,15 +25,18 @@ class Totals extends React.Component {
     super();
     this.state = {value: '0/0', open: false};
     this.timer = 0;
+    this._mounted = false;
   }
 
   componentDidMount() {
     $p.md.on('barcode', this.onBarcode);
     this.onBarcode();
+    this._mounted = true;
   }
 
   componentWillUnmount() {
     $p.md.off('barcode', this.onBarcode);
+    this._mounted = false;
   }
 
   onBarcode = () => {
@@ -55,7 +58,7 @@ class Totals extends React.Component {
     return fetch(`/adm/api/scan?user=${current_user.ref}&place=${location.pathname.substr(1).split('/')[0]}&totals_only=true`, opts)
       .then((res) => res.json())
       .then(({d, l, error}) => {
-        if(!error) {
+        if(!error && this._mounted) {
           this.setState({value: `${l}/${d}`});
         }
       });
