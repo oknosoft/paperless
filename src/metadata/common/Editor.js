@@ -43,7 +43,8 @@ export default function ($p) {
         }
       }
       for(const flap of contours) {
-        if(flap.furn.furn_set.name.toLowerCase().includes('пассив')) {
+        const {furn_set} = flap.furn;
+        if(furn_set.shtulp_kind() === 2 || furn_set.name.toLowerCase().includes('пассив')) {
           for(const profile of flap.profiles) {
             const nearest = profile.nearest(true);
             if(nearest) {

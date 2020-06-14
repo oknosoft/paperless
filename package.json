@@ -7,8 +7,8 @@
     "url": "https://github.com/oknosoft/paperless"
   },
   "engines": {
-    "node": "^8.15",
-    "npm": "^6.12"
+    "node": "^12.18",
+    "npm": "^6.14"
   },
   "keywords": [
     "metadata",
@@ -21,15 +21,15 @@
   "license": "SEE LICENSE IN LICENSE.en.md",
   "proxy": "http://localhost:3016/",
   "dependencies": {
-    "md5-file": "^4.0.0",
+    "md5-file": "^5.0",
     "metadata-abstract-ui": "2.0.22-beta.7",
     "metadata-core": "2.0.22-beta.7",
     "metadata-pouchdb": "2.0.22-beta.7",
     "metadata-react": "2.0.22-beta.7",
     "metadata-redux": "2.0.22-beta.7",
     "metadata-superlogin": "2.0.22-beta.7",
-    "paper-jsdom-canvas": "^0.12.4",
-    "windowbuilder": "github:oknosoft/windowbuilder-core#6692734e65e61787699f81590e1c013965548d67"
+    "paper-jsdom-canvas": "^0.12.8",
+    "windowbuilder": "github:oknosoft/windowbuilder-core#ada96045e23a35513b37ca02cb29b8047ac4594d"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -37,8 +37,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "8.1.0",
