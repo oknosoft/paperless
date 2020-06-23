@@ -22,14 +22,14 @@
   "proxy": "http://localhost:3016/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-abstract-ui": "2.0.22-beta.7",
-    "metadata-core": "2.0.22-beta.7",
-    "metadata-pouchdb": "2.0.22-beta.7",
-    "metadata-react": "2.0.22-beta.7",
-    "metadata-redux": "2.0.22-beta.7",
-    "metadata-superlogin": "2.0.22-beta.7",
-    "paper-jsdom-canvas": "^0.12.8",
-    "windowbuilder": "github:oknosoft/windowbuilder-core#ada96045e23a35513b37ca02cb29b8047ac4594d"
+    "metadata-abstract-ui": "2.0.23-beta.2",
+    "metadata-core": "2.0.23-beta.2",
+    "metadata-pouchdb": "2.0.23-beta.2",
+    "metadata-react": "2.0.23-beta.2",
+    "metadata-redux": "2.0.23-beta.2",
+    "metadata-superlogin": "2.0.23-beta.2",
+    "paper-jsdom-canvas": "0.12.8",
+    "windowbuilder": "github:oknosoft/windowbuilder-core#22a99a2eb8e8f6df1493ff573aca4e84ef02d5f1"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
