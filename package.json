@@ -29,7 +29,7 @@
     "metadata-redux": "2.0.23-beta.2",
     "metadata-superlogin": "2.0.23-beta.2",
     "paper-jsdom-canvas": "0.12.8",
-    "windowbuilder": "github:oknosoft/windowbuilder-core#22a99a2eb8e8f6df1493ff573aca4e84ef02d5f1"
+    "windowbuilder": "github:oknosoft/windowbuilder-core#9ab6200be901a502c7c3337b9582d52a0d555950"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -91,6 +91,11 @@
     "webpack-manifest-plugin": "2.2.0",
     "workbox-webpack-plugin": "4.3.1"
   },
+  "files": [
+    "server/**",
+    "LICENSE",
+    "LICENSE.ru.md"
+  ],
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
