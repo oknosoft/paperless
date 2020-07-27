@@ -7,7 +7,7 @@
  */
 
 import paper from 'paper/dist/paper-core';
-import drawer from 'windowbuilder/dist/drawer';
+import drawer from 'wb-core/dist/drawer';
 
 export default function ($p) {
 
