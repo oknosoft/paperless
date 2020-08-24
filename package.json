@@ -1,6 +1,6 @@
 {
   "name": "paperless",
-  "version": "2.1.253",
+  "version": "2.1.254",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "metadata-redux": "2.0.23-beta.3",
     "metadata-superlogin": "2.0.23-beta.3",
     "paper-jsdom-canvas": "0.12.8",
-    "wb-core": "github:oknosoft/windowbuilder-core#13f9858ce612c95ff3271c8dc99b281d651539fe"
+    "wb-core": "github:oknosoft/windowbuilder-core#78798c23b62f28e97c9c31bd95a8e77b6f28d947"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",

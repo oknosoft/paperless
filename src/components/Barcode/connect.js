@@ -168,7 +168,7 @@ export function control(barcode) {
           pouch.authorized ?
             dialogs.snack({message: `Успешный вход '${login}'`, timeout: timeout / 2})
             :
-            dialogs.snack({message: `Ошибка входа '${login}'`, timeout})
+            dialogs.snack({message: `Ошибка входа '${login}'`, timeout});
         })
         .catch((err) => dialogs.snack({message: `Ошибка входа '${err.message || err}'`, timeout}));
     }

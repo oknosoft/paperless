@@ -6,14 +6,25 @@ const path = require('path');
 const fs = require('fs');
 const md5File = require('md5-file');
 
-const localWbModules = path.resolve(__dirname, '../node_modules/windowbuilder/dist');
-const remoteWbModules = 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\windowbuilder-core\\dist';
-const wbLibs = ['drawer.js', 'init.js'];
-
 const localNodeModules = path.resolve(__dirname, '../node_modules');
-const remoteNodeModules = 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\git-osde\\packages';
 const {dependencies} = require(path.resolve(__dirname, '../package.json'));
-const libs = Object.keys(dependencies).filter(v => /^metadata-/.test(v));
+
+// накапливаем пути
+const repos = [
+  {
+    local: 'wb-core',
+    remote: 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\windowbuilder-core',
+    dir: 'dist',
+  },
+];
+
+for(const local of Object.keys(dependencies).filter(v => /^metadata-/.test(v))) {
+  repos.push({
+    local,
+    remote: `D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\git-osde\\packages\\${local}`,
+    dir: '',
+  });
+}
 
 function fromDir(startPath, filter, callback) {
 
@@ -39,22 +50,11 @@ function fromDir(startPath, filter, callback) {
   };
 };
 
-let i = 0;
-for (const lib of wbLibs) {
-  const lname = path.resolve(localWbModules, lib);
-  const rname = path.resolve(remoteWbModules, lib);
-
-  if(!fs.existsSync(lname) || (md5File.sync(rname) != md5File.sync(lname))){
-    i++;
-    fs.createReadStream(rname).pipe(fs.createWriteStream(lname));
-  }
-}
-i && console.log(`from ${remoteWbModules} written ${i} files`);
-
+// исполняем
 let copied;
-for (const lib of libs) {
-  const lpath = path.resolve(localNodeModules, lib);
-  const rpath = path.resolve(remoteNodeModules, lib);
+for(const {local, remote, dir} of repos) {
+  const lpath = path.resolve(localNodeModules, local, dir);
+  const rpath = path.resolve(remote, dir);
   let i = 0;
   fromDir(rpath, /\.(css|js|mjs|md|map|gif|png)$/, (rname, isDir) => {
     const name = rname.replace(rpath, '');
@@ -74,6 +74,8 @@ for (const lib of libs) {
     console.log(`from ${rpath} written ${i} files`);
   }
 }
-if(!copied && !i){
+
+
+if(!copied){
   console.log(`all files match`);
 }
