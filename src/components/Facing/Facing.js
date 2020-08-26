@@ -56,6 +56,7 @@ class Facing extends WorkPlace {
 
           // рисуем текущий слой
           project.draw_fragment({elm: bar.elm});
+          filling.draw_arcr();
 
           // вписываем в размер экрана
           project.zoom_fit();
