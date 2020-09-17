@@ -33,6 +33,7 @@ class Profiles extends React.Component {
 
   filter(collection) {
     const res = [];
+    const beads = [];
     collection.clear();
     const {ox: {coordinates, specification}, contour: {profiles}} = this.props;
     coordinates.forEach((row) => {
@@ -43,9 +44,24 @@ class Profiles extends React.Component {
           nrow.len = srow.len * 1000;
         }
         res.push(nrow);
+        if(row.r) {
+          // для гнутых, добавляем инфо по штапикам
+          specification.find_rows({elm: row.elm}, (srow) => {
+            if(srow.nom.elm_type == 'Штапик') {
+              const nrow = collection.add(row);
+              nrow.len = srow.len * 1000;
+              nrow.nom = srow.nom;
+              nrow.alp1 = srow.alp1;
+              nrow.alp2 = srow.alp2;
+              nrow.clr = srow.clr;
+              nrow.r = row.r - row.nom.width;
+              beads.push(nrow);
+            }
+          });
+        }
       }
     });
-    return res;
+    return res.concat(beads);
   }
 
   render() {
