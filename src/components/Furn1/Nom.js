@@ -94,7 +94,7 @@ class Nom extends React.Component {
   }
 
   render() {
-    const {ox, cnstr, registerRep} = this.props;
+    const {ox, cnstr, registerRep, count} = this.props;
     const row = ox && cnstr && ox.constructions.find({cnstr});
     const classes = row ? {root: furnClr(row.furn)} : {};
     return this.scheme ?
@@ -114,7 +114,7 @@ class Nom extends React.Component {
           hideHeader
           registerRep={registerRep}
           cnstr={cnstr}
-          minHeight={430}
+          minHeight={count === 1 ? 680 : 440}
         />
       ]
       :

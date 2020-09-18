@@ -68,7 +68,7 @@ class Furn1 extends WorkPlace {
         <Builder registerChild={this.registerEditor}/>
       </Grid>
       {!full_picture && <Grid item sm={12} md={4} xl={3} className={classes.props}>
-        {has_ox && <Nom {...this.state} registerRep={this.registerRep} complete_list_sorting={[11,20]}/>}
+        {has_ox && <Nom {...this.state} count={1} registerRep={this.registerRep} complete_list_sorting={[11,20]}/>}
       </Grid>}
       <Grid item sm={12} md={4} xl={3} className={classes.props}>
         <Props ox={ox} cnstr={0} show_spec={false} changeFull={this.changeFull}/>

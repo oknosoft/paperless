@@ -24,15 +24,15 @@ class Noms extends React.Component {
 
   render() {
     const {ox, cnstr, classes} = this.props;
+    const constructions = ox.constructions._obj.filter(({parent}) => parent === cnstr);
     return <div className={classes.workheight}>
-      {ox.constructions._obj
-        .filter(({parent}) => parent === cnstr)
-        .map((row) => (
+      {constructions.map((row) => (
           <Nom
             key={`nom-${row.cnstr}`}
             ox={ox} cnstr={row.cnstr}
             registerRep={this.registerRep}
             complete_list_sorting={[19,30]}
+            count={constructions.length}
           />
         ))}
     </div>;

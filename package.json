@@ -19,7 +19,7 @@
   ],
   "author": "Evgeniy Malyarov <info@oknosoft.ru> (http://www.oknosoft.ru)",
   "license": "SEE LICENSE IN LICENSE.en.md",
-  "proxy": "http://localhost:3016/",
+  "proxy": "https://eco-paperless.oknosoft.ru/",
   "dependencies": {
     "md5-file": "^5.0",
     "metadata-abstract-ui": "2.0.23-beta.3",
