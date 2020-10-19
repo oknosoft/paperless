@@ -1,6 +1,6 @@
 {
   "name": "paperless",
-  "version": "2.1.254",
+  "version": "2.1.255",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
@@ -19,17 +19,17 @@
   ],
   "author": "Evgeniy Malyarov <info@oknosoft.ru> (http://www.oknosoft.ru)",
   "license": "SEE LICENSE IN LICENSE.en.md",
-  "proxy": "https://eco-paperless.oknosoft.ru/",
+  "proxy": "http://localhost:3016/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-abstract-ui": "2.0.23-beta.4",
-    "metadata-core": "2.0.23-beta.4",
-    "metadata-pouchdb": "2.0.23-beta.4",
-    "metadata-react": "2.0.23-beta.4",
-    "metadata-redux": "2.0.23-beta.4",
-    "metadata-superlogin": "2.0.23-beta.4",
+    "metadata-abstract-ui": "2.0.23-beta.5",
+    "metadata-core": "2.0.23-beta.5",
+    "metadata-pouchdb": "2.0.23-beta.5",
+    "metadata-react": "2.0.23-beta.5",
+    "metadata-redux": "2.0.23-beta.5",
+    "metadata-superlogin": "2.0.23-beta.5",
     "paper-jsdom-canvas": "0.12.8",
-    "wb-core": "github:oknosoft/windowbuilder-core#7d36673d2ec9223eede1c938b96fa7c5fb2e0114"
+    "wb-core": "github:oknosoft/windowbuilder-core#b4daef5b99a968895384c3598da655f34e754bea"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
