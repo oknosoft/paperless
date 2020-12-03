@@ -130,6 +130,7 @@ Nom.propTypes = {
   cnstr: PropTypes.number.isRequired,
   complete_list_sorting: PropTypes.array.isRequired,
   registerRep: PropTypes.func.isRequired,
+  count: PropTypes.number,
 };
 
 export default Nom;

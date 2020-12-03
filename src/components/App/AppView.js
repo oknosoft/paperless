@@ -32,12 +32,9 @@ import Arc from '../Arc';                     // арки, трапеции
 
 
 import {withIfaceAndMeta} from 'metadata-redux';
-import withStyles from './styles';
 import {compose} from 'redux';
-
-
+import withStyles from './styles';
 import items, {item_props} from './menu';
-import {control} from '../Barcode/connect';
 
 const mainTitle = 'Безбумажка';
 

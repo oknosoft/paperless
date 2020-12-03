@@ -93,5 +93,5 @@ export default function ($p) {
         dr.redraw();
       }
     }
-  }
+  };
 }

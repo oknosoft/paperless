@@ -6,16 +6,13 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import {Helmet} from 'react-helmet';
 import cn from 'classnames';
-
-import {WorkPlace} from '../App/WorkPlace';
 import {description} from '../App/menu';
-import {control} from '../Barcode/connect';
 
 import withStyles from './styles';
 
-const ltitle = 'Заказ дилера';
+const ltitle = 'Заказ дилера: безбумажка';
 
-function PageHome({classes, title}) {
+function PageHome({classes}) {
   return (
     <div className={classes.root}>
       <Helmet title={ltitle}>
@@ -36,7 +33,6 @@ function PageHome({classes, title}) {
 
 PageHome.propTypes = {
   classes: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
   handleNavigate: PropTypes.func.isRequired,
   handleIfaceState: PropTypes.func.isRequired,
 };
