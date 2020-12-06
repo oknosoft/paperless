@@ -55,6 +55,7 @@ class Locks extends React.Component {
       .then(() => {
         const {characteristic: {specification, coordinates, constructions}} = production.get(0);
         const {Штапик} = $p.enm.elm_types;
+
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр
           if(!row.elm || !row.len || row.nom.elm_type !== Штапик) {
@@ -116,23 +117,33 @@ class Locks extends React.Component {
   };
 
   render() {
-    const {registerRep} = this.props;
-    return this.scheme ?
-      <FrmReport
-        key="report"
-        _tabular="specification"
-        _acl="r"
-        _mgr={this.rep._manager}
-        _obj={this.rep}
-        _meta={this._meta}
-        scheme={this.scheme}
-        read_only
-        ignoreTitle
-        hideToolbar
-        registerRep={registerRep}
-        handleColumns={this.handleColumns}
-        minHeight={600}
-      />
+    const {props: {registerRep}, scheme, rep} = this;
+    const {characteristic: {coordinates}} = rep.production.get(0);
+    const false_binding = coordinates.find({elm_type: $p.enm.elm_types.Раскладка});
+    return scheme ?
+      [
+        false_binding && <Typography
+          key="false_binding"
+          color="error"
+          variant="h6"
+          component="h2"
+        >{false_binding.nom.name}</Typography>,
+        <FrmReport
+          key="report"
+          _tabular="specification"
+          _acl="r"
+          _mgr={rep._manager}
+          _obj={rep}
+          _meta={this._meta}
+          scheme={scheme}
+          read_only
+          ignoreTitle
+          hideToolbar
+          registerRep={registerRep}
+          handleColumns={this.handleColumns}
+          minHeight={600}
+        />
+      ]
       :
       <Typography key="err-nom" color="error">
         {`Не найден элемент scheme_settings {obj: "rep.materials_demand.specification", name: "materials_demand.specification.locks1"}`}

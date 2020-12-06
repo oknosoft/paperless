@@ -19,7 +19,8 @@
   ],
   "author": "Evgeniy Malyarov <info@oknosoft.ru> (http://www.oknosoft.ru)",
   "license": "SEE LICENSE IN LICENSE.en.md",
-  "proxy": "http://localhost:3016/",
+  "proxy1": "http://localhost:3016/",
+  "proxy": "https://paperless.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
     "metadata-abstract-ui": "2.0.23-beta.7",
@@ -29,7 +30,7 @@
     "metadata-redux": "2.0.23-beta.7",
     "metadata-superlogin": "2.0.23-beta.7",
     "paper-jsdom-canvas": "0.12.8",
-    "wb-core": "github:oknosoft/windowbuilder-core#1f674373b76df6c54e6258e568e4473870439f03",
+    "wb-core": "github:oknosoft/windowbuilder-core#f6dee0f88c32141d95cb59ef5cb87a63bbc506b9",
     "wb-forms": "github:oknosoft/windowbuilder-forms#9d72b7109f016f410010bac01619cfb278db0c99"
   },
   "devDependencies": {
