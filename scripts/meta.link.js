@@ -16,6 +16,11 @@ const repos = [
     remote: 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\windowbuilder-core',
     dir: 'dist',
   },
+  {
+    local: 'wb-forms',
+    remote: 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\windowbuilder-forms',
+    dir: 'dist',
+  },
 ];
 
 for(const local of Object.keys(dependencies).filter(v => /^metadata-/.test(v))) {
