@@ -100,7 +100,7 @@ module.exports = function scan($p, log) {
 
   function raw({query, res}) {
     const startkey = query.moment ? query.moment.substr(0, 8) : moment().format('YYYYMMDD');
-    return pouch.remote.events.allDocs('history', {
+    return pouch.remote.events.query('history', {
       startkey,
       endkey: `${startkey}\ufff0`,
       include_docs: true,
