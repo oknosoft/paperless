@@ -9,8 +9,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import Details from './ScanDetails';
+//import Details from './ScanDetails';
 import withStyles from '@material-ui/core/styles/withStyles';
+
 
 const styles = theme => ({
   root: {
@@ -65,7 +66,8 @@ class Totals extends React.Component {
   };
 
   openRep = () => {
-    this.setState({open: true});
+    //this.setState({open: true});
+    $p.ui.dialogs.alert({title: 'Recharts', text: 'Временно отключено'});
   };
 
   closeRep = () => {
@@ -81,7 +83,7 @@ class Totals extends React.Component {
         className={classes.root}
         onClick={this.openRep}
         title="Сканирований за день (всего/уникальных)">{value}</Typography>,
-      open && <Details key="details" queryClose={this.closeRep}/>,
+      // open && <Details key="details" queryClose={this.closeRep}/>,
     ];
   }
 }
