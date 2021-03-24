@@ -12,7 +12,6 @@ import Confirm from 'metadata-react/App/Confirm';   // диалог вопрос
 import Login, {FrmLogin} from 'metadata-react/FrmLogin/Proxy';  // логин и свойства подключения
 import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
 import AppDrawer from 'metadata-react/App/AppDrawer';
-import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
 import Barcode from '../Barcode';
 import ScanTotals from '../ScanStat/ScanTotals';
@@ -111,7 +110,7 @@ class AppView extends Component {
 
   render() {
     const {props, state} = this;
-    const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user,
+    const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, user,
       couch_direct, offline, meta_loaded, barcode, page, idle} = props;
 
     const isHome = location.pathname === '/';
@@ -191,15 +190,6 @@ class AppView extends Component {
             <Barcode className={classes.barcode} barcode={barcode} handleNavigate={handleNavigate} />
             <div className={classes.title} />
             {user.logged_in && <ScanTotals />}
-            <HeaderButtons
-              sync_started={sync_started}
-              fetch={fetch}
-              offline={offline}
-              user={user}
-              handleNavigate={handleNavigate}
-              compact
-              barColor="default"
-            />
           </Toolbar>
         </AppBar>
         <AppDrawer
@@ -241,7 +231,6 @@ class AppView extends Component {
 
 AppView.propTypes = {
   handleNavigate: PropTypes.func.isRequired,
-  handleLogin: PropTypes.func.isRequired,
   handleIfaceState: PropTypes.func.isRequired,
   first_run: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
@@ -249,9 +238,7 @@ AppView.propTypes = {
   title: PropTypes.string.isRequired,
   idle: PropTypes.bool,
   offline: PropTypes.bool,
-  fetch: PropTypes.bool,
   couch_direct: PropTypes.bool,
-  sync_started: PropTypes.bool,
   doc_ram_loaded: PropTypes.bool,
   meta_loaded: PropTypes.bool,
   complete_loaded: PropTypes.bool,

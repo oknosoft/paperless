@@ -112,19 +112,21 @@ export function decrypt(barcode, doc = {}) {
     }
     else {
       // ищем barcode в _local/bar
-      const {adapters: {pouch}, current_user, utils} = characteristics._owner.$p;
-      const {pouch_db: db} = characteristics;
+      const {adapters: {pouch}, current_user, utils, wsql} = characteristics._owner.$p;
+      const work_center = wsql.get_user_param('work_center');
+      const person = wsql.get_user_param('individual_person');
+
       const opts = {
         method: 'post',
-        credentials: 'include',
-        headers: Object.assign({'Content-Type': 'application/json'}, db.getBasicAuthHeaders({prefix: pouch.auth_prefix(), ...db.__opts.auth})),
         body: JSON.stringify({
           _id: `${moment().format('YYYYMMDDHHmmssSSS')}|${barcode}`,
           user: current_user ? current_user.ref : utils.blank.guid,
           place: location.pathname.substr(1).split('/')[0],
-        })
+          work_center: work_center || utils.blank.guid,
+          person: person || utils.blank.guid,
+        }),
       };
-      return fetch(`/adm/api/scan`, opts)
+      return pouch.fetch(`/adm/api/scan`, opts)
         .then((res) => res.json())
         .then((doc) => {
           if(doc.error) {
@@ -151,7 +153,7 @@ export function decrypt(barcode, doc = {}) {
  */
 export function control(barcode) {
   const auth = barcode.split('@');
-  const {current_user, ui: {dialogs}, adapters: {pouch}} = $p;
+  const {current_user, ui: {dialogs}, adapters: {pouch}, cat: {work_centers, individuals}, wsql} = $p;
   if(auth.length === 2 && ['ldap', 'couchdb'].includes(auth[1])) {
     if(current_user) {
       dialogs.snack({message: `Для повторной авторизации завершите сеанс текущего пользователя`, timeout});
@@ -194,6 +196,20 @@ export function control(barcode) {
   }
   if(barcode.length < 3) {
     return dialogs.snack({message: `Подозрительно короткий штрихкод '${barcode}'`, timeout});
+  }
+  if(barcode.startsWith('fl-')) {
+    const fl = individuals.find_rows({id: {like: barcode.substr(3)}})[0];
+    if(!fl || fl.empty()) {
+      return dialogs.snack({message: `Не найдено физлицо по коду '${barcode}'`, timeout});
+    }
+    return wsql.set_user_param('individual_person', fl.ref);
+  }
+  if(barcode.startsWith('wc-')) {
+    const wc = work_centers.find_rows({id: {like: barcode.substr(3)}})[0];
+    if(!wc || wc.empty()) {
+      return dialogs.snack({message: `Не найден рабочий центр по коду '${barcode}'`, timeout});
+    }
+    return wsql.set_user_param('work_center', wc.ref);
   }
   const {pathname} = location;
   if(wpaths.some((path) => pathname.includes(path))) {

@@ -13,10 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 
-const styles = theme => ({
+const styles = ({spacing}) => ({
   root: {
-    marginRight: theme.spacing(),
     cursor: 'pointer',
+    marginRight: spacing(),
+  },
+  space: {
+    marginRight: spacing(),
   }
 });
 
@@ -46,17 +49,15 @@ class Totals extends React.Component {
   };
 
   refresh = () => {
-    const {adapters: {pouch}, current_user} = $p;
+    const {adapters: {pouch}, current_user, wsql} = $p;
+    let person = wsql.get_user_param('individual_person');
     if(!current_user) {
       return;
     }
-    const {doc: db} = pouch.remote;
-    const opts = {
-      method: 'get',
-      credentials: 'include',
-      headers: Object.assign({'Content-Type': 'application/json'}, db.getBasicAuthHeaders({prefix: pouch.auth_prefix(), ...db.__opts.auth})),
-    };
-    return fetch(`/adm/api/scan?user=${current_user.ref}&place=${location.pathname.substr(1).split('/')[0]}&totals_only=true`, opts)
+    if(!person) {
+      person = current_user.ref;
+    }
+    return pouch.fetch(`/adm/api/scan?user=${person}&place=${location.pathname.substr(1).split('/')[0]}&totals_only=true`)
       .then((res) => res.json())
       .then(({d, l, error}) => {
         if(!error && this._mounted) {
@@ -76,10 +77,25 @@ class Totals extends React.Component {
 
   render() {
     const {state: {value, open}, props: {classes}} = this;
+    const {cat: {work_centers, individuals}, wsql} = $p;
+    const wc = work_centers.get(wsql.get_user_param('work_center'));
+    const ip = individuals.get(wsql.get_user_param('individual_person'));
     return [
       <Typography
+        key="wc"
+        className={classes.space}
+        title={`Рабочий центр: '${wc.empty() ? 'не задан' : wc.name}'`}>
+        {wc.empty() ? '- ' : `${wc.name.substr(0, 12)} `}
+      </Typography>,
+      <Typography
+        key="ip"
+        className={classes.space}
+        title={`Сотрудник: '${ip.empty() ? 'не задан' : ip.name}'`}>
+        {ip.empty() ? '- ' : `${ip.name.substr(0, 20)} `}
+      </Typography>,
+      <Typography
         key="text"
-        variant="h5"
+        variant="h6"
         className={classes.root}
         onClick={this.openRep}
         title="Сканирований за день (всего/уникальных)">{value}</Typography>,

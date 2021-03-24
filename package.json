@@ -30,8 +30,8 @@
     "metadata-redux": "2.0.24-beta.3",
     "metadata-superlogin": "2.0.24-beta.3",
     "paper-jsdom-canvas": "0.12.8",
-    "wb-core": "github:oknosoft/windowbuilder-core#276500d2b24468629d197c935670e960bf5da65c",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#0f2e3a4705e69226d17c134a76009b0636af5eb5"
+    "wb-core": "github:oknosoft/windowbuilder-core#b49651a6c6533006594f51c35e50b40799a3b830",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#0d120e797ed648e2963099b162978f8db0d9513e"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
