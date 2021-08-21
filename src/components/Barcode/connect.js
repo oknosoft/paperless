@@ -72,6 +72,11 @@ const timeout = 4000;
 
 const wpaths = 'imposts,furn1,furn2,glass,welding,falsebinding,facing,arc'.split(',');
 
+const not_found = {
+  error: true,
+  message: 'not found',
+};
+
 /**
  * Расшифровывает штрихкод
  * @param barcode
@@ -85,14 +90,11 @@ export function decrypt(barcode, doc = {}) {
   return new Promise((resolve, reject) => {
 
     const {utils, cat: {characteristics}} = $p;
-    const not_found = {
-      error: true,
-      message: 'not found',
-    };
 
     if(utils.is_guid(barcode)) {
       // если передали guid
-      characteristics.get(barcode, 'promise')
+      characteristics.get(barcode)
+        .load()
         .then((ox) => {
           if(ox.is_new()) {
             reject(not_found);

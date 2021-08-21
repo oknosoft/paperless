@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'metadata-react/App/Dialog';
 import Diagram from 'metadata-react/Diagrams/Diagram';
 import withStyles from 'metadata-react/Diagrams/styles';
-import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import {item_props} from '../App/menu';
 
 class Details extends React.Component {

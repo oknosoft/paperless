@@ -31,9 +31,10 @@ export class WorkPlace extends React.Component {
 
   changeFull = () => {
     const {cnstr, ox, full_picture} = this.state;
-    this.setState({full_picture: !full_picture}, () => {
-      this.barcodeFin({cnstr, ox});
-    });
+    (ox.coordinates.count() ? Promise.resolve() : ox.load())
+      .then(() => this.setState({full_picture: !full_picture}, () => {
+        this.barcodeFin({cnstr, ox});
+      }));
   };
 
   onBarcode(barcode) {

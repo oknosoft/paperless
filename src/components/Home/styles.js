@@ -17,10 +17,6 @@ export default withStyles((theme) => {
     content: {
       paddingTop: theme.spacing(3),
       paddingBottom: theme.spacing(3),
-      [theme.breakpoints.up('sm')]: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-      },
     },
     text: {
       paddingLeft: theme.spacing(4),

@@ -67,7 +67,7 @@ class Profiles extends React.Component {
   };
 
   render() {
-    const {ox, scheme, filter} = this;
+    const {props: {ox}, scheme, filter} = this;
     return scheme ?
       <div style={{maxHeight: 600, minHeight: 400}}>
         <TabularSection
