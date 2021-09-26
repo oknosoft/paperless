@@ -193,7 +193,7 @@ export function control(barcode) {
   if(wpaths.includes(barcode)) {
     return dialogs.handleNavigate(`/${barcode}`);
   }
-  if(barcode.length > 20) {
+  if(barcode.length > 20 && barcode.length !== 36) {
     return dialogs.snack({message: `Подозрительно длинный штрихкод '${barcode}'`, timeout});
   }
   if(barcode.length < 3) {

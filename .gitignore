@@ -6,8 +6,6 @@
 # Exclude compiled files
 build/
 /.eslintcache
-/tmp
-coverage
 /scripts/stats.json
 
 
@@ -19,5 +17,5 @@ coverage
 
 # npm files
 node_modules
-package-lock.json
+*.lock
 *.log
