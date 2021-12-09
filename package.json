@@ -23,14 +23,14 @@
   "proxy": "https://paperless.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-abstract-ui": "2.0.26-beta.3",
-    "metadata-core": "2.0.26-beta.3",
-    "metadata-pouchdb": "2.0.26-beta.3",
-    "metadata-react": "2.0.26-beta.3",
-    "metadata-redux": "2.0.26-beta.3",
-    "metadata-superlogin": "2.0.26-beta.3",
-    "wb-core": "github:oknosoft/windowbuilder-core#d2462f206cc897e69c71d21ea44e7f4b7f7c3d75",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#32b577e51f105e2dac56bea9612ac74e51b5879d"
+    "metadata-abstract-ui": "2.0.26-beta.5",
+    "metadata-core": "2.0.26-beta.5",
+    "metadata-pouchdb": "2.0.26-beta.5",
+    "metadata-react": "2.0.26-beta.5",
+    "metadata-redux": "2.0.26-beta.5",
+    "metadata-superlogin": "2.0.26-beta.5",
+    "wb-core": "github:oknosoft/windowbuilder-core#61bcf7d364dc10c7f502fb945f6800d010e20e16",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#d70fa5382d1bc96f8458385706366371c9b49811"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
