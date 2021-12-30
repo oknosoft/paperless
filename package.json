@@ -1,14 +1,14 @@
 {
   "name": "paperless",
-  "version": "2.1.257",
+  "version": "2.1.259",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
     "url": "https://github.com/oknosoft/paperless"
   },
   "engines": {
-    "node": "^12.18",
-    "npm": "^6.14"
+    "node": "^16.13",
+    "yarn": "^1.22"
   },
   "keywords": [
     "metadata",
@@ -23,14 +23,14 @@
   "proxy": "https://paperless.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-abstract-ui": "2.0.26-beta.5",
-    "metadata-core": "2.0.26-beta.5",
-    "metadata-pouchdb": "2.0.26-beta.5",
-    "metadata-react": "2.0.26-beta.5",
-    "metadata-redux": "2.0.26-beta.5",
-    "metadata-superlogin": "2.0.26-beta.5",
-    "wb-core": "github:oknosoft/windowbuilder-core#61bcf7d364dc10c7f502fb945f6800d010e20e16",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#d70fa5382d1bc96f8458385706366371c9b49811"
+    "metadata-abstract-ui": "2.0.27-beta.1",
+    "metadata-core": "2.0.27-beta.1",
+    "metadata-pouchdb": "2.0.27-beta.1",
+    "metadata-react": "2.0.27-beta.1",
+    "metadata-redux": "2.0.27-beta.1",
+    "metadata-superlogin": "2.0.27-beta.1",
+    "wb-core": "github:oknosoft/windowbuilder-core#1c0fe1b9da875d10a0d531ad4bc29be0c9e1d575",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#269be1c5769944515a7c1d2203d9b9082d5caaf5"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
