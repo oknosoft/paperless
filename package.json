@@ -1,14 +1,10 @@
 {
   "name": "paperless",
-  "version": "2.1.256",
+  "version": "2.1.259",
   "description": "Безбумажка для Заказа дилера - сервер",
   "repository": {
     "type": "git",
     "url": "https://github.com/oknosoft/paperless"
-  },
-  "engines": {
-    "node": "^12.18",
-    "npm": "^6.14"
   },
   "keywords": [
     "metadata",
