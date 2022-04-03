@@ -1,7 +1,7 @@
 {
-  "parser": "babel-eslint", // https://github.com/babel/babel-eslint,
+  //"parser": "babel-eslint", // https://github.com/babel/babel-eslint,
   "parserOptions": {
-    "ecmaVersion": 7,
+    "ecmaVersion": 8,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true
@@ -18,7 +18,7 @@
   "settings": {
     "react": {
       "pragma": "React",  // Pragma to use, default to "React"
-      "version": "16.0", // React version, default to the latest React stable release
+      "version": "17.0", // React version, default to the latest React stable release
     },
   },
   "globals": {
@@ -36,7 +36,7 @@
   "rules": {
     "strict": [2, "global"],
     "max-len": [1, 160, 2],
-    "no-empty": 1,
+    "no-empty": 0,
     "no-undef": 1,
     "no-unused-vars": 1,
     "semi": [1, "always"],
@@ -45,6 +45,7 @@
     "no-console": 0,
     "no-extra-semi": 1,
     "no-prototype-builtins": 0,
+    "no-setter-return": 0,
     "no-unexpected-multiline": 1,
     "no-useless-escape": 1,
     "no-mixed-spaces-and-tabs": 1,
