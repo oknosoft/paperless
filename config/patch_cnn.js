@@ -27,13 +27,13 @@ function reset_replace(prm) {
  * предопределенные зоны
  */
 export const predefined = {
-  'localhost': {
-    zone: 21,
-    log_level: 'warn',
-    //keys: {google: ''},
-    crazy_ram: false,
-  },
-  'tmk.': {zone: 23, host: 'https://tmk-online.ru/'},
+  // 'localhost': {
+  //   zone: 21,
+  //   log_level: 'warn',
+  //   //keys: {google: ''},
+  //   crazy_ram: false,
+  // },
+  // 'tmk.': {zone: 23, host: 'https://tmk-online.ru/'},
 }
 
 /**

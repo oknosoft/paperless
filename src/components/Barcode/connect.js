@@ -7,6 +7,7 @@
 
 import {connect} from 'react-redux';
 import {dispatchIface} from 'metadata-redux';
+import items from '../App/menu';
 
 const state = {
   timeStamp: 0,
@@ -70,7 +71,13 @@ const state = {
 // для снэка
 const timeout = 4000;
 
-const wpaths = 'imposts,furn1,furn2,glass,welding,falsebinding,facing,arc'.split(',');
+const wpaths = [];
+for(const {id} of items) {
+  if(!id) {
+    break;
+  }
+  wpaths.push(id);
+}
 
 const not_found = {
   error: true,

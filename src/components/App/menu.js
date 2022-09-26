@@ -70,6 +70,14 @@ const items = [
     need_user: true,
   },
   {
+    text: 'Сухари',
+    title: 'Установка сухарей',
+    id: 'crackers',
+    navigate: '/crackers',
+    need_meta: true,
+    need_user: true,
+  },
+  {
     divider: true,
   },
   {
