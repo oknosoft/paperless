@@ -43,13 +43,36 @@ export class WorkPlace extends React.Component {
       .then((bar) => (
         bar && this.barcodeFin(bar)
       ))
-      .catch(({message}) => {
-        $p.record_log(message);
+      .catch((err) => {
+        const {message} = err;
         const {ox} = this.state;
         if(ox && ox.unload) {
           ox.unload();
         }
-        this.editor.project.clear();
+        const {project, PointText} = this.editor;
+        project.clear();
+        project.l_connective.visible = true;
+        new PointText({
+          parent: project.l_connective,
+          name: 'text',
+          justification: 'left',
+          fillColor: 'black',
+          content: `Ошибка штрихкода '${barcode}'`,
+          fontSize: 120,
+          point: [-300, 80],
+        });
+        if(message) {
+          new PointText({
+            parent: project.l_connective,
+            name: 'text',
+            justification: 'left',
+            fillColor: 'black',
+            content: message,
+            fontSize: 70,
+            point: [-300, 200],
+          });
+        }
+        project.zoom_fit();
         this.setState({ox: {}});
       });
   }

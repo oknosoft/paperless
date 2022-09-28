@@ -71,8 +71,8 @@ export default function ($p) {
 
   };
 
-  const {Filling, DimensionRadius} = EditorInvisible;
-  Filling.prototype.draw_arcr = function () {
+  const {Filling, DimensionRadius, ProfileItem} = EditorInvisible;
+  Filling.prototype.draw_arcr = function draw_arcr () {
     const {profiles, l_dimensions, elm} = this;
     for(const {sub_path} of profiles) {
       if(sub_path.length > 50 && !sub_path.is_linear()) {
@@ -93,5 +93,11 @@ export default function ($p) {
         dr.redraw();
       }
     }
+  };
+
+  ProfileItem.prototype.crackers_dimensions = function crackers_dimensions() {
+    const {l_dimensions} = this.layer;
+    l_dimensions.visible = true;
+    l_dimensions.draw_by_imposts();
   };
 }

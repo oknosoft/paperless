@@ -9,40 +9,42 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Crackers extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project}} = this;
-    const {cnstr, ox} = bar;
+    const {state: {full_picture}, editor: {project, PointText, Contour}} = this;
+    const {elm, ox} = bar;
     project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
       .then(() => {
         if(full_picture) {
           return;
         }
 
-        const contour = project.getItem({cnstr});
-        if(contour) {
+        const profile = project.getItem({elm});
+        if(profile) {
 
           // рисуем текущий слой
-          project.draw_fragment({elm: -cnstr});
-
-          // прячем заполнения
-          contour.glasses(true);
+          project.draw_fragment({elm});
 
           // рисуем спецразмеры импостов
-          contour.l_dimensions.draw_by_imposts();
-
-          // подкрашиваем штульпы
-          this.editor.color_shtulps(contour);
+          profile.crackers_dimensions();
 
           // показываем номера элементов на палках
-          for(const profile of contour.profiles) {
-            if(profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
-              profile.show_number();
-            }
-          }
-
-          // вписываем в размер экрана
-          project.zoom_fit();
-          this.setState(bar);
+          profile.show_number();
         }
+        else {
+          project.clear();
+          project.l_connective.visible = true;
+          new PointText({
+            parent: project.l_connective,
+            name: 'text',
+            justification: 'left',
+            fillColor: 'black',
+            content: elm ? `Не найден профиль №${elm}` : 'Не указан профиль в штрихкоде',
+            fontSize: 120,
+            point: [-300, 80],
+          });
+        }
+        // вписываем в размер экрана
+        project.zoom_fit();
+        this.setState(bar);
       });
   }
 

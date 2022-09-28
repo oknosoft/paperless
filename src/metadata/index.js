@@ -21,7 +21,9 @@ import {metaActions, metaMiddleware, dispatchIface} from 'metadata-redux';
 import {customPouchMiddleware} from './reducers/pouchdb';
 
 // читаем скрипт инициализации метаданных, полученный в результате выполнения meta:prebuild
-import meta_init from 'wb-core/dist/init';
+import init_meta from 'wb-core/dist/init_meta';
+import init_sql from 'wb-core/dist/init_sql';
+import init_classes from 'wb-core/dist/init';
 import modifiers from './modifiers';
 import {load_ram, load_common} from './common/load_ram';
 import {lazy} from '../components/App/DataRoute';
@@ -41,7 +43,9 @@ $p.wsql.init(patch_prm(settings));
 patch_cnn();
 
 // со скрипом инициализации метаданных, так же - не затягиваем
-meta_init($p);
+init_meta($p);
+init_sql($p);
+init_classes($p);
 
 // запускаем проверку единственности экземпляра
 $p.utils.single_instance_checker.init();

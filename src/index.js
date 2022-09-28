@@ -3,7 +3,7 @@ import './styles/global.css';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {render} from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import {Provider} from 'react-redux';
 
 // метод инициализации хранилища состояния приложения
@@ -61,4 +61,5 @@ RootProvider.childContextTypes = {
   store: PropTypes.object,
 };
 
-render(<RootProvider/>, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<RootProvider/>);
