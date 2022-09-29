@@ -96,8 +96,27 @@ export default function ($p) {
   };
 
   ProfileItem.prototype.crackers_dimensions = function crackers_dimensions() {
-    const {l_dimensions} = this.layer;
-    l_dimensions.visible = true;
-    l_dimensions.draw_by_imposts();
+    const {layer: {l_dimensions, l_visualization}, rays, width}  = this;
+    const {b, e} = rays;
+    const {inner, outer} = this.joined_imposts();
+    const profiles = [b, ...inner, ...outer, e];
+    for(const {profile, point} of profiles) {
+      // определим сторону
+      const side = this.cnn_side(profile, null, rays);
+      const ray = side.is('inner') ? rays.inner : rays.outer;
+      const ipoint = ray.intersect_point(profile.generatrix, point, width);
+      if(ipoint) {
+        const offset = ray.getOffsetOf(ipoint);
+        const normal = ray.getNormalAt(offset).multiply(width * .8);
+        const segments = [ipoint, ipoint.add(normal.rotate(30)), ipoint.add(normal.rotate(-30))];
+        new paper.Path({
+          segments,
+          closed: true,
+          strokeColor: 'black',
+          strokeScaling: false,
+        });
+
+      }
+    }
   };
 }
