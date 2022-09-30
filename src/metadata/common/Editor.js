@@ -96,26 +96,73 @@ export default function ($p) {
   };
 
   ProfileItem.prototype.crackers_dimensions = function crackers_dimensions() {
-    const {layer: {l_dimensions, l_visualization}, rays, width}  = this;
+    const {
+      layer: {l_dimensions, l_visualization},
+      project: {_scope: {consts}},
+      rays, width, length, generatrix}  = this;
     const {b, e} = rays;
     const {inner, outer} = this.joined_imposts();
     const profiles = [b, ...inner, ...outer, e];
+    let other = b.find_other();
+    if(other) {
+      profiles.push({profile: other.profile, point: other.profile[other.node]});
+    }
+    other = e.find_other();
+    if(other) {
+      profiles.push({profile: other.profile, point: other.profile[other.node]});
+    }
+
+    const fontSize = consts.font_size * 1.2;
+    const text = new paper.PointText({
+      layer: l_visualization,
+      guide: true,
+      justification: 'center',
+      fillColor: 'black',
+      fontFamily: consts.font_family,
+      fontSize,
+      content: `l=${length.toFixed()}`,
+      position: e.point,
+    });
+    const tangent = generatrix.getTangentAt(generatrix.getOffsetOf(e.point));
+    const hor = Math.abs(tangent.x) > Math.abs(tangent.y);
+    text.translate(tangent.normalize(hor ? text.bounds.width * 0.7 : text.bounds.height));
+
     for(const {profile, point} of profiles) {
       // определим сторону
       const side = this.cnn_side(profile, null, rays);
-      const ray = side.is('inner') ? rays.inner : rays.outer;
+      const isInner = side.is('inner');
+      const ray = isInner ? rays.inner : rays.outer;
       const ipoint = ray.intersect_point(profile.generatrix, point, width);
       if(ipoint) {
         const offset = ray.getOffsetOf(ipoint);
         const normal = ray.getNormalAt(offset).multiply(width * .8);
         const segments = [ipoint, ipoint.add(normal.rotate(30)), ipoint.add(normal.rotate(-30))];
+        const base = ray.getNearestPoint(this.corns(1));
+        const fin = ray.getNearestPoint(this.corns(2));
+        const delta = isInner ? ray.getOffsetOf(base) - offset : offset - ray.getOffsetOf(base);
+        const d2 = isInner ? offset - ray.getOffsetOf(fin) : ray.getOffsetOf(fin) - offset;
+        if(delta < 1 || d2 < 1) {
+          continue;
+        }
         new paper.Path({
+          layer: l_visualization,
+          guide: true,
           segments,
           closed: true,
           strokeColor: 'black',
           strokeScaling: false,
         });
-
+        const text = new paper.PointText({
+          layer: l_visualization,
+          guide: true,
+          justification: 'center',
+          fillColor: 'black',
+          fontFamily: consts.font_family,
+          fontSize,
+          content: `${delta.toFixed()} (${(length - delta).toFixed()})`,
+          position: ipoint.add(normal),
+        });
+        text.translate(normal.normalize(20 + text.bounds.width / 2));
       }
     }
   };
