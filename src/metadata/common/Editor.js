@@ -14,7 +14,7 @@ export default function ($p) {
   // формируем в $p конструктор стандартной рисовалки
   drawer({$p, paper});
 
-  const {EditorInvisible} = $p;
+  const {EditorInvisible, cch} = $p;
 
   $p.Editor = class Editor extends EditorInvisible {
 
@@ -112,7 +112,7 @@ export default function ($p) {
       profiles.push({profile: other.profile, point: other.profile[other.node]});
     }
 
-    const fontSize = consts.font_size * 1.2;
+    const fontSize = consts.font_size * 1.1;
     const text = new paper.PointText({
       layer: l_visualization,
       guide: true,
@@ -144,6 +144,12 @@ export default function ($p) {
         if(delta < 1 || d2 < 1) {
           continue;
         }
+        const param = cch.properties.predefined('rigel_cnn');
+        const ptext = param?.extract_pvalue?.({
+          ox: profile.ox,
+          elm: profile,
+          prm_row: {}
+        });
         new paper.Path({
           layer: l_visualization,
           guide: true,
@@ -159,7 +165,7 @@ export default function ($p) {
           fillColor: 'black',
           fontFamily: consts.font_family,
           fontSize,
-          content: `${delta.toFixed()} (${(length - delta).toFixed()})`,
+          content: `${delta.toFixed()} (${ptext && !ptext.empty() ? ptext.toString() : '?'}) ${(length - delta).toFixed()}`,
           position: ipoint.add(normal),
         });
         text.translate(normal.normalize(20 + text.bounds.width / 2));

@@ -27,12 +27,9 @@ function reset_replace(prm) {
  * предопределенные зоны
  */
 export const predefined = {
-  // 'localhost': {
-  //   zone: 21,
-  //   log_level: 'warn',
-  //   //keys: {google: ''},
-  //   crazy_ram: false,
-  // },
+  ':1110': {
+    zone: 10,
+  },
   // 'tmk.': {zone: 23, host: 'https://tmk-online.ru/'},
 }
 
