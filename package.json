@@ -29,7 +29,7 @@
     "metadata-redux": "2.0.30-beta.11",
     "metadata-superlogin": "2.0.30-beta.11",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#9e9f36a470abd54eb1091c6094355b09cf98354d",
+    "wb-core": "github:oknosoft/windowbuilder-core#1a4d0f1e90f3b1d402fe72b1f56461ff0e82ab3b",
     "wb-forms": "github:oknosoft/windowbuilder-forms#1e7330ec99adb5a754811ab8aedcf080dcbcd27f"
   },
   "devDependencies": {

@@ -112,7 +112,7 @@ export default function ($p) {
       profiles.push({profile: other.profile, point: other.profile[other.node]});
     }
 
-    const fontSize = consts.font_size * 1.1;
+    const fontSize = consts.font_size * length / 1200;
     const text = new paper.PointText({
       layer: l_visualization,
       guide: true,
@@ -125,7 +125,7 @@ export default function ($p) {
     });
     const tangent = generatrix.getTangentAt(generatrix.getOffsetOf(e.point));
     const hor = Math.abs(tangent.x) > Math.abs(tangent.y);
-    text.translate(tangent.normalize(hor ? text.bounds.width * 0.7 : text.bounds.height));
+    text.translate(tangent.normalize(hor ? text.bounds.width : text.bounds.height * 2));
 
     for(const {profile, point} of profiles) {
       // определим сторону
@@ -150,7 +150,7 @@ export default function ($p) {
           elm: profile,
           prm_row: {}
         });
-        new paper.Path({
+        const mark = new paper.Path({
           layer: l_visualization,
           guide: true,
           segments,
@@ -158,6 +158,12 @@ export default function ($p) {
           strokeColor: 'black',
           strokeScaling: false,
         });
+        if(ptext.css) {
+          try {
+            Object.assign(mark, JSON.parse(ptext.css));
+          }
+          catch (e) {}
+        }
         const text = new paper.PointText({
           layer: l_visualization,
           guide: true,
@@ -165,10 +171,21 @@ export default function ($p) {
           fillColor: 'black',
           fontFamily: consts.font_family,
           fontSize,
-          content: `${delta.toFixed()} (${ptext && !ptext.empty() ? ptext.toString() : '?'}) ${(length - delta).toFixed()}`,
+          content: `${delta.toFixed()} (${ptext && !ptext.empty() ? ptext.toString() : '?'})`, // ${(length - delta).toFixed()}
           position: ipoint.add(normal),
         });
         text.translate(normal.normalize(20 + text.bounds.width / 2));
+        const text2 = new paper.PointText({
+          layer: l_visualization,
+          guide: true,
+          justification: 'center',
+          fillColor: '#007',
+          fontFamily: consts.font_family,
+          fontSize: fontSize * 0.8,
+          content: profile.nom.article,
+        });
+        text2.translate(text.bounds.bottomLeft.subtract(text2.bounds.topLeft));
+
       }
     }
   };

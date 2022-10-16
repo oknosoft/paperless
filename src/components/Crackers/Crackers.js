@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import {withIface} from 'metadata-redux';
 import Builder from '../Builder';
 import Props from '../Props/Main';
+import Specification from './Specification';
 import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
 class Crackers extends WorkPlace {
@@ -57,6 +58,7 @@ class Crackers extends WorkPlace {
       </Grid>
       <Grid item sm={12} md={full_picture ? 3 : 4} className={classes.props}>
         <Props {...this.state} show_spec={false} changeFull={this.changeFull}/>
+        {ox && ox.empty && !ox.empty() ? <Specification {...this.state}/> : null}
       </Grid>
     </WorkPlaceFrame>;
   }
