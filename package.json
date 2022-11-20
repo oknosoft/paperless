@@ -25,12 +25,12 @@
   "proxy": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.30-beta.11",
-    "metadata-redux": "2.0.30-beta.11",
-    "metadata-superlogin": "2.0.30-beta.11",
+    "metadata-react": "2.0.30-beta.13",
+    "metadata-redux": "2.0.30-beta.13",
+    "metadata-superlogin": "2.0.30-beta.13",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#1a4d0f1e90f3b1d402fe72b1f56461ff0e82ab3b",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#1e7330ec99adb5a754811ab8aedcf080dcbcd27f"
+    "wb-core": "github:oknosoft/windowbuilder-core#960d5e2ed3cd18f17d51479dafb7f9cac7cd82cd",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#be88b738db081b5e0e8263e319faffd8258d033c"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
