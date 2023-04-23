@@ -21,16 +21,15 @@
   "author": "Evgeniy Malyarov <info@oknosoft.ru> (http://www.oknosoft.ru)",
   "license": "SEE LICENSE IN LICENSE",
   "proxy1": "http://localhost:3016/",
-  "proxy2": "https://paperless.ecookna.ru/",
-  "proxy": "https://develop.ecookna.ru/",
+  "proxy": "https://paperless.ecookna.ru/",
+  "proxy3": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.30-beta.13",
-    "metadata-redux": "2.0.30-beta.13",
-    "metadata-superlogin": "2.0.30-beta.13",
+    "metadata-react": "2.0.33-beta.2",
+    "metadata-redux": "2.0.33-beta.2",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#960d5e2ed3cd18f17d51479dafb7f9cac7cd82cd",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#be88b738db081b5e0e8263e319faffd8258d033c"
+    "wb-core": "github:oknosoft/windowbuilder-core#f99bfb5e1838312e990de859c6677fd9460ad5ac",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#c6a6ffe4e5aabd824562199c5ba6b66d7cbb3fe9"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
