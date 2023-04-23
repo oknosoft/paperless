@@ -135,7 +135,7 @@ export default function ($p) {
       const ipoint = ray.intersect_point(profile.generatrix, point, width);
       if(ipoint) {
         const offset = ray.getOffsetOf(ipoint);
-        const normal = ray.getNormalAt(offset).multiply(width * .8);
+        const normal = ray.getNormalAt(offset).multiply(width * .8 * length / 1200);
         const segments = [ipoint, ipoint.add(normal.rotate(30)), ipoint.add(normal.rotate(-30))];
         const base = ray.getNearestPoint(this.corns(1));
         const fin = ray.getNearestPoint(this.corns(2));
@@ -158,21 +158,25 @@ export default function ($p) {
           strokeColor: 'black',
           strokeScaling: false,
         });
-        if(ptext.css) {
+        if(ptext?.css) {
           try {
             Object.assign(mark, JSON.parse(ptext.css));
           }
           catch (e) {}
+        }
+        let content = delta.toFixed();
+        if(ptext && !ptext.empty()) {
+          content += ` (${ptext.toString()})`;
         }
         const text = new paper.PointText({
           layer: l_visualization,
           guide: true,
           justification: 'center',
           fillColor: 'black',
+          position: ipoint.add(normal),
           fontFamily: consts.font_family,
           fontSize,
-          content: `${delta.toFixed()} (${ptext && !ptext.empty() ? ptext.toString() : '?'})`, // ${(length - delta).toFixed()}
-          position: ipoint.add(normal),
+          content,
         });
         text.translate(normal.normalize(20 + text.bounds.width / 2));
         const text2 = new paper.PointText({

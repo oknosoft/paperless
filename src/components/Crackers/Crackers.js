@@ -19,7 +19,7 @@ class Crackers extends WorkPlace {
         }
 
         const profile = project.getItem({elm});
-        if(profile) {
+        if(profile?.crackers_dimensions) {
 
           // рисуем текущий слой
           project.draw_fragment({elm});
@@ -30,6 +30,7 @@ class Crackers extends WorkPlace {
           // показываем номера элементов на палках
           profile.show_number();
           profile.mark_direction();
+
         }
         else {
           project.clear();
