@@ -61,7 +61,11 @@ class Glass extends WorkPlace {
               row.elm = bar.cnstr;
               this.rep
                 .handleSave()
-                .then(() => this.rep._result.expandAll());
+                .then(() => {
+                  this.forceUpdate(() => {
+                    this.rep._result.expandAll();
+                  });
+                });
             });
           });
         }
@@ -80,7 +84,7 @@ class Glass extends WorkPlace {
 
   registerRep = (el) => {
     this.rep = el;
-  }
+  };
 
   render() {
     const {state: {ox, cnstr, full_picture}, props: {classes}, editor} = this;
