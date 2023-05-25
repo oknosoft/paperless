@@ -1,13 +1,13 @@
 {
   "name": "paperless",
-  "version": "2.1.259",
+  "version": "2.1.260",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
     "url": "https://github.com/oknosoft/paperless"
   },
   "engines": {
-    "node": "^16.13",
+    "node": ">=16.13",
     "yarn": "^1.22"
   },
   "keywords": [
@@ -25,11 +25,11 @@
   "proxy3": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.33-beta.2",
-    "metadata-redux": "2.0.33-beta.2",
+    "metadata-react": "2.0.33-beta.3",
+    "metadata-redux": "2.0.33-beta.3",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#ceeada14e7ef99dc77f2cb311356622b2b84cf5a",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#c6a6ffe4e5aabd824562199c5ba6b66d7cbb3fe9"
+    "wb-core": "github:oknosoft/windowbuilder-core#78299862636e46f6481e9cfd786fdf71df2fff80",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#e1833cae1366289804688f500d28dacb92e38b94"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
