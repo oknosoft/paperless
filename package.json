@@ -28,7 +28,7 @@
     "metadata-react": "2.0.33-beta.3",
     "metadata-redux": "2.0.33-beta.3",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#78299862636e46f6481e9cfd786fdf71df2fff80",
+    "wb-core": "github:oknosoft/windowbuilder-core#ceb3e9e570974e8db587577e19834a48d74a0112",
     "wb-forms": "github:oknosoft/windowbuilder-forms#e1833cae1366289804688f500d28dacb92e38b94"
   },
   "devDependencies": {

@@ -65,7 +65,7 @@ class Details extends React.Component {
       credentials: 'include',
       headers: Object.assign({'Content-Type': 'application/json'}, db.getBasicAuthHeaders({prefix: pouch.auth_prefix(), ...db.__opts.auth})),
     };
-    return fetch(`/adm/api/scan?user=${current_user.ref}&place=${location.pathname.substr(1).split('/')[0]}&totals_only=true&period=month`, opts)
+    return fetch(`/adm/api/scan?user=${current_user.ref}&place=${location.pathname.substring(1).split('/')[0]}&totals_only=true&period=month`, opts)
       .then((res) => res.json())
       .then((res) => {
         if(Array.isArray(res)) {
