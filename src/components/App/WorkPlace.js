@@ -40,9 +40,7 @@ export class WorkPlace extends React.Component {
   onBarcode(barcode) {
     return new Promise((resolve) => this.setState({full_picture: false}, resolve))
       .then(() => this.editor && decrypt(barcode))
-      .then((bar) => (
-        bar && this.barcodeFin(bar)
-      ))
+      .then((bar) => bar && this.barcodeFin(bar))
       .catch((err) => {
         const {message} = err;
         const {ox} = this.state;
@@ -77,7 +75,18 @@ export class WorkPlace extends React.Component {
       });
   }
 
-  barcodeFin() {
+  barcodeFin(bar) {
+    const {ox} = bar;
+    return (ox.is_new() ? ox.load() : Promise.resolve())
+      .then(() => ox.calc_order.is_new() ? ox.calc_order.load() : null)
+      .then(() => {
+        if(ox.base_block.empty() || !ox.base_block.is_new()) {
+          return null;
+        }
+        ox.base_block.obj_delivery_state = 'Шаблон';
+        return ox.base_block.load();
+      })
+      .then(() => bar);
   }
 
   shouldComponentUpdate({handleIfaceState, title}) {

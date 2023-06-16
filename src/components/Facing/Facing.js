@@ -12,8 +12,9 @@ class Facing extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, consts, PointText, constructor: {Filling, BuilderElement}}} = this;
-    const {cnstr, elm, ox} = bar;
-    project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
+
+    return super.barcodeFin(bar)
+      .then(({cnstr, elm, ox}) => project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
       .then(() => {
         if(full_picture) {
           for(const contour of project.contours) {
@@ -62,7 +63,7 @@ class Facing extends WorkPlace {
           project.zoom_fit();
           this.setState(bar);
         }
-      });
+      }));
   }
 
   fillingClick(filling) {

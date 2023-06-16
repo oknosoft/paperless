@@ -7,81 +7,89 @@ import Props from '../Props/Main';
 import Profiles from './Profiles';
 import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
+/*
+return super.barcodeFin(bar)
+      .then(({cnstr, elm, ox}) => {});
+*/
 class Arc extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor} = this;
     const {project, constructor: {DimensionRadius, Filling}} = editor;
-    const {cnstr, elm, ox} = bar;
-    ox.coordinates.clear({elm_type: ''});
 
-    project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
-      .then(() => {
-        if(full_picture) {
-          return;
-        }
-
-        const contour = project.getItem({cnstr});
-        if(contour) {
-
-          // для заполнений отдельная ветка
-          const item = elm && editor.elm(elm);
-          if(item instanceof Filling) {
-            project._attr._builder_props.auto_lines = true;
-            project.draw_fragment({elm});
-            item.draw_arcr();
-          }
-          else {
-            // рисуем текущий слой
-            project.draw_fragment({elm: -cnstr});
-
-            // прячем заполнения
-            contour.glasses(true);
-
-            // рисуем спецразмеры импостов
-            contour.l_dimensions.draw_by_imposts();
-
-            // подкрашиваем штульпы
-            editor.color_shtulps(contour);
-            const {_by_spec, _opening} = contour.l_visualization;
-            _by_spec.opacity = 0.4;
-            if(_opening) {
-              _opening.opacity = 0.4;
+    return super.barcodeFin(bar)
+      .then(({cnstr, elm, ox}) => {
+        ox.coordinates.clear({elm_type: ''});
+        return project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
+          .then(() => {
+            if(full_picture) {
+              return;
             }
 
-            // расставляем радиусы на гнутых элементах
-            contour.l_dimensions.children
-              .filter((dim) => dim instanceof DimensionRadius)
-              .forEach((dim) => {
-                dim.remove();
-              });
+            const contour = project.getItem({cnstr});
+            if(contour) {
 
-            // показываем номера элементов на палках
-            for(const profile of contour.profiles) {
-              if(!profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
-                profile.show_number();
+              // для заполнений отдельная ветка
+              const item = elm && editor.elm(elm);
+              if(item instanceof Filling) {
+                project._attr._builder_props.auto_lines = true;
+                project.draw_fragment({elm});
+                item.draw_arcr();
               }
-              if(!profile.is_linear()) {
-                const {generatrix: gen, rays: {outer}, path} = profile;
-                const p0 = gen.getPointAt(gen.length * 0.7);
-                const p1 = path.getNearestPoint(outer.getNearestPoint(p0));
-                const dr = new DimensionRadius({
-                  elm1: profile,
-                  p1: path.getOffsetOf(p1).round(),
-                  parent: contour.l_dimensions,
-                  by_curve: false,
-                  ref: `r-${profile.elm}`,
-                });
-                dr.redraw();
+              else {
+                // рисуем текущий слой
+                project.draw_fragment({elm: -cnstr});
+
+                // прячем заполнения
+                contour.glasses(true);
+
+                // рисуем спецразмеры импостов
+                contour.l_dimensions.draw_by_imposts();
+
+                // подкрашиваем штульпы
+                editor.color_shtulps(contour);
+                const {_by_spec, _opening} = contour.l_visualization;
+                _by_spec.opacity = 0.4;
+                if(_opening) {
+                  _opening.opacity = 0.4;
+                }
+
+                // расставляем радиусы на гнутых элементах
+                contour.l_dimensions.children
+                  .filter((dim) => dim instanceof DimensionRadius)
+                  .forEach((dim) => {
+                    dim.remove();
+                  });
+
+                // показываем номера элементов на палках
+                for(const profile of contour.profiles) {
+                  if(!profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
+                    profile.show_number();
+                  }
+                  if(!profile.is_linear()) {
+                    const {generatrix: gen, rays: {outer}, path} = profile;
+                    const p0 = gen.getPointAt(gen.length * 0.7);
+                    const p1 = path.getNearestPoint(outer.getNearestPoint(p0));
+                    const dr = new DimensionRadius({
+                      elm1: profile,
+                      p1: path.getOffsetOf(p1).round(),
+                      parent: contour.l_dimensions,
+                      by_curve: false,
+                      ref: `r-${profile.elm}`,
+                    });
+                    dr.redraw();
+                  }
+                }
               }
+
+              // вписываем в размер экрана
+              project.zoom_fit();
+              this.setState(bar);
             }
-          }
-
-          // вписываем в размер экрана
-          project.zoom_fit();
-          this.setState(bar);
-        }
+          });
       });
+
+
   }
 
   render() {

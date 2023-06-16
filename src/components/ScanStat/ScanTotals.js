@@ -45,7 +45,7 @@ class Totals extends React.Component {
 
   onBarcode = () => {
     this.timer && clearTimeout(this.timer);
-    this.timer = setTimeout(this.refresh, 4000);
+    this.timer = 0;// setTimeout(this.refresh, 4000);
   };
 
   refresh = () => {

@@ -13,63 +13,63 @@ class Glass extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, PointText, consts}} = this;
-    let {cnstr, ox} = bar;
-    project.load(ox, {custom_lines: full_picture, mosquito: full_picture /*, visualization: false */})
+    return super.barcodeFin(bar)
+      .then(({cnstr, ox}) => project.load(ox, {custom_lines: full_picture, mosquito: full_picture /*, visualization: false */})
       .then(() => {
-        if(full_picture) {
-          return;
-        }
-
-        let contour = project.getItem({cnstr});
-        if(contour) {
-          if(contour.layer) {
-            contour = contour.layer;
-            cnstr = contour.cnstr;
+          if(full_picture) {
+            return;
           }
 
-          // прячем лишние рамные слои
-          for(const cnt of project.contours) {
-            if(cnt !== contour && cnt.layer !== contour) {
-              cnt.visible = false;
+          let contour = project.getItem({cnstr});
+          if(contour) {
+            if(contour.layer) {
+              contour = contour.layer;
+              cnstr = contour.cnstr;
             }
-          }
 
-          // рисуем номера заполнений
-          for(const filling of contour.fillings) {
-            new PointText({
-              parent: filling,
-              guide: true,
-              justification: 'right',
-              fillColor: 'black',
-              fontFamily: consts.font_family,
-              fontSize: consts.font_size * 1.5,
-              fontWeight: 'bold',
-              content: filling.elm,
-              position: filling.path.interiorPoint.subtract([consts.font_size, consts.font_size]),
-            });
-            filling.onClick = this.fillingClick.bind(this, filling);
-          }
+            // прячем лишние рамные слои
+            for(const cnt of project.contours) {
+              if(cnt !== contour && cnt.layer !== contour) {
+                cnt.visible = false;
+              }
+            }
 
-          // вписываем в размер экрана
-          project.zoom_fit();
-          bar.cnstr = cnstr;
-          this.setState(bar, () => {
-            this.rep && Promise.resolve().then(() => {
-              const {_obj} = this.rep.props;
-              const row = _obj.production.get(0);
-              row.characteristic = bar.ox;
-              row.elm = bar.cnstr;
-              this.rep
-                .handleSave()
-                .then(() => {
-                  this.forceUpdate(() => {
-                    this.rep._result.expandAll();
+            // рисуем номера заполнений
+            for(const filling of contour.fillings) {
+              new PointText({
+                parent: filling,
+                guide: true,
+                justification: 'right',
+                fillColor: 'black',
+                fontFamily: consts.font_family,
+                fontSize: consts.font_size * 1.5,
+                fontWeight: 'bold',
+                content: filling.elm,
+                position: filling.path.interiorPoint.subtract([consts.font_size, consts.font_size]),
+              });
+              filling.onClick = this.fillingClick.bind(this, filling);
+            }
+
+            // вписываем в размер экрана
+            project.zoom_fit();
+            bar.cnstr = cnstr;
+            this.setState(bar, () => {
+              this.rep && Promise.resolve().then(() => {
+                const {_obj} = this.rep.props;
+                const row = _obj.production.get(0);
+                row.characteristic = bar.ox;
+                row.elm = bar.cnstr;
+                this.rep
+                  .handleSave()
+                  .then(() => {
+                    this.forceUpdate(() => {
+                      this.rep._result.expandAll();
+                    });
                   });
-                });
+              });
             });
-          });
-        }
-      });
+          }
+        }));
   }
 
   fillingClick(filling) {
