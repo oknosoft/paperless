@@ -13,19 +13,22 @@ module.exports = function scan($p, log) {
     pouch.remote.events = new PouchDB(server.eve_url, {skip_setup: true, owner: pouch, adapter: 'http', auth});
   }
 
-  function history({query, res}) {
+  const {ping, pong} = require('./hrtime')(log);
+
+  function history({query, res, stat}) {
     return pouch.remote.events.query('history', {startkey: [query.bar, ''], endkey: [query.bar, '\ufff0']})
       .then((rsp) => {
         res.end(JSON.stringify(rsp));
       })
-      .catch((err) => end.end500({res, err, log}));
+      .catch((err) => end.end500({res, err, log}))
+      .then(() => pong(stat));
   }
 
   function stringifyKey(key) {
     return `${key[0]}${key[1].pad()}${key[2].pad()}${key[3]}${key[4]}`;
   }
 
-  function events({query, res, method, path}) {
+  function events({query, res, method, path, stat}) {
     if(!query.moment) {
       query.moment = moment().format('YYYYMMDDHHmmssSSS');
     }
@@ -36,9 +39,9 @@ module.exports = function scan($p, log) {
 
     const opts = {};
     if(query.period === 'day') {
-      const year = parseFloat(query.moment.substr(0, 4));
-      const month = parseFloat(query.moment.substr(4, 2));
-      const day = parseFloat(query.moment.substr(6, 2));
+      const year = parseFloat(query.moment.substring(0, 4));
+      const month = parseFloat(query.moment.substring(4, 6));
+      const day = parseFloat(query.moment.substring(6, 8));
       if(query.place) {
         opts.key = [year, month, day, query.user, query.place];
       }
@@ -49,7 +52,7 @@ module.exports = function scan($p, log) {
     }
     else if(query.period === 'month') {
       opts.keys = [];
-      const start = moment(`${query.moment.substr(0,4)}-${query.moment.substr(4,2)}-${query.moment.substr(6,2)}`);
+      const start = moment(`${query.moment.substring(0,4)}-${query.moment.substring(4,6)}-${query.moment.substring(6,8)}`);
       for(let i = 0; i < 31; i++) {
         const key = start.subtract(i ? 1 : 0, 'day').format('YYYY-MM-DD').split('-').map(v => parseFloat(v));
         key.push(query.user, query.place);
@@ -93,13 +96,15 @@ module.exports = function scan($p, log) {
           res.end(JSON.stringify(opts.keys));
         }
         else {
-          end.end404(res, `${method} ${path}`);
+          stat.error = `${method} ${path}`;
+          end.end404(res, stat.error);
         }
+        pong(stat);
       });
   }
 
-  function raw({query, res}) {
-    const startkey = query.moment ? query.moment.substr(0, 8) : moment().format('YYYYMMDD');
+  function raw({query, res, stat}) {
+    const startkey = query.moment ? query.moment.substring(0, 8) : moment().format('YYYYMMDD');
     return pouch.remote.events.query('history', {
       startkey,
       endkey: `${startkey}\ufff0`,
@@ -108,24 +113,33 @@ module.exports = function scan($p, log) {
       .then((rsp) => {
         res.end(JSON.stringify(rsp));
       })
-      .catch((err) => end.end500({res, err, log}));
+      .catch((err) => {
+        stat.error = err.message || `${err.error} ${err.reason}`;
+        end.end500({res, err, log});
+      })
+      .then(() => pong(stat));
   }
+
 
   return async function scan(req, res) {
 
     const {parsed: {path}, method, query} = req;
+    const stat = ping({method, query});
+
     if(method === 'GET') {
       if(query.bar) {
-        return history({query, res});
+        return history({query, res, stat});
       }
       else if(query.raw) {
-        return raw({query, res});
+        return raw({query, res, stat});
       }
       if(query.user) {
-        return events({query, res, method, path});
+        return events({query, res, method, path, stat});
       }
       else {
-        end.end404(res, `${method} ${path}`);
+        stat.error = `${method} ${path}`;
+        end.end404(res, stat.error);
+        return pong(stat);
       }
     }
 
@@ -133,23 +147,29 @@ module.exports = function scan($p, log) {
       return getBody(req)
         .then((body) => {
           const doc = JSON.parse(body);
-          const code = doc._id.substr(18);
+          const code = doc._id.substring(18);
           if(code.length < 3 || code === 'undefined' || code.length > 20) {
-            return end.end404(res, `${method} ${path}`);
+            end.end404(res, `${method} ${path}`);
+            return pong(stat);
           }
           const barcode = `bar|${code}`;
           return pouch.remote.events.put(doc)
             .catch(() => null)
             .then(() => pouch.remote.events.get(barcode))
-            .catch(() => pouch.remote.doc.get(`_local/${barcode}`))
             .then((rsp) => {
               res.end(JSON.stringify(rsp));
+              pong(stat);
             })
-            .catch(() => end.end404(res, `${method} ${barcode}`));
+            .catch(() => {
+              stat.error = `${method} ${path}`;
+              end.end404(res, stat.error);
+              pong(stat);
+            });
       });
     }
     else {
-      end.end404(res, `${method} ${path}`);
+      stat.error = `${method} ${path}`;
+      return end.end404(res, stat.error);
     }
   };
 };

@@ -13,23 +13,30 @@ module.exports = function bar($p, log) {
     pouch.remote.events = new PouchDB(server.eve_url, {skip_setup: true, owner: pouch, adapter: 'http', auth});
   }
 
+  const {ping, pong} = require('./hrtime')(log);
+
   return async function bar(req, res) {
 
     const {parsed: {path}, method} = req;
+    const stat = ping({method});
+
     if(method === 'GET') {
       let ok;
       const id = decodeURIComponent(path.split('api/bar/')[1]);
       if(!id) {
-        throw {status: 404, message: `empty bar`};
+        stat.error = `empty bar`;
+        pong(stat);
+        throw {status: 404, message: stat.error};
       }
       try {
         const doc = await pouch.remote.events.get(id.replace('_local/', ''));
         res.end(JSON.stringify(doc));
+        pong(stat);
         ok = true;
       }
       catch(err) {
-        err.message = 'bar ' + (err.message || '');
-        log(err);
+        stat.error = 'bar ' + (err.message || `${err.error} ${err.reason}`);
+        pong(stat);
       }
       if(!ok) {
         throw {status: 404, message: `bar not found '${id}'`};
@@ -58,13 +65,20 @@ module.exports = function bar($p, log) {
               diff = true;
             })
             .then(() => diff ? pouch.remote.events.put(doc) : {ok: true, rev: doc.rev || 'new'})
+            .catch((err) => {
+              stat.error = err.message || `${err.error} ${err.reason}`;
+              return {error: stat.error};
+            })
             .then((rsp) => {
               res.end(JSON.stringify(rsp));
+              pong(stat);
             });
         });
     }
     else {
-      end.end404(res, `${method} ${path}`);
+      stat.error = `${method} ${path}`;
+      end.end404(res, stat.error);
+      pong(stat);
     }
   };
 };
