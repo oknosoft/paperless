@@ -57,7 +57,7 @@ class Totals extends React.Component {
     if(!person) {
       person = current_user.ref;
     }
-    return pouch.fetch(`/adm/api/scan?user=${person}&place=${location.pathname.substr(1).split('/')[0]}&totals_only=true`)
+    return pouch.fetch(`/adm/api/scan?user=${person}&place=${location.pathname.substring(1).split('/')[0]}&totals_only=true`)
       .then((res) => res.json())
       .then(({d, l, error}) => {
         if(!error && this._mounted) {

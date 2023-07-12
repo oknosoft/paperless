@@ -16,7 +16,7 @@ const state = {
 
   keydown(evt, handleIfaceState) {
 
-    if(evt.target.tagName === 'INPUT' && !this.input){
+    if(evt.target.tagName === 'INPUT' && !this.input || evt.code == 'NumLock'){
       return;
     }
 
