@@ -8,12 +8,11 @@
 
 module.exports = function scan($p, log) {
 
-  const {job_prm: {user_node: auth, server}, adapters: {pouch}, classes: {PouchDB}, utils: {moment, getBody, end}} = $p;
-  if(!pouch.remote.events) {
-    pouch.remote.events = new PouchDB(server.eve_url, {skip_setup: true, owner: pouch, adapter: 'http', auth});
-  }
+  const {adapters: {pouch}, utils: {moment, getBody, end}} = $p;
 
   const {ping, pong} = require('./hrtime')(log);
+
+  const monitor = require('./monitor')($p, log);
 
   function history({query, res, stat}) {
     return pouch.remote.events.query('history', {startkey: [query.bar, ''], endkey: [query.bar, '\ufff0']})
@@ -119,7 +118,6 @@ module.exports = function scan($p, log) {
       })
       .then(() => pong(stat));
   }
-
 
   return async function scan(req, res) {
 
