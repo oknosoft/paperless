@@ -6,7 +6,7 @@ const {Index, format} = require('./totals');
  */
 class Subscriber {
 
-  constructor(events, utils, log) {
+  constructor({events, utils, log, post_event}) {
     this.dates = {
       since: format(utils.date_add_day(new Date(), -2, 1)),
       start: format(utils.date_add_day(new Date(), -1, 1)),
@@ -15,7 +15,7 @@ class Subscriber {
     this.events = events;
     this.utils = utils;
     this.log = log;
-    this.index = new Index(utils);
+    this.index = new Index(utils, post_event);
     this.subscribe(events, log);
   }
 

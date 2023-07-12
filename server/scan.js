@@ -121,8 +121,12 @@ module.exports = function scan($p, log) {
 
   return async function scan(req, res) {
 
-    const {parsed: {path}, method, query} = req;
+    const {parsed: {path, paths}, method, query} = req;
     const stat = ping({method, query});
+
+    if (paths[3] === 'monitor'){
+      return monitor(req, res);
+    }
 
     if(method === 'GET') {
       if(query.bar) {

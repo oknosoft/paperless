@@ -13,8 +13,9 @@ function format(date) {
  */
 class Index {
 
-  constructor(utils) {
+  constructor(utils, post_event) {
     this.utils = utils;
+    this.post_event = post_event;
     this.dates = new Map();
   }
 
@@ -47,6 +48,7 @@ class Index {
       row.characteristic === characteristic &&
       row.specimen === specimen)) {
       root.push({shift, place, work_center, person, characteristic, specimen});
+      this.post_event();
     }
   }
 };
