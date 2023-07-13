@@ -72,6 +72,7 @@ class Subscriber {
     const {id, doc: {user, place, work_center, person}} = change;
     const [moment, bar] = id.split('|');
     const {events, dates, utils, log, index, since} = this;
+    // откидываем заведомо бессмысленные строки
     if(!moment || !bar || bar.length < 12 || moment < dates.start || utils.is_empty_guid(work_center)) {
       return;
     }
