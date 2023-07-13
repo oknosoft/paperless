@@ -3,6 +3,7 @@ import React from 'react';
 import IconInfo from '@material-ui/icons/Info';
 import IconPerson from '@material-ui/icons/Person';
 import IconSettings from '@material-ui/icons/Settings';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 const items = [
   {
@@ -79,6 +80,14 @@ const items = [
   },
   {
     divider: true,
+  },
+  {
+    text: 'Монитор',
+    navigate: '/monitor',
+    title: 'Статистика сканирований',
+    need_meta: true,
+    need_user: true,
+    icon: <EqualizerIcon/>
   },
   {
     text: 'Профиль',

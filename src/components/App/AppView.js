@@ -27,8 +27,9 @@ import Glass from '../Glass';                 // остеклание
 import Welding from '../Welding';             // сварка
 import Falsebinding from '../Falsebinding';   // фальшпереплёты
 import Facing from '../Facing';               // раскладка
-import Crackers from '../Crackers';               // раскладка
+import Crackers from '../Crackers';           // раскладка
 import Arc from '../Arc';                     // арки, трапеции
+import Monitor from '../Monitor';             // статистика сканирований
 
 
 import {withIfaceAndMeta} from 'metadata-redux';
@@ -172,6 +173,7 @@ class AppView extends Component {
             <Route path="/login" render={(props) => <Login {...props} {...auth_props} />}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
             <Route path="/about" component={AboutPage} />
+            <Route path="/monitor" render={(props) => wraper(Monitor, props)} />
           </Switch>
         </div>
       );
