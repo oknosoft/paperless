@@ -18,10 +18,12 @@ module.exports = function events({utils, cat: {users}}, log, auth) {
       if(that && that !== res) {
         continue;
       }
-      const data = {ok: true};
-      index.get;
-      res.posti++;
-      res.write(`${evt ? `event: ${evt.event}\n` : ''}data: ${JSON.stringify({data})}\nid: ${res.posti}\n\n`);
+      const data = {totals: index.totals(res.req.query)};
+      if(res.totals !== data.totals) {
+        res.totals = data.totals;
+        res.posti++;
+        res.write(`event: scan\ndata: ${JSON.stringify({data})}\nid: ${res.posti}\n\n`);
+      }
     }
   };
   post_event.register = (o) => index = o;

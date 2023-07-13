@@ -14,17 +14,17 @@ module.exports = function subscriber($p, log) {
 
   function monitor(req, res) {
 
-    let {parsed: {query, path}, headers, user}  = req;
+    let {parsed: {paths}, headers, query}  = req;
 
-    if(query && query.includes('feed=longpoll')) {
+    if(query?.feed === 'longpoll' || paths[4] === 'longpoll') {
       return res.end(JSON.stringify({error: 'feed', reason: 'longpoll not supported now'}));
     }
 
-    if(query && query.includes('feed=eventsource')) {
+    if(query?.feed === 'eventsource' || paths[4] === 'eventsource') {
       return event_source(req, res);
     }
 
-    res.end(JSON.stringify({ok: true, count: events.index.dates.get(20230712).length}));
+    res.end(JSON.stringify({ok: true, totals: events.index.totals(req.query)}));
   }
 
   return monitor;

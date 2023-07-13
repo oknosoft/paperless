@@ -20,61 +20,67 @@ class Subscriber {
   }
 
   // подписывается на события
-  async subscribe(events, log) {
+  async subscribe() {
 
     // в _local/stat_ram_seq, храним текущий seq, чтобы не поолзать по базе events с начала времён
-    const since = {
-      _id: '_local/stat_ram_seq',
-      get() {
-        return events.get(this._id)
-          .catch(() => ({since: 'now'}))
-          .then(({since}) => since);
-      },
+    const {dates, events, log} = this;
+    const _id = '_local/stat_ram_seq';
+    this.since = {
       set(since) {
-        return events.get(this._id)
-          .catch(() => ({_id: this._id}))
+        return events.get(_id)
+          .catch(() => ({_id}))
           .then((doc) => {
             doc.since = since;
             return events.put(doc);
-          })
+          });
+      },
+      conf: {
+        live: true,
+        include_docs: true,
+        since: await events.get(_id)
+          .catch(() => ({since: 'now'}))
+          .then(({since}) => since),
+        selector: {
+          $and: [
+            {_id: {$gt: dates.start}},
+            {_id: {$lt: dates.end}},
+          ]
+        }
       }
     };
 
-    const {dates} = this;
-    const conf = {
-      live: true,
-      include_docs: true,
-      since: await since.get(),
-      selector: {
-        $and: [
-          {_id: {$gt: dates.start}},
-          {_id: {$lt: dates.end}},
-        ]
-      }
-    };
-    this._changes = events.changes(conf)
+    this.reconnect();
+  }
+
+  reconnect() {
+    const {dates, events, since, log} = this;
+    this.changes = events.changes(since.conf)
       .once('change', (change) => {
-        if(change.id < dates.start || conf.since === 'now') {
+        if(change.id < dates.start || since.conf.since === 'now') {
           since.set(change.seq);
         }
       })
       .on('change', this.update.bind(this))
-      .on('error', log);
+      .on('error', (error) => {
+        log(error);
+        setTimeout(this.reconnect.bind(this), 10000);
+      });
   }
 
   // обновляет индекс
   async update(change) {
     const {id, doc: {user, place, work_center, person}} = change;
     const [moment, bar] = id.split('|');
-    const {events, dates, utils, log, index} = this;
+    const {events, dates, utils, log, index, since} = this;
     if(!moment || !bar || bar.length < 12 || moment < dates.start || utils.is_empty_guid(work_center)) {
       return;
     }
     try {
       const {characteristic, cnstr, elm, specimen} = await events.get(`bar|${bar}`);
-      if(specimen !== undefined) {
+      if(specimen !== 0) {
         index.add({moment, place, work_center, person, characteristic, specimen});
       }
+      since.conf.since = change.seq;
     }
     catch (e) {
       if(e.status !== 404) {
