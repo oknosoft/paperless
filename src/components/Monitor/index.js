@@ -21,8 +21,8 @@ function Monitor({handleIfaceState}) {
     const sse = new EventSource('/adm/api/scan/monitor?feed=eventsource&place=glass');
     function onScan({data}) {
       try {
-        const {data} = JSON.parse(data);
-        setTotals(data.count);
+        const res = JSON.parse(data);
+        setTotals(res.data.count);
       }
       catch (e) {}
     }
