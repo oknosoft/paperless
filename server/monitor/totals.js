@@ -109,7 +109,15 @@ class Index {
     const delta = tmp.getHours() * 60 + tmp.getMinutes() - max;
     const last = `${Math.floor(max / 60).pad(2)}:${(max % 60).pad(2)}`;
     const pause = `${Math.floor(delta / 60).pad(2)}:${(delta % 60).pad(2)}`;
-    const res = {count: rows.length, totals: {}, hour: hour.length, last, pause};
+    const res = {
+      date: query.date,
+      shift: query.shift,
+      count: rows.length,
+      hour: hour.length,
+      last,
+      pause,
+      totals: {},
+    };
 
     // группировка, если задана в запросе
     if(['work_center', 'place'].includes(query.group_by)) {

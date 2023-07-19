@@ -24,7 +24,7 @@ module.exports = function subscriber($p, log) {
       return event_source(req, res, stat);
     }
 
-    res.end(JSON.stringify({ok: true, totals: events.index.totals(req.query)}));
+    res.end(JSON.stringify({ok: true, ...events.index.totals(req.query)}));
     pong(stat);
   }
 
