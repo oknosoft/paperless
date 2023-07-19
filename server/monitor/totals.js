@@ -39,6 +39,8 @@ class Index {
     else if(time >= 20) {
       shift++;
     }
+    time *= 60;
+    time += parseInt(moment.substring(10, 12));
 
     const root = this.root(date);
     if (!root.some((row) => row.shift === shift &&
@@ -47,12 +49,14 @@ class Index {
       row.person === person &&
       row.characteristic === characteristic &&
       row.specimen === specimen)) {
-      root.push({shift, place, work_center, person, characteristic, specimen});
+      root.push({shift, place, work_center, person, characteristic, specimen, time});
       this.post_event();
     }
   }
 
   totals(query) {
+    const tmp = new Date();
+    let time = tmp.getHours() - tmp.getTimezoneOffset() / 60;
     if(query.date && query.shift) {
       if(typeof query.date !== 'number') {
         query.date = parseInt(query.date);
@@ -62,8 +66,6 @@ class Index {
       }
     }
     else {
-      let tmp = new Date();
-      const time = tmp.getHours();
       query.shift = 1;
       query.date = parseInt(format(tmp));
       if(time < 8) {
@@ -75,14 +77,45 @@ class Index {
       }
     }
 
+    if(query.place?.includes(',')) {
+      query.place = query.place.split(',');
+    }
+    if(query.work_center?.includes(',')) {
+      query.work_center = query.work_center.split(',');
+    }
+
+    // фильтр
     const rows = this.root(query.date).filter((row) => {
       return row.shift === query.shift &&
-        (!query.place || row.place === query.place) &&
-        (!query.work_center || row.work_center === query.work_center);
+        (!query.place ||
+          (Array.isArray(query.place) ? query.place.includes(row.place) : row.place === query.place)) &&
+        (!query.work_center ||
+          (Array.isArray(query.work_center) ? query.work_center.includes(row.work_center) : row.work_center === query.work_center));
     });
-    return rows.length;
-  }
 
-};
+    // время с последнего сканирования
+    time = (time - 1) * 60 + tmp.getMinutes();
+    const base = time = time * 60 + tmp.getMinutes();
+    const hour = rows.filter((row) => row.time >= time);
+    const max = rows.reduce((acc, val) => val > acc ? val : acc, 0);
+    const last = `${Math.floor(max / 60)}:${max % 60}`;
+    const delta = base - max;
+    const pause = `${Math.floor(delta / 60)}:${delta % 60}`;
+    const res = {count: rows.length, totals: {}, hour: hour.length, last, pause};
+
+    // группировка, если задана в запросе
+    if(['work_center', 'place'].includes(query.group_by)) {
+      for(const row of rows) {
+        if(res.totals[query.group_by]) {
+          res.totals[query.group_by]++;
+        }
+        else {
+          res.totals[query.group_by] = 1;
+        }
+      }
+    }
+    return res;
+  }
+}
 
 module.exports = {Index, format};
