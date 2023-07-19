@@ -37,6 +37,8 @@ class Subscriber {
       conf: {
         live: true,
         include_docs: true,
+        heartbeat: 20000,
+        batch_size: 100,
         since: await events.get(_id)
           .catch(() => ({since: 'now'}))
           .then(({since}) => since),
@@ -54,6 +56,7 @@ class Subscriber {
 
   reconnect() {
     const {dates, events, since, log} = this;
+    log(`monitor reconnect ${since.conf.since}`);
     this.changes = events.changes(since.conf)
       .once('change', (change) => {
         if(change.id < dates.start || since.conf.since === 'now') {
