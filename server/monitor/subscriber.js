@@ -15,7 +15,7 @@ class Subscriber {
     this.events = events;
     this.utils = utils;
     this.log = log;
-    this.index = new Index(utils, post_event);
+    this.index = new Index(utils, post_event, log);
     this.subscribe(events, log);
   }
 
@@ -23,7 +23,7 @@ class Subscriber {
   async subscribe() {
 
     // в _local/stat_ram_seq, храним текущий seq, чтобы не поолзать по базе events с начала времён
-    const {dates, events, log} = this;
+    const {dates, events} = this;
     const _id = '_local/stat_ram_seq';
     this.since = {
       set(since) {

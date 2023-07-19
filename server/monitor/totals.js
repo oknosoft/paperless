@@ -13,8 +13,9 @@ function format(date) {
  */
 class Index {
 
-  constructor(utils, post_event) {
+  constructor(utils, post_event, log) {
     this.utils = utils;
+    this.log = log;
     this.post_event = post_event;
     this.dates = new Map();
   }
@@ -51,12 +52,18 @@ class Index {
       row.specimen === specimen)) {
       root.push({shift, place, work_center, person, characteristic, specimen, time});
       this.post_event();
+      if(Math.random() < 0.01) {
+        this.log(`monitor index add ${moment}`);
+      }
     }
   }
 
   totals(query) {
     const tmp = new Date();
-    let time = tmp.getHours() - tmp.getTimezoneOffset() / 60;
+    let time = tmp.getHours();
+    if(process.platform !== 'win32') {
+      time -= tmp.getTimezoneOffset() / 60;
+    }
     if(query.date && query.shift) {
       if(typeof query.date !== 'number') {
         query.date = parseInt(query.date);
@@ -98,9 +105,9 @@ class Index {
     const base = time = time * 60 + tmp.getMinutes();
     const hour = rows.filter((row) => row.time >= time);
     const max = rows.reduce((acc, val) => val > acc ? val : acc, 0);
-    const last = `${Math.floor(max / 60)}:${max % 60}`;
+    const last = `${Math.floor(max / 60).pad(2)}:${(max % 60).pad(2)}`;
     const delta = base - max;
-    const pause = `${Math.floor(delta / 60)}:${delta % 60}`;
+    const pause = `${Math.floor(delta / 60).pad(1)}:${(delta % 60).pad(2)}`;
     const res = {count: rows.length, totals: {}, hour: hour.length, last, pause};
 
     // группировка, если задана в запросе

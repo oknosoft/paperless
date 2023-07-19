@@ -125,7 +125,7 @@ module.exports = function scan($p, log) {
     const stat = ping({method, query});
 
     if (paths[3] === 'monitor'){
-      return monitor(req, res);
+      return monitor(req, res, stat);
     }
 
     if(method === 'GET') {

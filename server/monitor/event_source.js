@@ -10,15 +10,14 @@ module.exports = function events({utils, cat: {users}}, log, auth) {
 
   /**
    * Ответ всем подписчикам
-   * @param {Object} data
-   * @param {Object} evt
+   * @param {Object} that
    */
   const post_event = (that) => {
     for(const res of resps) {
       if(that && that !== res) {
         continue;
       }
-      const data = {totals: index.totals(res.req.query)};
+      const data = index.totals(res.req.query);
       if(res.totals !== data.totals) {
         res.totals = data.totals;
         res.posti++;
@@ -28,23 +27,18 @@ module.exports = function events({utils, cat: {users}}, log, auth) {
   };
   post_event.register = (o) => index = o;
 
-  /**
-   * Шлёт пустые строки, чтобы браузер не уснул
-   */
-  const ping = () => {
-    for(const res of resps) {
-      res.write('\n');
-    }
-  }
+  const {pong} = require('../hrtime')(log);
 
   /**
    * Обрабатывает запросы к event-source
-   * @param req
+   * @param {http.ClientRequest} req
+   * @param {http.ServerResponse} res
+   * @param {Object} stat
    * @return {Promise}
    */
-  const event_source = async (req, res) => {
+  const event_source = async (req, res, stat) => {
 
-    if(req.method === 'POST' || req.method === 'PUT') {
+    if(req.method !== 'GET') {
       return res.end(JSON.stringify({ok: true, incoming: true}));
     }
 
@@ -63,6 +57,7 @@ module.exports = function events({utils, cat: {users}}, log, auth) {
       res.posti++;
       res.write(`event: id\ndata: ${res.event_id}\nid: ${res.posti}\n\n`);
       post_event(res);
+      pong(stat);
     });
 
     resps.add(res);
@@ -70,7 +65,7 @@ module.exports = function events({utils, cat: {users}}, log, auth) {
 
   };
 
-  setInterval(ping.bind(null), 70000);
+  setInterval(post_event.bind(null), 77000);
 
   return {post_event, event_source};
 };
