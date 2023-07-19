@@ -28,7 +28,7 @@ class Index {
     return dates.get(date);
   }
 
-  add({moment, place, work_center, person, characteristic, specimen}) {
+  add({moment, place, work_center, person, characteristic, specimen, stack}) {
     let date = parseInt(moment.substring(0, 8));
     let time = parseInt(moment.substring(8, 10));
     let shift = 1;
@@ -51,8 +51,10 @@ class Index {
       row.characteristic === characteristic &&
       row.specimen === specimen)) {
       root.push({shift, place, work_center, person, characteristic, specimen, time});
-      this.post_event();
-      if(Math.random() < 0.01) {
+      if(stack.length < 20) {
+        this.post_event();
+      }
+      if(Math.random() < 0.004) {
         this.log(`monitor index add ${moment}`);
       }
     }
@@ -102,22 +104,22 @@ class Index {
 
     // время с последнего сканирования
     time = (time - 1) * 60 + tmp.getMinutes();
-    const base = time = time * 60 + tmp.getMinutes();
     const hour = rows.filter((row) => row.time >= time);
-    const max = rows.reduce((acc, val) => val > acc ? val : acc, 0);
+    const max = rows.reduce((acc, val) => val.time > acc ? val.time : acc, 0);
+    const delta = tmp.getHours() * 60 + tmp.getMinutes() - max;
     const last = `${Math.floor(max / 60).pad(2)}:${(max % 60).pad(2)}`;
-    const delta = base - max;
-    const pause = `${Math.floor(delta / 60).pad(1)}:${(delta % 60).pad(2)}`;
+    const pause = `${Math.floor(delta / 60).pad(2)}:${(delta % 60).pad(2)}`;
     const res = {count: rows.length, totals: {}, hour: hour.length, last, pause};
 
     // группировка, если задана в запросе
     if(['work_center', 'place'].includes(query.group_by)) {
       for(const row of rows) {
-        if(res.totals[query.group_by]) {
-          res.totals[query.group_by]++;
+        const key = row[query.group_by];
+        if(res.totals[key]) {
+          res.totals[key]++;
         }
         else {
-          res.totals[query.group_by] = 1;
+          res.totals[key] = 1;
         }
       }
     }
