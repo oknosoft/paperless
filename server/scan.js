@@ -8,11 +8,11 @@
 
 module.exports = function scan($p, log) {
 
-  const {adapters: {pouch}, utils: {moment, getBody, end}} = $p;
+  const {job_prm: {server}, adapters: {pouch}, utils: {moment, getBody, end}} = $p;
 
   const {ping, pong} = require('./hrtime')(log);
 
-  const monitor = require('./monitor')($p, log);
+  const monitor = server.eve_url ? require('./monitor')($p, log) : () => null;
 
   function history({query, res, stat}) {
     return pouch.remote.events.query('history', {startkey: [query.bar, ''], endkey: [query.bar, '\ufff0']})
@@ -120,6 +120,10 @@ module.exports = function scan($p, log) {
   }
 
   return async function scan(req, res) {
+
+    if(!server.eve_url) {
+      throw {status: 404, message: `eve_url not defined`};
+    }
 
     const {parsed: {path, paths}, method, query} = req;
     const stat = ping({method, query});

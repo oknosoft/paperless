@@ -9,13 +9,17 @@
 module.exports = function bar($p, log) {
 
   const {job_prm: {user_node: auth, server}, adapters: {pouch}, classes: {PouchDB}, utils: {getBody, end}} = $p;
-  if(!pouch.remote.events) {
+  if(!pouch.remote.events && server.eve_url) {
     pouch.remote.events = new PouchDB(server.eve_url, {skip_setup: true, owner: pouch, adapter: 'http', auth});
   }
 
   const {ping, pong} = require('./hrtime')(log);
 
   return async function bar(req, res) {
+
+    if(!server.eve_url) {
+      throw {status: 404, message: `eve_url not defined`};
+    }
 
     const {parsed: {path}, method} = req;
     const stat = ping({method});
