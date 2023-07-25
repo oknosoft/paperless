@@ -113,7 +113,7 @@ class Index {
     });
 
     // время с последнего сканирования
-    time = (time ? time - 1 : 23) * 60 * 60 + tmp.getMinutes() * 60 + tmp.getSeconds();
+    time = (time ? time - 1 : 23) * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds();
     // записи за последний плавающий час
     const hour = rows.filter((row) => row.time >= time); // проверить
     const max = hour.reduce((acc, val) => val.time > acc ? val.time : acc, 0); // проверить
