@@ -28,6 +28,16 @@ class Index {
     return dates.get(date);
   }
 
+  /**
+   *
+   * @param {String}} moment 20230301071906592
+   * @param place
+   * @param work_center
+   * @param person
+   * @param characteristic
+   * @param specimen
+   * @param stack
+   */
   add({moment, place, work_center, person, characteristic, specimen, stack}) {
     let date = parseInt(moment.substring(0, 8));
     let time = parseInt(moment.substring(8, 10));
@@ -40,8 +50,8 @@ class Index {
     else if(time >= 20) {
       shift++;
     }
-    time *= 60;
-    time += parseInt(moment.substring(10, 12));
+    time *= 60 * 60;
+    time += parseInt(moment.substring(10, 12)) * 60 + parseInt(moment.substring(12, 14));
 
     const root = this.root(date);
     if (!root.some((row) => row.shift === shift &&
@@ -63,8 +73,8 @@ class Index {
   totals(query) {
     const tmp = new Date();
     let time = tmp.getHours();
-    if(process.platform !== 'win32') {
-      time -= tmp.getTimezoneOffset() / 60;
+    if(process.env.TIME_DIFF) {
+      time += parseInt(process.env.TIME_DIFF);
     }
     if(query.date && query.shift) {
       if(typeof query.date !== 'number') {
@@ -103,12 +113,13 @@ class Index {
     });
 
     // время с последнего сканирования
-    time = (time - 1) * 60 + tmp.getMinutes();
-    const hour = rows.filter((row) => row.time >= time);
-    const max = rows.reduce((acc, val) => val.time > acc ? val.time : acc, 0);
-    const delta = tmp.getHours() * 60 + tmp.getMinutes() - max;
-    const last = `${Math.floor(max / 60).pad(2)}:${(max % 60).pad(2)}`;
-    const pause = `${Math.floor(delta / 60).pad(2)}:${(delta % 60).pad(2)}`;
+    time = (time ? time - 1 : 23) * 60 * 60 + tmp.getMinutes() * 60 + tmp.getSeconds();
+    // записи за последний плавающий час
+    const hour = rows.filter((row) => row.time >= time); // проверить
+    const max = hour.reduce((acc, val) => val.time > acc ? val.time : acc, 0); // проверить
+    const delta = tmp.getHours() * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds() - max;
+    const last = `${Math.floor(max / 3600).pad(2)}:${(max % 3600).pad(2)}`;
+    const pause = `${Math.floor(delta / 3600).pad(2)}:${(delta % 3600).pad(2)}`;
     const res = {
       date: query.date,
       shift: query.shift,
