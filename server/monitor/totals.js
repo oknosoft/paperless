@@ -118,8 +118,8 @@ class Index {
     const hour = rows.filter((row) => row.time >= time); // проверить
     const max = hour.reduce((acc, val) => val.time > acc ? val.time : acc, 0); // проверить
     const delta = tmp.getHours() * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds() - max;
-    const last = `${Math.floor(max / 3600).pad(2)}:${(max % 3600).pad(2)}`;
-    const pause = `${Math.floor(delta / 3600).pad(2)}:${(delta % 3600).pad(2)}`;
+    const last = `${Math.floor(max / 3600).pad(2)}:${((max % 3600) % 60).pad(2)}`;
+    const pause = `${Math.floor(delta / 3600).pad(2)}:${((delta % 3600) % 60).pad(2)}`;
     const res = {
       date: query.date,
       shift: query.shift,
