@@ -128,7 +128,7 @@ class Index {
     time = (time ? time - 1 : 23) * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds();
     // записи за последний плавающий час
     const hour = rows.filter((row) => row.time >= time); // проверить
-    const last = hour.reduce((acc, val) => val.time > acc ? val.time : acc, 0); // проверить
+    const last = rows.reduce((acc, val) => val.time > acc ? val.time : acc, 0); // проверить
     const delta = tmp.getHours() * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds() - last;
     const res = {
       date: query.date,

@@ -153,7 +153,9 @@ module.exports = function scan($p, log) {
       return getBody(req)
         .then((body) => {
           const doc = JSON.parse(body);
+          // пример 20230301075052995
           const code = doc._id.substring(18);
+          doc._id = moment().format('YYYYMMDDHHmmssSSS') + '|' + code;
           if(code.length < 3 || code === 'undefined' || code.length > 20) {
             end.end404(res, `${method} ${path}`);
             return pong(stat);
