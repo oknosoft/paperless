@@ -9,18 +9,6 @@ function format(date) {
 }
 
 /**
- * Приводит число секунд к виду чч:mm:cc
- * @param {Number} num
- * @return {string}
- */
-function format2(num) {
-  const hours= Math.floor(num / 3600);
-  const minutes= Math.floor((num % 3600) / 60);
-  const seconds = num - hours * 3600 - minutes * 60;
-  return `${hours.pad(2)}:${minutes.pad(2)}:${seconds.pad(2)}`;
-}
-
-/**
  * Хранит записи и возвращает итоги
  */
 class Index {
@@ -51,19 +39,17 @@ class Index {
    * @param stack
    */
   add({moment, place, work_center, person, characteristic, specimen, stack}) {
-    let date = parseInt(moment.substring(0, 8));
-    let time = parseInt(moment.substring(8, 10));
+    const md = this.utils.moment(moment, 'YYYYMMDDHHmmssSSS');
+    const hour = md.hour();
     let shift = 1;
-    if(time < 8) {
-      const tmp = new Date(`${moment.substring(0, 4)}-${moment.substring(4, 6)}-${moment.substring(6, 8)}`);
-      date = parseInt(format(this.utils.date_add_day(tmp, -1, 1)), 10);
+    if(hour < 8) {
+      md.subtract(1, 'day');
       shift++;
     }
-    else if(time >= 20) {
+    else if(hour >= 20) {
       shift++;
     }
-    time *= 60 * 60;
-    time += parseInt(moment.substring(10, 12)) * 60 + parseInt(moment.substring(12, 14));
+    const date = parseInt(md.format('YYYYMMDD'));
 
     const root = this.root(date);
     if (!root.some((row) => row.shift === shift &&
@@ -72,7 +58,7 @@ class Index {
       row.person === person &&
       row.characteristic === characteristic &&
       row.specimen === specimen)) {
-      root.push({shift, place, work_center, person, characteristic, specimen, time});
+      root.push({shift, place, work_center, person, characteristic, specimen, moment: md});
       if(stack.length < 20) {
         this.post_event();
       }
@@ -83,10 +69,10 @@ class Index {
   }
 
   totals(query) {
-    const tmp = new Date();
-    let time = tmp.getHours();
+    const md = this.utils.moment();
+    const hour = md.hour();
     if(process.env.TIME_DIFF) {
-      time += parseInt(process.env.TIME_DIFF);
+      md.add(parseInt(process.env.TIME_DIFF), 'minutes');
     }
     if(query.date && query.shift) {
       if(typeof query.date !== 'number') {
@@ -98,12 +84,14 @@ class Index {
     }
     else {
       query.shift = 1;
-      query.date = parseInt(format(tmp));
-      if(time < 8) {
-        query.date = parseInt(format(this.utils.date_add_day(tmp, -1, 1)));
+      query.date = parseInt(md.format('YYYYMMDD'));
+      if(hour < 8) {
+        const tmp = md.clone();
+        tmp.subtract(1, 'day');
+        query.date = parseInt(tmp.format('YYYYMMDD'));
         query.shift++;
       }
-      else if(time >= 20) {
+      else if(hour >= 20) {
         query.shift++;
       }
     }
@@ -125,18 +113,21 @@ class Index {
     });
 
     // время с последнего сканирования
-    time = (time ? time - 1 : 23) * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds();
+    const slice = md.clone();
+    slice.subtract(1, 'hour');
+    const old = md.clone();
+    old.subtract(1, 'day');
     // записи за последний плавающий час
-    const hour = rows.filter((row) => row.time >= time); // проверить
-    const last = rows.reduce((acc, val) => val.time > acc ? val.time : acc, 0); // проверить
-    const delta = tmp.getHours() * 3600 + tmp.getMinutes() * 60 + tmp.getSeconds() - last;
+    const hour_rows = rows.filter((row) => row.moment.isAfter(slice)); // проверить
+    const last = rows.reduce((acc, row) => row.moment.isAfter(slice) ? row.moment : acc, old); // проверить
+    const delta = this.utils.moment.duration(last.diff(md));
     const res = {
       date: query.date,
       shift: query.shift,
       count: rows.length,
-      hour: hour.length,
-      last: format2(last),
-      pause: format2(delta),
+      hour: hour_rows.length,
+      last: last.format('HH:mm:ss'),
+      pause: delta.humanize(),
       totals: {},
     };
 
