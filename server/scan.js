@@ -12,7 +12,14 @@ module.exports = function scan($p, log) {
 
   const {ping, pong} = require('./hrtime')(log);
 
-  const monitor = server.eve_url ? require('./monitor')($p, log) : () => null;
+  let monitor = (req, res, stat) => {
+    res.end(JSON.stringify({error: true, reason: 'EVEURL not defined'}));
+    pong(stat);
+  };
+  if(server.eve_url) {
+    monitor = require('./monitor')($p, log);
+    log('paperless monitor start');
+  }
 
   function history({query, res, stat}) {
     return pouch.remote.events.query('history', {startkey: [query.bar, ''], endkey: [query.bar, '\ufff0']})
