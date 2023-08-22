@@ -10,6 +10,7 @@ module.exports = function bar($p, log) {
 
   const {job_prm: {user_node: auth, server}, adapters: {pouch}, classes: {PouchDB}, utils: {getBody, end}} = $p;
   if(!pouch.remote.events && server.eve_url) {
+    log(server.eve_url);
     pouch.remote.events = new PouchDB(server.eve_url, {skip_setup: true, owner: pouch, adapter: 'http', auth});
   }
 

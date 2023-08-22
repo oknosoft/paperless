@@ -17,6 +17,7 @@
   "license": "SEE LICENSE IN LICENSE.en.md",
   "dependencies": {},
   "devDependencies": {},
+  "main": "server/index.js",
   "files": [
     "server/**",
     "LICENSE",
