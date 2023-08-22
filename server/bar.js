@@ -12,6 +12,7 @@ module.exports = function bar($p, log) {
   if(!pouch.remote.events && server.eve_url) {
     log(server.eve_url);
     pouch.remote.events = new PouchDB(server.eve_url, {skip_setup: true, owner: pouch, adapter: 'http', auth});
+    pouch.local.events = pouch.remote.events;
   }
 
   const {ping, pong} = require('./hrtime')(log);

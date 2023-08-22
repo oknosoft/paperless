@@ -3,9 +3,10 @@
  */
 
 
-module.exports = function calc_stat($p, log, route) {
+module.exports = function paperless($p, log, route) {
 
   route.bar = require('./bar')($p, log);
   route.scan = require('./scan')($p, log);
+  require('./meta')($p, log);
 
 }
