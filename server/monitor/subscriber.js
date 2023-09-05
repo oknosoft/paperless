@@ -10,7 +10,7 @@ class Subscriber {
     this.dates = {
       since: format(utils.date_add_day(new Date(), -2, 1)),
       start: format(utils.date_add_day(new Date(), -1, 1)),
-      end: format(utils.date_add_day(new Date(), 1, 1)),
+      end: format(utils.date_add_day(new Date(), 2, 1)),
     };
     this.events = events;
     this.utils = utils;
