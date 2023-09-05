@@ -1,4 +1,3 @@
-
 /**
  * Приводит дату к строке
  * @param {Date} date
@@ -33,7 +32,6 @@ class Index {
     this.log = log;
     this.post_event = post_event;
     this.dates = new Map();
-    this.last = {};
   }
 
   root(date) {
@@ -42,19 +40,6 @@ class Index {
       dates.set(date, []);
     }
     return dates.get(date);
-  }
-
-  /**
-   * @param {Array|String} work_center
-   * @return {Moment|Undefined}
-   */
-  getLastMoment(work_center) {
-    if (Array.isArray(work_center)) {
-      const moments = work_center.map(w_c => this.last[w_c]).filter(w_c => !!w_c);
-      return this.utils.moment.max(moments);
-    }
-
-    return this.last[work_center];
   }
 
   /**
@@ -69,16 +54,18 @@ class Index {
    */
   add({moment, place, work_center, person, characteristic, specimen, stack}) {
     const md = this.utils.moment(moment, 'YYYYMMDDHHmmssSSS');
+    const temp_md = md.clone();
     const hour = md.hour();
     let shift = 1;
+
     if(hour < 8) {
-      md.subtract(1, 'day');
+      temp_md.subtract(1, 'day');
       shift++;
     }
     else if(hour >= 20) {
       shift++;
     }
-    const date = parseInt(md.format('YYYYMMDD'));
+    const date = parseInt(temp_md.format('YYYYMMDD'));
 
     const root = this.root(date);
     if (!root.some((row) => row.shift === shift &&
@@ -89,14 +76,6 @@ class Index {
       row.specimen === specimen)) {
       root.push({shift, place, work_center, person, characteristic, specimen, moment: md});
 
-      // сохранение времени последних сканов
-      if (!this.last[work_center]) {
-        this.last[work_center] = md;
-      } else if (md.isAfter(this.last[work_center])) {
-        this.last[work_center] = md;
-      }
-
-
       if(stack.length < 20) {
         this.post_event();
       }
@@ -106,7 +85,9 @@ class Index {
     }
   }
 
-  totals(query) {
+  totals(query_params) {
+    const query = {...query_params};
+
     const md = this.utils.moment();
     const hour = md.hour();
     if(process.env.TIME_DIFF) {
@@ -147,6 +128,7 @@ class Index {
       query.work_center = query.work_center.split(',');
     }
 
+
     // фильтр
     const rows = this.root(query.date).filter((row) => {
       return (Array.isArray(query.shift) ? query.shift.includes(row.shift) : row.shift === query.shift) &&
@@ -155,6 +137,7 @@ class Index {
         (!query.work_center ||
           (Array.isArray(query.work_center) ? query.work_center.includes(row.work_center) : row.work_center === query.work_center));
         });
+
 
     // Получение сканов за час из общего массива
     const getRowsLastHour = (rows) => {
@@ -166,9 +149,8 @@ class Index {
     const hour_rows = getRowsLastHour(rows);
 
     // время последнего скана и временная разница
-    const lastMomentTime = this.getLastMoment(query.work_center);
+    const lastMomentTime = this.utils.moment.max(rows.length ? rows.map(el => el.moment) : md);
     const delta = this.utils.moment.duration(md.diff(lastMomentTime));
-
 
     const res = {
       date: query.date,
@@ -178,8 +160,8 @@ class Index {
       last: lastMomentTime?.format('HH:mm:ss'),
       pause: formattedMomentDuration(delta),
       totals: {},
+      v: '0.5.2'
     };
-
 
 
     // Вариант нового решения по общей группировке
@@ -202,7 +184,7 @@ class Index {
         const hour_rows = getRowsLastHour(values);
 
         // время последнего скана и временная разница
-        const lastMomentTime = this.utils.moment.max(values.map(r => r.moment));
+        const lastMomentTime = this.utils.moment.max(values.length ? values.map(el => el.moment) : md);
         const delta = this.utils.moment.duration(md.diff(lastMomentTime));
 
         res.totals[key] = {
@@ -215,30 +197,6 @@ class Index {
         };
       }
     }
-
-
-    // Группировка частного случая по work_center (рабочее решение с созвона)
-    // switch (query.group_by) {
-    //   case 'work_center': {
-    //     for (const wc of query.work_center) {
-    //       if (!res.totals[wc]) res.totals[wc] = this.totals({ ...query, work_center: wc, group_by: '' });
-    //     }
-    //   }
-    // }
-
-
-    // группировка, если задана в запросе
-    // if(['work_center', 'place'].includes(query.group_by)) {
-    //   for(const row of rows) {
-    //     const key = row[query.group_by];
-    //     if(res.totals[key]) {
-    //       res.totals[key]++;
-    //     }
-    //     else {
-    //       res.totals[key] = 1;
-    //     }
-    //   }
-    // }
     return res;
   }
 }
