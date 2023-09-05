@@ -14,7 +14,17 @@ module.exports = {
   "main_presentation_name": false,
   "code_length": 9,
   "id": "",
-  "fields": {},
+  "fields": {
+    department: {
+      choice_groups_elm: "elm",
+      multiline_mode: false,
+      synonym: "Подразделение",
+      type: {
+        is_ref: true,
+        types:['cat.divisions']
+      }
+    }
+  },
   "tabular_sections": {
     "work_centers": {
       "name": "РабочиеЦентры",
@@ -36,5 +46,5 @@ module.exports = {
       }
     }
   },
-  "cachable": "events"
+  "cachable": "doc"
 };
