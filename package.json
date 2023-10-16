@@ -30,7 +30,7 @@
     "metadata-redux": "2.0.34-beta.1",
     "paperless-server": "github:oknosoft/paperless#6225d24ebfa426e842f422250aea58551bfe77e2",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#d4abbad66b127da6b3d611a22c59d362876f7200",
+    "wb-core": "github:oknosoft/windowbuilder-core#902533ef8b80eb918d1e14b44ff30425e8f6c99c",
     "wb-forms": "github:oknosoft/windowbuilder-forms#97e2cfca179ae1a52d49c4b78d5d2b94385ba623",
     "xlsx": "^0.18.5"
   },
