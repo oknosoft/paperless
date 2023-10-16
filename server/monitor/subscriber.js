@@ -6,6 +6,12 @@ const {Index, format} = require('./totals');
  */
 class Subscriber {
 
+  /**
+   * @param {PouchDB} events
+   * @param {MetaUtils} utils
+   * @param {Function} log
+   * @param {Function} post_event
+   */
   constructor({events, utils, log, post_event}) {
     this.dates = {
       since: format(utils.date_add_day(new Date(), -2, 1)),
