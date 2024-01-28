@@ -10,7 +10,7 @@ import common from './common';
 import catalogs from './catalogs';
 
 // модификаторы документов
-import documents from './documents';
+//import documents from './documents';
 
 // модификаторы планов видов характеристик
 //import chartscharacteristics from './chartscharacteristics';
@@ -24,6 +24,6 @@ export default function ($p) {
   //enums($p);
   catalogs($p);
   //chartscharacteristics($p);
-  documents($p);
+  //documents($p);
   reports($p);
 }
