@@ -79,12 +79,15 @@ export class WorkPlace extends React.Component {
     const {ox} = bar;
     return (ox.is_new() ? ox.load() : Promise.resolve())
       .then(() => ox.calc_order.is_new() ? ox.calc_order.load() : null)
-      .then(() => {
+      .then(async () => {
         if(ox.base_block.empty() || !ox.base_block.is_new()) {
           return null;
         }
-        ox.base_block.obj_delivery_state = 'Шаблон';
-        return ox.base_block.load();
+        try {
+          ox.base_block.obj_delivery_state = 'Шаблон';
+          await ox.base_block.load();
+        }
+        catch(e) {}
       })
       .then(() => bar);
   }
