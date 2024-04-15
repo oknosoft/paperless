@@ -7,7 +7,7 @@
     "url": "https://github.com/oknosoft/paperless"
   },
   "engines": {
-    "node": ">=16.13",
+    "node": ">=18.16",
     "yarn": "^1.22"
   },
   "keywords": [
@@ -20,17 +20,17 @@
   ],
   "author": "Evgeniy Malyarov <info@oknosoft.ru> (http://www.oknosoft.ru)",
   "license": "SEE LICENSE IN LICENSE",
-  "proxy": "http://localhost:3016/",
+  "proxy1": "http://localhost:3016/",
   "proxy2": "https://paperless.ecookna.ru/",
-  "proxy3": "https://eco-paperless.oknosoft.ru/",
+  "proxy": "https://eco-paperless.oknosoft.ru/",
   "proxy4": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.33-beta.4",
-    "metadata-redux": "2.0.33-beta.4",
+    "metadata-react": "2.0.34-beta.3",
+    "metadata-redux": "2.0.34-beta.3",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#c73f2d224eea77e2fc56f1b8e995d5f6371f8983",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#e1833cae1366289804688f500d28dacb92e38b94",
+    "wb-core": "github:oknosoft/windowbuilder-core#1bb46474de3f81263e80206e156f43da255e5493",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#2f745c2896ab1e3acca8f8721d913dfc4017dc61",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
@@ -89,6 +89,7 @@
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1"
   },
+  "packageManager": "yarn@1.22.21",
   "files": [
     "server/**",
     "LICENSE",
