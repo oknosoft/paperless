@@ -19,6 +19,8 @@ class Furn2 extends WorkPlace {
           return;
         }
 
+        clearTimeout(project._attr._vis_timer);
+
         let contour = project.getItem({cnstr});
         if(contour) {
           if(contour.layer) {

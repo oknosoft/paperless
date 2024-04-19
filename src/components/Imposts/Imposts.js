@@ -18,6 +18,8 @@ class Imposts extends WorkPlace {
           return;
         }
 
+        clearTimeout(project._attr._vis_timer);
+
         const contour = project.getItem({cnstr});
         if(contour) {
 
