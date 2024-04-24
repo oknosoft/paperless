@@ -128,6 +128,9 @@ export default function ($p) {
     text.translate(tangent.normalize(hor ? text.bounds.width : text.bounds.height * 2));
 
     for(const {profile, point} of profiles) {
+      if(!profile) {
+        continue;
+      }
       // определим сторону
       const side = this.cnn_side(profile, null, rays);
       const isInner = side.is('inner');
@@ -178,7 +181,7 @@ export default function ($p) {
           fontSize,
           content,
         });
-        text.translate(normal.normalize(20 + text.bounds.width / 2));
+        text.translate(normal.normalize(20 + text.bounds.width / 2).add([0, text.bounds.height / 4]));
         const text2 = new paper.PointText({
           layer: l_visualization,
           guide: true,
@@ -188,7 +191,7 @@ export default function ($p) {
           fontSize: fontSize * 0.8,
           content: profile.nom.article,
         });
-        text2.translate(text.bounds.bottomLeft.subtract(text2.bounds.topLeft));
+        text2.translate(text.bounds.center.subtract(text2.bounds.center).add(normal.normalize(10 + text.bounds.width + text2.bounds.width / 2)));
 
       }
     }
