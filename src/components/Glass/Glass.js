@@ -14,8 +14,16 @@ class Glass extends WorkPlace {
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, PointText, consts}} = this;
     return super.barcodeFin(bar)
-      .then(({cnstr, ox}) => project.load(ox, {custom_lines: full_picture, mosquito: full_picture /*, visualization: false */})
-      .then(() => {
+      .then(({cnstr, elm, ox}) => {
+        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+          const crow = ox.leading_product.coordinates.find({elm});
+          if(crow) {
+            ox = bar.ox = ox.leading_product;
+            cnstr = bar.cnstr = crow.cnstr;
+          }
+        }
+        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, glass_numbers: true /*, visualization: false */})
+        .then(() => {
           if(full_picture) {
             return;
           }
@@ -36,17 +44,17 @@ class Glass extends WorkPlace {
 
             // рисуем номера заполнений
             for(const filling of contour.fillings) {
-              new PointText({
-                parent: filling,
-                guide: true,
-                justification: 'right',
-                fillColor: 'black',
-                fontFamily: consts.font_family,
-                fontSize: consts.font_size * 1.5,
-                fontWeight: 'bold',
-                content: filling.elm,
-                position: filling.path.interiorPoint.subtract([consts.font_size, consts.font_size]),
-              });
+              // new PointText({
+              //   parent: filling,
+              //   guide: true,
+              //   justification: 'right',
+              //   fillColor: 'black',
+              //   fontFamily: consts.font_family,
+              //   fontSize: consts.font_size * 1.5,
+              //   fontWeight: 'bold',
+              //   content: filling.elm,
+              //   position: filling.path.interiorPoint.subtract([consts.font_size, consts.font_size]),
+              // });
               filling.onClick = this.fillingClick.bind(this, filling);
             }
 
@@ -69,7 +77,8 @@ class Glass extends WorkPlace {
               });
             });
           }
-        }));
+        })
+      });
   }
 
   fillingClick(filling) {

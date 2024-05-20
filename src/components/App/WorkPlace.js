@@ -78,14 +78,29 @@ export class WorkPlace extends React.Component {
   barcodeFin(bar) {
     const {ox} = bar;
     return (ox.is_new() ? ox.load() : Promise.resolve())
-      .then(() => ox.calc_order.is_new() ? ox.calc_order.load() : null)
+      .then(() => {
+        const refs = [];
+        const {calc_order, leading_product} = ox;
+        if(calc_order.is_new()) {
+          refs.push(`doc.calc_order|${calc_order.ref}`);
+        }
+        if(!leading_product.empty() && leading_product.is_new()) {
+          refs.push(`cat.characteristics|${leading_product.ref}`);
+        }
+        const {pouch} = $p.adapters;
+        return refs.length ? pouch.load_array(null, refs, false, pouch.remote.doc) : null;
+      })
       .then(async () => {
-        if(ox.base_block.empty() || !ox.base_block.is_new()) {
+        let {base_block, leading_product} = ox;
+        if(base_block.empty() || !leading_product.base_block.empty()) {
+          base_block = leading_product.base_block;
+        }
+        if(base_block.empty() || !base_block.is_new()) {
           return null;
         }
         try {
-          ox.base_block.obj_delivery_state = 'Шаблон';
-          await ox.base_block.load();
+          base_block.obj_delivery_state = 'Шаблон';
+          await base_block.load();
         }
         catch(e) {}
       })
