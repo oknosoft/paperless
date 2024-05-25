@@ -14,56 +14,65 @@ class Facing extends WorkPlace {
     const {state: {full_picture}, editor: {project, consts, PointText, constructor: {Filling, BuilderElement}}} = this;
 
     return super.barcodeFin(bar)
-      .then(({cnstr, elm, ox}) => project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
-      .then(() => {
-        if(full_picture) {
-          for(const contour of project.contours) {
-            for(const filling of contour.fillings) {
+      .then(({cnstr, elm, ox}) => {
+        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+          const crow = ox.leading_product.coordinates.find({elm});
+          if(crow) {
+            ox = bar.ox = ox.leading_product;
+            cnstr = bar.cnstr = crow.cnstr;
+          }
+        }
+        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
+          .then(() => {
+            if(full_picture) {
+              for(const contour of project.contours) {
+                for(const filling of contour.fillings) {
+                  filling.onClick = this.fillingClick.bind(this, filling);
+                }
+              }
+              return;
+            }
+
+            let filling, contour;
+
+            if(elm) {
+              filling = project.getItem({class: BuilderElement, elm});
+              if(filling instanceof Filling) {
+                contour = filling && filling.layer;
+                bar.cnstr = contour.cnstr;
+              }
+              else {
+                filling = null;
+              }
+            }
+
+            if(!filling) {
+              contour = project.getItem({cnstr});
+              if(contour) {
+                const {fillings} = contour;
+                if(fillings.length) {
+                  filling = fillings[0];
+                  bar.elm = filling.elm;
+                }
+              }
+            }
+
+            if(contour && filling) {
+              filling._attr._exclusive = true;
+              filling._attr._text.visible = false;
               filling.onClick = this.fillingClick.bind(this, filling);
+              onlay_sizes({imposts: filling.imposts, consts, PointText});
+
+              // рисуем текущий слой
+              project.draw_fragment({elm: bar.elm});
+              filling.draw_arcr();
+
+              // вписываем в размер экрана
+              project.zoom_fit();
+              this.setState(bar);
             }
-          }
-          return;
-        }
-
-        let filling, contour;
-
-        if(elm) {
-          filling = project.getItem({class: BuilderElement, elm});
-          if(filling instanceof Filling) {
-            contour = filling && filling.layer;
-            bar.cnstr = contour.cnstr;
-          }
-          else {
-            filling = null;
-          }
-        }
-
-        if(!filling) {
-          contour = project.getItem({cnstr});
-          if(contour) {
-            const {fillings} = contour;
-            if(fillings.length) {
-              filling = fillings[0];
-              bar.elm = filling.elm;
-            }
-          }
-        }
-
-        if(contour && filling) {
-          filling._attr._exclusive = true;
-          filling._attr._text.visible = false;
-          filling.onClick = this.fillingClick.bind(this, filling);
-          onlay_sizes({imposts: filling.imposts, consts, PointText});
-
-          // рисуем текущий слой
-          project.draw_fragment({elm: bar.elm});
-          filling.draw_arcr();
-
-          // вписываем в размер экрана
-          project.zoom_fit();
-          this.setState(bar);
-        }
-      }));
+          });
+      });
   }
 
   fillingClick(filling) {

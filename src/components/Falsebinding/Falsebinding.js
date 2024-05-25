@@ -12,55 +12,64 @@ class Falsebinding extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, PointText, consts, constructor: {DimensionLineCustom}}} = this;
-    const {cnstr, ox} = bar;
-    project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
-      .then(() => {
-        if(full_picture) {
-          return;
-        }
-
-        const contour = project.getItem({cnstr});
-        if(contour) {
-          // рисуем текущий слой
-          project.draw_fragment({elm: -cnstr});
-
-          // прячем вложенные слои и заполнения без раскладок
-          for(const cnt of contour.contours) {
-            cnt.visible = false;
+    return super.barcodeFin(bar)
+      .then(({cnstr, elm, ox}) => {
+        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+          const crow = ox.leading_product.coordinates.find({elm});
+          if(crow) {
+            ox = bar.ox = ox.leading_product;
+            cnstr = bar.cnstr = crow.cnstr;
           }
-          for(const filling of contour.fillings) {
-            const {imposts} = filling;
-            if(!imposts.length) {
-              filling.visible = false;
-              continue;
+        }
+        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
+          .then(() => {
+            if(full_picture) {
+              return;
             }
-            filling._attr._text.visible = false;
-            onlay_sizes({imposts, consts, PointText});
-          }
 
-          // прячем направление открывания и пользовательские размерные линии
-          const {l_visualization: {_opening}, l_dimensions} = contour;
-          if(_opening) {
-            _opening.visible = false;
-          }
-          l_dimensions.children
-            .filter((dim) => dim instanceof DimensionLineCustom)
-            .forEach((dim) => dim.remove());
+            const contour = project.getItem({cnstr});
+            if(contour) {
+              // рисуем текущий слой
+              project.draw_fragment({elm: -cnstr});
 
-          // рисуем направления профилей
-          // for (const profile of contour.profiles) {
-          //   profile.mark_direction();
-          // }
+              // прячем вложенные слои и заполнения без раскладок
+              for(const cnt of contour.contours) {
+                cnt.visible = false;
+              }
+              for(const filling of contour.fillings) {
+                const {imposts} = filling;
+                if(!imposts.length) {
+                  filling.visible = false;
+                  continue;
+                }
+                filling._attr._text.visible = false;
+                onlay_sizes({imposts, consts, PointText});
+              }
 
-          // рисуем спецразмеры фальшпереплёта
-          contour.l_dimensions.draw_by_falsebinding();
+              // прячем направление открывания и пользовательские размерные линии
+              const {l_visualization: {_opening}, l_dimensions} = contour;
+              if(_opening) {
+                _opening.visible = false;
+              }
+              l_dimensions.children
+                .filter((dim) => dim instanceof DimensionLineCustom)
+                .forEach((dim) => dim.remove());
 
-          // и длины элементов раскладок
+              // рисуем направления профилей
+              // for (const profile of contour.profiles) {
+              //   profile.mark_direction();
+              // }
 
-          // вписываем в размер экрана
-          project.zoom_fit();
-          this.setState(bar);
-        }
+              // рисуем спецразмеры фальшпереплёта
+              contour.l_dimensions.draw_by_falsebinding();
+
+              // и длины элементов раскладок
+
+              // вписываем в размер экрана
+              project.zoom_fit();
+              this.setState(bar);
+            }
+          });
       });
   }
 

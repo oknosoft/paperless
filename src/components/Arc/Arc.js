@@ -19,6 +19,13 @@ class Arc extends WorkPlace {
 
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
+        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+          const crow = ox.leading_product.coordinates.find({elm});
+          if(crow) {
+            ox = bar.ox = ox.leading_product;
+            cnstr = bar.cnstr = crow.cnstr;
+          }
+        }
         ox.coordinates.clear({elm_type: ''});
         return project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
           .then(() => {

@@ -111,6 +111,9 @@ export function decrypt(barcode, doc = {}) {
             if(!doc.cnstr) {
               doc.cnstr = 1;
             }
+            if(!ox.coordinates.count() && !ox.leading_product.empty()) {
+              ox.leading_product._data._is_new = true;
+            }
             resolve(doc);
           }
         })
