@@ -15,7 +15,7 @@ class Arc extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor} = this;
-    const {project, constructor: {DimensionRadius, Filling}} = editor;
+    const {project, constructor: {DimensionRadius, DimensionLine, Filling}} = editor;
 
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
@@ -55,23 +55,23 @@ class Arc extends WorkPlace {
 
                 // подкрашиваем штульпы
                 editor.color_shtulps(contour);
-                const {_by_spec, _opening} = contour.l_visualization;
-                _by_spec.opacity = 0.4;
+                const {by_spec, _opening} = contour.l_visualization;
+                by_spec.opacity = 0.4;
                 if(_opening) {
                   _opening.opacity = 0.4;
                 }
 
                 // расставляем радиусы на гнутых элементах
-                contour.l_dimensions.children
-                  .filter((dim) => dim instanceof DimensionRadius)
-                  .forEach((dim) => {
-                    dim.remove();
-                  });
+                contour.l_dimensions.children.filter((dim) => dim instanceof DimensionRadius)
+                  .forEach((dim) => dim.remove());
 
                 // показываем номера элементов на палках
+                project.l_dimensions.children.filter((dim) => dim instanceof DimensionLine)
+                  .forEach((dim) => dim.remove());
+                project.l_dimensions.visible = true;
                 for(const profile of contour.profiles) {
                   if(!profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
-                    profile.show_number();
+                    profile.draw_articles(1);
                   }
                   if(!profile.is_linear()) {
                     const {generatrix: gen, rays: {outer}, path} = profile;

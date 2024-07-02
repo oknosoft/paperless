@@ -32,7 +32,7 @@ class Welding extends WorkPlace {
           // показываем номера элементов на палках
           for(const profile of contour.profiles) {
             if(!profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
-              profile.show_number();
+              profile.draw_articles(1);
             }
           }
 

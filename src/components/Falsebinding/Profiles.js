@@ -77,6 +77,7 @@ class Profiles extends React.Component {
           scheme={scheme}
           filter={filter}
           read_only
+          disable_cache
           hideToolbar
         />
       </div>

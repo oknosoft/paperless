@@ -28,7 +28,7 @@ class Crackers extends WorkPlace {
           profile.crackers_dimensions();
 
           // показываем номера элементов на палках
-          profile.show_number();
+          profile.draw_articles(1);
           profile.mark_direction();
 
         }

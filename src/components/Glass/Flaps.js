@@ -65,6 +65,7 @@ class Flaps extends React.Component {
           columnsChange={columnsChange}
           minHeight={minHeight}
           read_only
+          disable_cache
           hideToolbar
         />
       </div>

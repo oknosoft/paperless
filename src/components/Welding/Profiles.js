@@ -53,6 +53,7 @@ class Profiles extends React.Component {
           _tabular="coordinates"
           scheme={this.scheme}
           read_only
+          disable_cache
           hideToolbar
         />
       </div>

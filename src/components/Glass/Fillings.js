@@ -55,6 +55,7 @@ class Fillings extends React.Component {
           filter={this.filter}
           minHeight={minHeight}
           read_only
+          disable_cache
           hideToolbar
         />
       </div>
