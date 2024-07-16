@@ -26,10 +26,10 @@
   "proxy4": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.34-beta.3",
-    "metadata-redux": "2.0.34-beta.3",
+    "metadata-react": "2.0.35-beta.1",
+    "metadata-redux": "2.0.35-beta.1",
     "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#18d1adcef8ec2d3489a3cfefc3acd79763d3cca3",
+    "wb-core": "github:oknosoft/windowbuilder-core#4f134a805bd576c92657e7493326113d081738f2",
     "wb-forms": "github:oknosoft/windowbuilder-forms#2f745c2896ab1e3acca8f8721d913dfc4017dc61",
     "xlsx": "^0.18.5"
   },
@@ -89,7 +89,7 @@
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1"
   },
-  "packageManager": "yarn@1.22.21",
+  "packageManager": "yarn@1.22.22",
   "files": [
     "server/**",
     "LICENSE",

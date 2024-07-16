@@ -27,6 +27,7 @@ class Profiles extends React.Component {
         this._meta.fields.alp1.type.fraction = 1;
         this._meta.fields.alp2.type.fraction = 1;
         this._meta.fields.r.type.fraction = 0;
+        this._meta.fields.x2.type.fraction = 0;
       }
     });
   }
@@ -36,31 +37,40 @@ class Profiles extends React.Component {
     const beads = [];
     collection.clear();
     const {ox: {coordinates, specification}, contour: {profiles}} = this.props;
-    coordinates.forEach((row) => {
-      if(profiles.some((profile) => profile.elm === row.elm)) {
-        const nrow = collection.add(row);
-        const srow = specification.find({elm: row.elm, nom: row.nom.ref});
-        if(srow) {
-          nrow.len = srow.len * 1000;
-        }
-        res.push(nrow);
-        if(row.r) {
-          // для гнутых, добавляем инфо по штапикам
-          specification.find_rows({elm: row.elm}, (srow) => {
-            if(srow.nom.elm_type == 'Штапик') {
-              const nrow = collection.add(row);
-              nrow.len = srow.len * 1000;
-              nrow.nom = srow.nom;
-              nrow.alp1 = srow.alp1;
-              nrow.alp2 = srow.alp2;
-              nrow.clr = srow.clr;
-              nrow.r = row.r - row.nom.width;
-              beads.push(nrow);
-            }
-          });
-        }
+    for(const profile of profiles) {
+      const row = coordinates.find({elm: profile.elm});
+      const nrow = collection.add(row);
+      const srow = specification.find({elm: row.elm, nom: row.nom.ref});
+      if(srow) {
+        nrow.len = srow.len * 1000;
       }
-    });
+      res.push(nrow);
+      if(row.r) {
+        let {rinner, router} = profile;
+        if(rinner > router) {
+          [rinner, router] = [router, rinner];
+        }
+        row.r = router;
+        row.x2 = rinner;
+        // для гнутых, добавляем инфо по штапикам
+        specification.find_rows({elm: row.elm}, (srow) => {
+          if(srow.nom.elm_type.is('Штапик')) {
+            const nrow = collection.add(row);
+            nrow.len = srow.len * 1000;
+            nrow.nom = srow.nom;
+            nrow.alp1 = srow.alp1;
+            nrow.alp2 = srow.alp2;
+            nrow.clr = srow.clr;
+            nrow.r = rinner + nrow.nom.width;
+            nrow.x2 = rinner;
+            beads.push(nrow);
+          }
+        });
+      }
+      else {
+        row.x2 = 0;
+      }
+    }
     return res.concat(beads);
   }
 
@@ -79,7 +89,7 @@ class Profiles extends React.Component {
       </div>
       :
       <Typography key="err-nom" color="error">
-        {`Не найден элемент scheme_settings {obj: "cat.characteristics.coordinates", name: "characteristics.coordinates.welding"}`}
+        {`Не найден элемент scheme_settings {obj: "cat.characteristics.coordinates", name: "characteristics.coordinates.arc"}`}
       </Typography>;
   }
 
