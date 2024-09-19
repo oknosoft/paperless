@@ -28,6 +28,7 @@ class Crackers extends WorkPlace {
           profile.crackers_dimensions();
 
           // показываем номера элементов на палках
+          project.l_dimensions.visible = true;
           profile.draw_articles(1);
           profile.mark_direction();
 

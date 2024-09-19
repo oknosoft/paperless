@@ -30,6 +30,7 @@ class Welding extends WorkPlace {
           contour.l_visualization.visible = false;
 
           // показываем номера элементов на палках
+          project.l_dimensions.visible = true;
           for(const profile of contour.profiles) {
             if(!profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
               profile.draw_articles(1);

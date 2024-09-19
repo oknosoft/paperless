@@ -36,6 +36,7 @@ class Imposts extends WorkPlace {
           this.editor.color_shtulps(contour);
 
           // показываем номера элементов на палках
+          project.l_dimensions.visible = true;
           for(const profile of contour.profiles) {
             if(profile.elm_type._manager.impost_lay.includes(profile.elm_type)) {
               profile.draw_articles(1);
