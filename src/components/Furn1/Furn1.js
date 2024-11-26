@@ -13,7 +13,7 @@ class Furn1 extends WorkPlace {
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, constructor}} = this;
     const {cnstr, ox} = bar;
-    project.load(ox, {custom_lines: full_picture, mosquito: full_picture})
+    project.load(ox, {custom_lines: full_picture, mosquito: full_picture, redraw: true})
       .then(() => {
         if(full_picture) {
           return;
@@ -60,7 +60,7 @@ class Furn1 extends WorkPlace {
 
   registerRep = (el) => {
     this.rep = el;
-  }
+  };
 
   render() {
     const {state: {ox, full_picture}, props: {classes}, editor} = this;

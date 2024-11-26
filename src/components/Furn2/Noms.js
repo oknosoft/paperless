@@ -10,7 +10,7 @@ class Noms extends React.Component {
     if(el) {
       this.reps.add(el);
     }
-  }
+  };
 
   handleSave() {
     for(const rep of this.reps) {

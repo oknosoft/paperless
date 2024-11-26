@@ -27,7 +27,7 @@ class Arc extends WorkPlace {
           }
         }
         ox.coordinates.clear({elm_type: ''});
-        return project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
+        return project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture, redraw: true})
           .then(() => {
             if(full_picture) {
               return;

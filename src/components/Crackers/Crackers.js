@@ -12,7 +12,7 @@ class Crackers extends WorkPlace {
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project, PointText, Contour}} = this;
     const {elm, ox} = bar;
-    project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture})
+    project.load(ox, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture, redraw: true})
       .then(() => {
         if(full_picture) {
           return;

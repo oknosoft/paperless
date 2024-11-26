@@ -37,9 +37,7 @@ class Fillings extends React.Component {
     });
   }
 
-  filter = () => {
-    return this._filtered;
-  }
+  filter = () => this._filtered;
 
   render() {
     const {ox} = this.props;

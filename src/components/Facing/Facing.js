@@ -22,7 +22,7 @@ class Facing extends WorkPlace {
             cnstr = bar.cnstr = crow.cnstr;
           }
         }
-        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1})
+        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, rounding: 1, redraw: true})
           .then(() => {
             if(full_picture) {
               for(const contour of project.contours) {

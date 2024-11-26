@@ -28,14 +28,14 @@
     "md5-file": "^5.0",
     "metadata-react": "2.0.35-beta.2",
     "metadata-redux": "2.0.35-beta.2",
-    "url-join": "^4.0.1",
-    "wb-core": "github:oknosoft/windowbuilder-core#d3f23169fe8318851f1191dd7330042c3dc17cba",
+    "url-join": "^5.0",
+    "wb-core": "github:oknosoft/windowbuilder-core#c8c6d5cb812ed006d03aea65d21cf0a56092aa17",
     "wb-forms": "github:oknosoft/windowbuilder-forms#b0ef484d4147ddb48d25de541b6ee97a4845d9a7",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@babel/core": "^7.25.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
