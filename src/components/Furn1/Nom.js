@@ -9,7 +9,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FrmReport from 'metadata-react/FrmReport';
-import Typography from '@material-ui/core/Typography';
+import TypographyWithAppearance from '../ConditionalAppearance/Typography';
 import furnClr from './furnClr';
 
 class Nom extends React.Component {
@@ -97,11 +97,9 @@ class Nom extends React.Component {
     const {ox, cnstr, registerRep, count} = this.props;
     const row = ox && cnstr && ox.constructions.find({cnstr});
     const classes = row ? {root: furnClr(row.furn)} : {};
-    return this.scheme ?
-      [
-        <Typography key="cnstr" variant="h6" classes={classes}>{`№${cnstr} (${row && row.furn.name})`}</Typography>,
+    return this.scheme ? <>
+        <TypographyWithAppearance variant="h6" classes={classes} fld="furn">{`№${cnstr} (${row && row.furn.name})`}</TypographyWithAppearance>
         <FrmReport
-          key="report"
           _tabular="specification"
           _acl="r"
           _mgr={this.rep._manager}
@@ -116,11 +114,11 @@ class Nom extends React.Component {
           cnstr={cnstr}
           minHeight={count === 1 ? 680 : 440}
         />
-      ]
+      </>
       :
-      <Typography key="err-nom" color="error">
+      <TypographyWithAppearance color="error">
         {`Не найден элемент scheme_settings {obj: "rep.materials_demand.specification", name: "materials_demand.specification.furn1"}`}
-      </Typography>;
+      </TypographyWithAppearance>;
   }
 
 }
