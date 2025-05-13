@@ -75,7 +75,7 @@ class Furn2 extends WorkPlace {
         <Builder registerChild={this.registerEditor}/>
       </Grid>
       {!full_picture && <Grid item sm={12} md={4} xl={3} className={classes.props}>
-        {has_ox && <Noms {...this.state} ref={this.registerRep} classes={classes}/>}
+        {has_ox && <Noms {...this.state} ref={this.registerRep} classes={classes} editor={editor}/>}
       </Grid>}
       <Grid item sm={12} md={4} xl={3} className={classes.props}>
         <div className={classes.workheight}>

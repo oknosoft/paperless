@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Nom from '../Furn1/Nom';
+import {ConditionalAppearanceContext, initialContext} from '../ConditionalAppearance/context';
 
 class Noms extends React.Component {
 
@@ -23,18 +24,22 @@ class Noms extends React.Component {
   }
 
   render() {
-    const {ox, cnstr, classes} = this.props;
+    const {ox, cnstr, classes, editor} = this.props;
     const constructions = ox.constructions._obj.filter(({parent}) => parent === cnstr);
+
     return <div className={classes.workheight}>
-      {constructions.map((row) => (
+      {constructions.map(({cnstr}) => {
+        const layer = editor.project.getItem({cnstr});
+        return <ConditionalAppearanceContext.Provider value={{...initialContext, ox, cnstr, editor, layer }}>
           <Nom
-            key={`nom-${row.cnstr}`}
-            ox={ox} cnstr={row.cnstr}
+            key={`nom-${cnstr}`}
+            ox={ox} cnstr={cnstr}
             registerRep={this.registerRep}
             complete_list_sorting={[19,30]}
             count={constructions.length}
           />
-        ))}
+        </ConditionalAppearanceContext.Provider>;
+      })}
     </div>;
   }
 
