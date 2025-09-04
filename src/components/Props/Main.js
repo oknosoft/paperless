@@ -63,11 +63,6 @@ export default function MainProps(props) {
               <TableCell>{`${ox.x}x${ox.y} S:${ox.s.toFixed(3)}`}</TableCell>
             </TableRow>}
 
-            {ox.note ? <TableRow>
-              <TableCell>Коммент</TableCell>
-              <TableCell>{ox.note}</TableCell>
-            </TableRow> : null}
-
             {block && <TableRow>
               <TableCell>Блок</TableCell>
               <TableCell>{block}</TableCell>
@@ -78,7 +73,13 @@ export default function MainProps(props) {
       </TableCell>
     </TableRow>);
 
-    //rows.push(<TableRow key="divider"><TableCell /><TableCell /></TableRow>);
+    const note = ox.note || ox.calc_order_row.note;
+    if(note) {
+      rows.push(<TableRow>
+        <TableCell>Комментарий</TableCell>
+        <TableCell>{note}</TableCell>
+      </TableRow>);
+    }
 
     rows.push(...Params({ox, cnstr: 0, filter}));
 

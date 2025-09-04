@@ -29,7 +29,7 @@
     "metadata-react": "2.0.38-beta.2",
     "metadata-redux": "2.0.38-beta.2",
     "url-join": "^5.0",
-    "wb-core": "github:oknosoft/windowbuilder-core#4d4f072c9cc144aa6834aac0a92dd9c0f6d13983",
+    "wb-core": "github:oknosoft/windowbuilder-core#552029cff7045bfd5043cf419548ecfdd9103b62",
     "wb-forms": "github:oknosoft/windowbuilder-forms#fac95359019753435c41fcb35231c6b9b373f95a",
     "xlsx": "^0.18.5"
   },
