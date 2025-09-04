@@ -11,11 +11,19 @@ import {TableRow, TableCell} from './TableRow';
 
 export default function Params(props) {
 
-  const {ox: {params}, cnstr} = props;
+  const {ox: {params}, cnstr, filter} = props;
   const res = [];
 
   params.find_rows({cnstr, inset: $p.utils.blank.guid}, (row) => {
-    row.param && row.param.include_to_description && res.push(row);
+    const {param} = row;
+    if(param) {
+      if(filter) {
+        filter(row) && res.push(row);
+      }
+      else {
+        param.include_to_description && res.push(row);
+      }
+    }
   });
 
   return res

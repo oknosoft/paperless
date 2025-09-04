@@ -1,4 +1,3 @@
-// @flow
 
 import React from 'react';
 import Table from '@material-ui/core/Table';
@@ -12,8 +11,8 @@ import scale_svg from '../../metadata/common/scale_svg';
 
 export default function MainProps(props) {
 
-  const {ox, cnstr, block, task, show_spec, changeFull} = props;
-  const name = ox.prod_name && ox.prod_name(true);
+  const {ox, cnstr, block, task, show_spec, changeFull, hideBounds, filter} = props;
+  const name = ox.prod_name?.(true);
 
   const rows = [];
 
@@ -28,6 +27,9 @@ export default function MainProps(props) {
     ox.coordinates.forEach(({clr, elm_type}) => {
       elm_type._manager.profiles.includes(elm_type) && !clr.empty() && clrs.add(clr);
     });
+    if(!clrs.size && ox.clr.empty && !ox.clr.empty()) {
+      clrs.add(ox.clr);
+    }
     rows.push(<TableRow key="sub">
       <TableCell onClick={changeFull}>
         <div dangerouslySetInnerHTML={{__html: ox.svg ? scale_svg(ox.svg, {width: 130, height: 110, zoom: 0.2}, 0) : 'нет эскиза'}}/>
@@ -56,10 +58,15 @@ export default function MainProps(props) {
               <TableCell>{Array.from(clrs).join(',')}</TableCell>
             </TableRow>
 
-            <TableRow>
+            {hideBounds ? null : <TableRow>
               <TableCell>Габарит</TableCell>
               <TableCell>{`${ox.x}x${ox.y} S:${ox.s.toFixed(3)}`}</TableCell>
-            </TableRow>
+            </TableRow>}
+
+            {ox.note ? <TableRow>
+              <TableCell>Коммент</TableCell>
+              <TableCell>{ox.note}</TableCell>
+            </TableRow> : null}
 
             {block && <TableRow>
               <TableCell>Блок</TableCell>
@@ -73,9 +80,9 @@ export default function MainProps(props) {
 
     //rows.push(<TableRow key="divider"><TableCell /><TableCell /></TableRow>);
 
-    rows.push(...Params({ox, cnstr: 0}));
+    rows.push(...Params({ox, cnstr: 0, filter}));
 
-    cnstr && rows.push(...Params({ox, cnstr}));
+    cnstr && rows.push(...Params({ox, cnstr, filter}));
 
     show_spec && rows.push(...CompleteListSorting({ox, cnstr, show_spec}));
 
