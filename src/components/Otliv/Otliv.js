@@ -11,7 +11,7 @@ function filter(row) {
   return param.predefined_name !== 'auto_align' && (!param.is_calculated || param.show_calculated);
 }
 
-class Universal extends WorkPlace {
+class Otliv extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project}} = this;
@@ -38,10 +38,10 @@ class Universal extends WorkPlace {
   }
 }
 
-Universal.propTypes = {
+Otliv.propTypes = {
   handleIfaceState: PropTypes.func.isRequired,
   title: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(withIface(Universal));
+export default withStyles(withIface(Otliv));

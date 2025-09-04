@@ -7,14 +7,6 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 const items = [
   {
-    text: 'Универсальное',
-    title: 'Стандартный эскиз',
-    id: 'universal',
-    navigate: '/universal',
-    need_meta: true,
-    need_user: true,
-  },
-  {
     text: 'Импосты',
     title: 'Установка импостов',
     id: 'imposts',
@@ -83,6 +75,14 @@ const items = [
     title: 'Установка сухарей',
     id: 'crackers',
     navigate: '/crackers',
+    need_meta: true,
+    need_user: true,
+  },
+  {
+    text: 'Отливы',
+    title: 'Водоотлив',
+    id: 'otliv',
+    navigate: '/otliv',
     need_meta: true,
     need_user: true,
   },
