@@ -3,37 +3,68 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import TabularSection from 'metadata-react/TabularSection';
 
-class Crooked extends React.Component {
+function sort(a, b) {
+  if(a.nom.name < b.nom.name) {
+    return -1;
+  }
+  else if(a.nom.name > b.nom.name) {
+    return 1;
+  }
+  else {
+    return a.len - b.len;
+  }
+}
+
+const nomStyle = {textAlign: 'right', paddingRight: 8};
+function NomCoordinate({value}) {
+  if(typeof value === 'number') {
+    const text = (value * 1000).toFixed(0);
+    return <div title={text} style={nomStyle}>{text}</div>;
+  }
+  const text = value.name;
+  return <div title={text}>{text}</div>;
+}
+
+function columnsChange({columns}) {
+  columns[0].formatter = NomCoordinate;
+}
+
+class Coordinates extends React.Component {
 
   constructor(props, context) {
     super(props, context);
 
     const {cat, utils} = $p;
     this._meta = utils._clone(cat.characteristics.metadata('specification'));
-    this._meta.fields.qty.type.fraction = 0;
-    this._meta.fields.totqty.type.fraction = 0;
 
     cat.scheme_settings.find_rows({obj: 'cat.characteristics.specification'}, (scheme) => {
-      if(scheme.name.endsWith('crackers')) {
+      if(scheme.name.endsWith('operations')) {
         this.scheme = scheme;
       }
     });
   }
 
   filter = (collection) => {
+    const pre = [];
     const res = [];
+    const noms = new Set();
     const {elm, ox: {cnn_elmnts}} = this.props;
-    const {rigel_cnn} = $p.job_prm.nom;
+    const {hide_oper} = $p.job_prm.nom;
     collection.forEach((row) => {
-      if(row.elm === elm || cnn_elmnts.find({elm1: row.elm, elm2: elm})) {
-        for(const nom of rigel_cnn) {
-          if(row.nom._hierarchy(nom)) {
-            res.push(row);
-            break;
-          }
-        }
+      if(row.elm === elm && row.dop === -2 && row.len && !hide_oper.includes(row.nom)) {
+        pre.push(row);
       }
     });
+    pre.sort(sort);
+    for(const row of pre) {
+      noms.add(row.nom);
+    }
+    for(const nom of noms) {
+      res.push({nom});
+      for(const row of pre.filter(row => row.nom === nom)) {
+        res.push({nom: row.len});
+      }
+    }
     return res;
   };
 
@@ -54,6 +85,7 @@ class Crooked extends React.Component {
             scheme={this.scheme}
             filter={this.filter}
             minHeight={minHeight}
+            columnsChange={columnsChange}
             read_only
             disable_cache
             hideToolbar
@@ -62,15 +94,15 @@ class Crooked extends React.Component {
       </div>
       :
       <Typography key="err-nom" color="error">
-        {`Не найден элемент scheme_settings {obj: "cat.characteristics.specification", name: "characteristics.specification.crackers"}`}
+        {`Не найден элемент scheme_settings {obj: "cat.characteristics.specification", name: "characteristics.specification.operations"}`}
       </Typography>;
   }
 
 }
 
-Crooked.propTypes = {
+Coordinates.propTypes = {
   ox: PropTypes.object.isRequired,
   elm: PropTypes.number.isRequired,
 };
 
-export default Crooked;
+export default Coordinates;

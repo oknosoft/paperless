@@ -79,6 +79,14 @@ const items = [
     need_user: true,
   },
   {
+    text: 'Обработки',
+    title: 'Координаты операций',
+    id: 'operations',
+    navigate: '/operations',
+    need_meta: true,
+    need_user: true,
+  },
+  {
     text: 'Отливы',
     title: 'Водоотлив',
     id: 'otliv',
