@@ -74,23 +74,20 @@ class Coordinates extends React.Component {
     if(!rows.length) {
       return null;
     }
-    const minHeight = Math.min(420, 35 + 35 * rows.length);
     return this.scheme ?
-      <div>
-        <div style={{height: minHeight}}>
-          <TabularSection
-            _obj={ox}
-            _meta={this._meta}
-            _tabular="specification"
-            scheme={this.scheme}
-            filter={this.filter}
-            minHeight={minHeight}
-            columnsChange={columnsChange}
-            read_only
-            disable_cache
-            hideToolbar
-          />
-        </div>
+      <div style={{height: 'calc(100vh - 74px)'}}>
+        <TabularSection
+          _obj={ox}
+          _meta={this._meta}
+          _tabular="specification"
+          scheme={this.scheme}
+          filter={this.filter}
+          minHeight={400}
+          columnsChange={columnsChange}
+          read_only
+          disable_cache
+          hideToolbar
+        />
       </div>
       :
       <Typography key="err-nom" color="error">

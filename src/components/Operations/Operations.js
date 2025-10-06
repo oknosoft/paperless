@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import {withIface} from 'metadata-redux';
 import Builder from '../Builder';
 import Props from '../Props/Main';
-import Profile from './Profile';
+import Coordinates from './Coordinates';
 
 import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 
@@ -57,12 +58,15 @@ class Operations extends WorkPlace {
   render() {
     const {state: {full_picture, ox, elm, profile}, props: {classes}} = this;
     return <WorkPlaceFrame>
-      <Grid item sm={12} md={full_picture ? 9 : 8} className={classes.workplace}>
+      <Grid item sm={12} md={full_picture ? 9 : 7} className={classes.workplace}>
         <Builder registerChild={this.registerEditor}/>
       </Grid>
-      <Grid item sm={12} md={full_picture ? 3 : 4} className={classes.props}>
+      {full_picture ? null : <Grid item sm={12} md={2} className={classes.props}>
+        {profile ? <Coordinates ox={ox} elm={elm}/> : null}
+      </Grid>}
+      <Grid item sm={12} md={3} className={classes.props}>
         <Props {...this.state} show_spec={false} changeFull={this.changeFull}/>
-        <Profile ox={ox} elm={elm} profile={profile}/>
+        {profile ? <Typography>{`${profile.nom.name} ${profile.info}`}</Typography> : null}
       </Grid>
     </WorkPlaceFrame>;
   }
