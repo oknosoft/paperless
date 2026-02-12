@@ -60,7 +60,7 @@ export default function MainProps(props) {
 
             {hideBounds ? null : <TableRow>
               <TableCell>Габарит</TableCell>
-              <TableCell>{`${ox.x}x${ox.y} S:${ox.s.toFixed(3)}`}</TableCell>
+              <TableCell>{`${ox.x.round(1)}x${ox.y.round(1)} S:${ox.s.toFixed(3)}`}</TableCell>
             </TableRow>}
 
             {block && <TableRow>

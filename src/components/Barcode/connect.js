@@ -133,7 +133,7 @@ export function decrypt(barcode, doc = {}) {
         body: JSON.stringify({
           _id: `${moment().format('YYYYMMDDHHmmssSSS')}|${barcode}`,
           user: current_user ? current_user.ref : utils.blank.guid,
-          place: location.pathname.substr(1).split('/')[0],
+          place: location.pathname.substring(1).split('/')[0],
           work_center: work_center || utils.blank.guid,
           person: person || utils.blank.guid,
         }),
@@ -210,14 +210,14 @@ export function control(barcode) {
     return dialogs.snack({message: `Подозрительно короткий штрихкод '${barcode}'`, timeout});
   }
   if(barcode.startsWith('fl-')) {
-    const fl = individuals.find_rows({id: {like: barcode.substr(3)}})[0];
+    const fl = individuals.find_rows({id: {like: barcode.substring(3)}})[0];
     if(!fl || fl.empty()) {
       return dialogs.snack({message: `Не найдено физлицо по коду '${barcode}'`, timeout});
     }
     return wsql.set_user_param('individual_person', fl.ref);
   }
   if(barcode.startsWith('wc-')) {
-    const wc = work_centers.find_rows({id: {like: barcode.substr(3)}})[0];
+    const wc = work_centers.find_rows({id: {like: barcode.substring(3)}})[0];
     if(!wc || wc.empty()) {
       return dialogs.snack({message: `Не найден рабочий центр по коду '${barcode}'`, timeout});
     }
