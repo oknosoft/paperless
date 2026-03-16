@@ -157,7 +157,13 @@ export default function ($p) {
       const side = this.cnn_side(profile, null, rays);
       const isInner = side.is('inner');
       const ray = isInner ? rays.inner : rays.outer;
-      const ipoint = ray.intersect_point(profile.generatrix, point, width);
+      const pgen = profile.generatrix.clone({insert: false});
+      if(profile.elm_type.is('rama')) {
+        const pt = (point.getDistance(b.point, 1) < point.getDistance(e.point, 1) ?
+          generatrix.getTangentAt(0) : generatrix.getTangentAt(generatrix.length).negate()) .multiply(profile.width / 2);
+        pgen.translate(pt);
+      }
+      const ipoint = ray.intersect_point(pgen, point, width);
       if(ipoint) {
         const offset = ray.getOffsetOf(ipoint);
         const normal = ray.getNormalAt(offset).multiply(width * .8 * length / 1200);
@@ -166,7 +172,7 @@ export default function ($p) {
         const fin = ray.getNearestPoint(this.corns(2));
         const delta = isInner ? ray.getOffsetOf(base) - offset : offset - ray.getOffsetOf(base);
         const d2 = isInner ? offset - ray.getOffsetOf(fin) : ray.getOffsetOf(fin) - offset;
-        if(delta < 0 || d2 < 0) {
+        if(delta < 1 || d2 < 1) {
           continue;
         }
         const param = cch.properties.predefined('rigel_cnn');
