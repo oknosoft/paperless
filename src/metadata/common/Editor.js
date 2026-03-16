@@ -99,10 +99,32 @@ export default function ($p) {
     const {
       layer: {l_dimensions, l_visualization},
       project: {_scope: {consts}},
-      rays, width, length, generatrix}  = this;
+      rays, width, length, generatrix, layer}  = this;
     const {b, e} = rays;
     const {inner, outer} = this.joined_imposts();
-    const profiles = [b, ...inner, ...outer, e];
+    const profiles = [{profile: b.profile, point: b.point}, ...inner, ...outer, {profile: e.profile, point: e.point}];
+    // if(!b.profile) {
+    //   for(const test of layer.profiles) {
+    //     if(test !== this) {
+    //       const {rays} = test;
+    //       if(rays.e.point.is_nearest(b.point, 1) || rays.b.point.is_nearest(b.point, 1)) {
+    //         profiles[0].profile = test;
+    //         break;
+    //       }
+    //     }
+    //   }
+    // }
+    // if(!e.profile) {
+    //   for(const test of layer.profiles) {
+    //     if(test !== this) {
+    //       const {rays} = test;
+    //       if(rays.e.point.is_nearest(e.point, 1) || rays.b.point.is_nearest(e.point, 1)) {
+    //         profiles[3].profile = test;
+    //         break;
+    //       }
+    //     }
+    //   }
+    // }
     let other = b.find_other();
     if(other) {
       profiles.push({profile: other.profile, point: other.profile[other.node]});
@@ -144,7 +166,7 @@ export default function ($p) {
         const fin = ray.getNearestPoint(this.corns(2));
         const delta = isInner ? ray.getOffsetOf(base) - offset : offset - ray.getOffsetOf(base);
         const d2 = isInner ? offset - ray.getOffsetOf(fin) : ray.getOffsetOf(fin) - offset;
-        if(delta < 1 || d2 < 1) {
+        if(delta < 0 || d2 < 0) {
           continue;
         }
         const param = cch.properties.predefined('rigel_cnn');
