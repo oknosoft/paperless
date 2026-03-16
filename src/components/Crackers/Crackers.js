@@ -31,7 +31,7 @@ class Crackers extends WorkPlace {
           project.l_dimensions.visible = true;
           profile.draw_articles(1);
           profile.mark_direction();
-
+          profile.zoom_fit();
         }
         else {
           project.clear();
@@ -45,9 +45,8 @@ class Crackers extends WorkPlace {
             fontSize: 120,
             point: [-300, 80],
           });
+          project.zoom_fit();
         }
-        // вписываем в размер экрана
-        project.zoom_fit();
         this.setState(bar);
       });
   }

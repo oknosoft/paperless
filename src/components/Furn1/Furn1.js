@@ -54,7 +54,16 @@ class Furn1 extends WorkPlace {
           // прячем заполнения
           layer.glasses(true);
           // вписываем в размер экрана
-          project.zoom_fit();
+          if(layer.in_virt_layer) {
+            let bl = layer.layer;
+            while (!(bl instanceof constructor.ContourVirtual)) {
+              bl = bl.layer;
+            }
+            project.zoom_fit(bl.bounds.expand(300));
+          }
+          else {
+            project.zoom_fit();
+          }
 
           bar.layer = layer;
           this.setState(bar, () => {

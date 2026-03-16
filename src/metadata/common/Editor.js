@@ -102,29 +102,7 @@ export default function ($p) {
       rays, width, length, generatrix, layer}  = this;
     const {b, e} = rays;
     const {inner, outer} = this.joined_imposts();
-    const profiles = [{profile: b.profile, point: b.point}, ...inner, ...outer, {profile: e.profile, point: e.point}];
-    // if(!b.profile) {
-    //   for(const test of layer.profiles) {
-    //     if(test !== this) {
-    //       const {rays} = test;
-    //       if(rays.e.point.is_nearest(b.point, 1) || rays.b.point.is_nearest(b.point, 1)) {
-    //         profiles[0].profile = test;
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
-    // if(!e.profile) {
-    //   for(const test of layer.profiles) {
-    //     if(test !== this) {
-    //       const {rays} = test;
-    //       if(rays.e.point.is_nearest(e.point, 1) || rays.b.point.is_nearest(e.point, 1)) {
-    //         profiles[3].profile = test;
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
+    const profiles = [b, ...inner, ...outer, e];
     let other = b.find_other();
     if(other) {
       profiles.push({profile: other.profile, point: other.profile[other.node]});
@@ -147,7 +125,7 @@ export default function ($p) {
     });
     const tangent = generatrix.getTangentAt(generatrix.getOffsetOf(e.point));
     const hor = Math.abs(tangent.x) > Math.abs(tangent.y);
-    text.translate(tangent.normalize(hor ? text.bounds.width : text.bounds.height * 2));
+    text.translate(tangent.normalize(hor ? text.bounds.width : text.bounds.height * 1.7));
 
     for(const {profile, point} of profiles) {
       if(!profile) {
@@ -223,5 +201,17 @@ export default function ($p) {
 
       }
     }
+  };
+
+  ProfileItem.prototype.zoom_fit = function zoom_fit() {
+    let bounds;
+    const {layer: {profiles}, project, orientation} = this;
+    for(const profile of profiles) {
+      if(profile === this || this.has_cnn(profile, profile.b) || this.has_cnn(profile, profile.e)) {
+        bounds = bounds ? bounds.unite(profile.bounds) : profile.bounds;
+      }
+    }
+    bounds = orientation.is('vert') ? bounds.expand(0, 800) : bounds.expand(700, 0);
+    project.zoom_fit(bounds);
   };
 }
