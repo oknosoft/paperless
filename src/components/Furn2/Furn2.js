@@ -11,7 +11,7 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Furn2 extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project, PointText, consts}} = this;
+    const {state: {full_picture}, editor: {project, PointText, consts, constructor}} = this;
     let {cnstr, ox} = bar;
     const {leading_product, leading_elm} = ox;
     let loader = Promise.resolve(ox);
@@ -32,10 +32,24 @@ class Furn2 extends WorkPlace {
             contour = contour.layer;
             cnstr = contour.cnstr;
           }
+
           // прячем лишние слои
-          for(const cnt of project.contours) {
-            if(cnt !== contour && cnt.layer !== contour) {
-              cnt.visible = false;
+          if(contour.in_virt_layer) {
+            project.l_dimensions.clear();
+            for(const cnt of project.contours) {
+              // прячем заполнения и профили
+              for(const item of cnt.profiles.concat(cnt.fillings)) {
+                item.visible = false;
+              }
+              cnt.l_dimensions.clear();
+            }
+            contour.l_dimensions.redraw(true);
+          }
+          else {
+            for(const cnt of project.contours) {
+              if(cnt !== contour && cnt.layer !== contour) {
+                cnt.visible = false;
+              }
             }
           }
 
@@ -58,8 +72,19 @@ class Furn2 extends WorkPlace {
               position: cnt.bounds.center,
             });
           }
+
           // вписываем в размер экрана
-          project.zoom_fit();
+          if(contour.in_virt_layer) {
+            let bl = contour.layer;
+            while (bl.layer && !(bl instanceof constructor.ContourVirtual)) {
+              bl = bl.layer;
+            }
+            project.zoom_fit(bl.bounds.expand(300));
+          }
+          else {
+            project.zoom_fit();
+          }
+
           bar.cnstr = cnstr;
           this.setState(bar, () => {
             this.rep && Promise.resolve().then(() => this.rep.handleSave());

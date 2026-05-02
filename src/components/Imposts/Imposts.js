@@ -10,7 +10,7 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Imposts extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project}} = this;
+    const {state: {full_picture}, editor: {project, constructor}} = this;
     const {cnstr, ox} = bar;
     const {leading_product, leading_elm} = ox;
     let loader = Promise.resolve(ox);
@@ -49,7 +49,17 @@ class Imposts extends WorkPlace {
           }
 
           // вписываем в размер экрана
-          project.zoom_fit();
+          if(contour.in_virt_layer) {
+            let bl = contour.layer;
+            while (!(bl instanceof constructor.ContourVirtual)) {
+              bl = bl.layer;
+            }
+            project.zoom_fit(bl.bounds.expand(300));
+          }
+          else {
+            project.zoom_fit();
+          }
+
           this.setState(bar);
         }
       });

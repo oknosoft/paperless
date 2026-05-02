@@ -53,6 +53,7 @@ class Furn1 extends WorkPlace {
           project.draw_fragment({elm: -cnstr, faltz: 'faltz'});
           // прячем заполнения
           layer.glasses(true);
+
           // вписываем в размер экрана
           if(layer.in_virt_layer) {
             let bl = layer.layer;

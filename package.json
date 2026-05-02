@@ -26,11 +26,11 @@
   "proxy4": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.39-beta.1",
-    "metadata-redux": "2.0.39-beta.1",
+    "metadata-react": "2.0.40-beta.1",
+    "metadata-redux": "2.0.40-beta.1",
     "url-join": "^5.0",
-    "wb-core": "github:oknosoft/windowbuilder-core#da8075f58aa971fb70ead106638b5a1871233219",
-    "wb-forms": "github:oknosoft/windowbuilder-forms#d9589a8f1bf265a8d6a047569b71a68aa32671f8",
+    "wb-core": "github:oknosoft/windowbuilder-core#370c113a36499c7dcc6fb842462b98b85c798d53",
+    "wb-forms": "github:oknosoft/windowbuilder-forms#384eca9c9509c69d4384f0acc7d8a76745aac241",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
