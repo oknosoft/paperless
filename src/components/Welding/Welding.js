@@ -11,9 +11,14 @@ import Profiles from './Profiles';
 class Welding extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project}} = this;
-    const {cnstr, ox} = bar;
-    project.load(ox, {custom_lines: full_picture, mosquito: full_picture, redraw: true})
+    const {state: {full_picture}, editor: {project, constructor}} = this;
+    let {cnstr, ox} = bar;
+    const {leading_product, leading_elm} = ox;
+    let loader = Promise.resolve(ox);
+    if(!leading_product.empty() && leading_elm < 0) {
+      loader = leading_product.is_new() ? leading_product.load() : Promise.resolve(leading_product);
+    }
+    loader.then((projectOx) => project.load(projectOx, {custom_lines: full_picture, mosquito: full_picture, redraw: true}))
       .then(() => {
         if(full_picture) {
           return;
@@ -41,7 +46,17 @@ class Welding extends WorkPlace {
           this.editor.color_shtulps(contour);
 
           // вписываем в размер экрана
-          project.zoom_fit();
+          if(contour.in_virt_layer) {
+            let bl = contour.layer;
+            while (bl.layer && !(bl instanceof constructor.ContourVirtual)) {
+              bl = bl.layer;
+            }
+            project.zoom_fit(bl.bounds.expand(300));
+          }
+          else {
+            project.zoom_fit();
+          }
+
           this.setState(bar);
 
         }

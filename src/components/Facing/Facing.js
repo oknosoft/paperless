@@ -11,11 +11,11 @@ import onlay_sizes from '../Falsebinding/onlay_sizes';
 class Facing extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project, consts, PointText, constructor: {Filling, BuilderElement}}} = this;
+    const {state: {full_picture}, editor: {project, consts, PointText, constructor: {Filling, BuilderElement, ContourVirtual}}} = this;
 
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
-        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+        if((!ox.coordinates.count() || ox.leading_elm) && elm && !ox.leading_product.empty()) {
           const crow = ox.leading_product.coordinates.find({elm});
           if(crow) {
             ox = bar.ox = ox.leading_product;
@@ -68,7 +68,17 @@ class Facing extends WorkPlace {
               filling.draw_arcr();
 
               // вписываем в размер экрана
-              project.zoom_fit();
+              if(contour.in_virt_layer) {
+                let bl = contour.layer;
+                while (bl.layer && !(bl instanceof ContourVirtual)) {
+                  bl = bl.layer;
+                }
+                project.zoom_fit(bl.bounds.expand(300));
+              }
+              else {
+                project.zoom_fit();
+              }
+
               this.setState(bar);
             }
           });

@@ -12,10 +12,10 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Glass extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project, PointText, consts}} = this;
+    const {state: {full_picture}, editor: {project, PointText, consts, constructor}} = this;
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
-        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+        if((!ox.coordinates.count() || ox.leading_elm) && elm && !ox.leading_product.empty()) {
           const crow = ox.leading_product.coordinates.find({elm});
           if(crow) {
             ox = bar.ox = ox.leading_product;
@@ -36,30 +36,43 @@ class Glass extends WorkPlace {
             }
 
             // прячем лишние рамные слои
-            for(const cnt of project.contours) {
-              if(cnt !== contour && cnt.layer !== contour) {
-                cnt.visible = false;
+            if(contour.in_virt_layer) {
+              project.l_dimensions.clear();
+              for(const cnt of project.contours) {
+                // прячем заполнения и профили
+                for(const item of cnt.profiles.concat(cnt.fillings)) {
+                  item.visible = false;
+                }
+                cnt.l_dimensions.clear();
+              }
+              contour.l_dimensions.redraw(true);
+            }
+            else {
+              for(const cnt of project.contours) {
+                if(cnt !== contour && cnt.layer !== contour) {
+                  cnt.visible = false;
+                }
               }
             }
 
-            // рисуем номера заполнений
+            // обработчик клика
             for(const filling of contour.fillings) {
-              // new PointText({
-              //   parent: filling,
-              //   guide: true,
-              //   justification: 'right',
-              //   fillColor: 'black',
-              //   fontFamily: consts.font_family,
-              //   fontSize: consts.font_size * 1.5,
-              //   fontWeight: 'bold',
-              //   content: filling.elm,
-              //   position: filling.path.interiorPoint.subtract([consts.font_size, consts.font_size]),
-              // });
+              filling.visible = true;
               filling.onClick = this.fillingClick.bind(this, filling);
             }
 
             // вписываем в размер экрана
-            project.zoom_fit();
+            if(contour.in_virt_layer) {
+              let bl = contour.layer;
+              while (bl.layer && !(bl instanceof constructor.ContourVirtual)) {
+                bl = bl.layer;
+              }
+              project.zoom_fit(bl.bounds.expand(300));
+            }
+            else {
+              project.zoom_fit();
+            }
+
             bar.cnstr = cnstr;
             this.setState(bar, () => {
               this.rep && Promise.resolve().then(() => {

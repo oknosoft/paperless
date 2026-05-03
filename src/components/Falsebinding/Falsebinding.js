@@ -11,10 +11,10 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Falsebinding extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project, PointText, consts, constructor: {DimensionLineCustom}}} = this;
+    const {state: {full_picture}, editor: {project, PointText, consts, constructor}} = this;
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
-        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+        if((!ox.coordinates.count() || ox.leading_elm) && elm && !ox.leading_product.empty()) {
           const crow = ox.leading_product.coordinates.find({elm});
           if(crow) {
             ox = bar.ox = ox.leading_product;
@@ -52,13 +52,8 @@ class Falsebinding extends WorkPlace {
                 _opening.visible = false;
               }
               l_dimensions.children
-                .filter((dim) => dim instanceof DimensionLineCustom)
+                .filter((dim) => dim instanceof constructor.DimensionLineCustom)
                 .forEach((dim) => dim.remove());
-
-              // рисуем направления профилей
-              // for (const profile of contour.profiles) {
-              //   profile.mark_direction();
-              // }
 
               // рисуем спецразмеры фальшпереплёта
               contour.l_dimensions.draw_by_falsebinding();
@@ -66,7 +61,17 @@ class Falsebinding extends WorkPlace {
               // и длины элементов раскладок
 
               // вписываем в размер экрана
-              project.zoom_fit();
+              if(contour.in_virt_layer) {
+                let bl = contour.layer;
+                while (bl.layer && !(bl instanceof constructor.ContourVirtual)) {
+                  bl = bl.layer;
+                }
+                project.zoom_fit(bl.bounds.expand(300));
+              }
+              else {
+                project.zoom_fit();
+              }
+
               this.setState(bar);
             }
           });

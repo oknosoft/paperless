@@ -15,11 +15,11 @@ class Arc extends WorkPlace {
 
   barcodeFin(bar) {
     const {state: {full_picture}, editor} = this;
-    const {project, constructor: {DimensionRadius, DimensionLine, Filling}} = editor;
+    const {project, constructor: {DimensionRadius, DimensionLine, Filling, ContourVirtual}} = editor;
 
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
-        if(!ox.coordinates.count() && elm && !ox.leading_product.empty()) {
+        if((!ox.coordinates.count() || ox.leading_elm) && elm && !ox.leading_product.empty()) {
           const crow = ox.leading_product.coordinates.find({elm});
           if(crow) {
             ox = bar.ox = ox.leading_product;
@@ -90,7 +90,17 @@ class Arc extends WorkPlace {
               }
 
               // вписываем в размер экрана
-              project.zoom_fit();
+              if(contour.in_virt_layer) {
+                let bl = contour.layer;
+                while (bl.layer && !(bl instanceof ContourVirtual)) {
+                  bl = bl.layer;
+                }
+                project.zoom_fit(bl.bounds.expand(300));
+              }
+              else {
+                project.zoom_fit();
+              }
+
               this.setState(bar);
             }
           });

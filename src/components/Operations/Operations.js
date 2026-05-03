@@ -12,14 +12,15 @@ import withStyles, {WorkPlace, WorkPlaceFrame} from '../App/WorkPlace';
 class Operations extends WorkPlace {
 
   barcodeFin(bar) {
-    const {state: {full_picture}, editor: {project, PointText, Contour}} = this;
+    const {state: {full_picture}, editor: {project, PointText, constructor}} = this;
     const {elm, ox} = bar;
     const {leading_product, leading_elm} = ox;
     let loader = Promise.resolve(ox);
     if(!leading_product.empty() && leading_elm < 0) {
       loader = leading_product.is_new() ? leading_product.load() : Promise.resolve(leading_product);
     }
-    loader.then((projectOx) => project.load(projectOx, {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture, bw: !full_picture, redraw: true}))
+    loader.then((projectOx) => project.load(projectOx,
+      {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture, bw: !full_picture, redraw: true}))
       .then(() => {
         if(full_picture) {
           return;
@@ -32,7 +33,6 @@ class Operations extends WorkPlace {
           project.draw_fragment({elm});
 
           // рисуем технологические операции
-
 
           // показываем номера элементов на палках
           project.l_dimensions.visible = true;
@@ -54,8 +54,19 @@ class Operations extends WorkPlace {
             point: [-300, 80],
           });
         }
+
         // вписываем в размер экрана
-        project.zoom_fit();
+        if(profile?.layer.in_virt_layer) {
+          let bl = profile.layer.layer;
+          while (bl.layer && !(bl instanceof constructor.ContourVirtual)) {
+            bl = bl.layer;
+          }
+          project.zoom_fit(bl.bounds.expand(300));
+        }
+        else {
+          project.zoom_fit();
+        }
+
         this.setState(bar);
       });
   }
