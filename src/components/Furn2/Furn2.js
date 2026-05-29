@@ -18,7 +18,7 @@ class Furn2 extends WorkPlace {
     if(!leading_product.empty() && leading_elm < 0) {
       loader = leading_product.is_new() ? leading_product.load() : Promise.resolve(leading_product);
     }
-    loader.then((projectOx) => project.load(projectOx, {custom_lines: full_picture, mosquito: full_picture, redraw: true}))
+    loader.then((projectOx) => project.load(projectOx, {custom_lines: full_picture, mosquito: full_picture, redraw: true, workplace: 'furn2'}))
       .then(() => {
         if(full_picture) {
           return;

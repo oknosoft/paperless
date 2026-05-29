@@ -22,7 +22,7 @@ class Glass extends WorkPlace {
             cnstr = bar.cnstr = crow.cnstr;
           }
         }
-        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, glass_numbers: true, redraw: true /*, visualization: false */})
+        project.load(ox, {custom_lines: full_picture, mosquito: full_picture, glass_numbers: true, redraw: true, workplace: 'glass'})
         .then(() => {
           if(full_picture) {
             return;

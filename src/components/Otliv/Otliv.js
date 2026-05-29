@@ -16,7 +16,7 @@ class Otliv extends WorkPlace {
   barcodeFin(bar) {
     const {state: {full_picture}, editor: {project}} = this;
     const {ox} = bar;
-    project.load(ox, {auto_lines: false, custom_lines: true, unfolding: !full_picture, redraw: true})
+    project.load(ox, {auto_lines: false, custom_lines: true, unfolding: !full_picture, redraw: true, workplace: 'otliv'})
       .then(() => {
         clearTimeout(project._attr._vis_timer);
         project.zoom_fit();

@@ -18,7 +18,7 @@ class Crackers extends WorkPlace {
       loader = leading_product.is_new() ? leading_product.load() : Promise.resolve(leading_product);
     }
     loader.then((projectOx) => project.load(projectOx,
-      {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture, bw: !full_picture, redraw: true}))
+      {auto_lines: full_picture, custom_lines: full_picture, mosquito: full_picture, bw: !full_picture, redraw: true, workplace: 'crackers'}))
       .then(() => {
         if(full_picture) {
           return;
