@@ -30,9 +30,10 @@ export default function MainProps(props) {
     if(!clrs.size && ox.clr.empty && !ox.clr.empty()) {
       clrs.add(ox.clr);
     }
+    const svg = ox.svg || ox.leading_product.svg;
     rows.push(<TableRow key="sub">
       <TableCell onClick={changeFull}>
-        <div dangerouslySetInnerHTML={{__html: ox.svg ? scale_svg(ox.svg, {width: 130, height: 110, zoom: 0.2}, 0) : 'нет эскиза'}}/>
+        <div dangerouslySetInnerHTML={{__html: svg ? scale_svg(svg, {width: 130, height: 110, zoom: 0.2}, 0) : 'нет эскиза'}}/>
       </TableCell>
       <TableCell>
         <Table>
