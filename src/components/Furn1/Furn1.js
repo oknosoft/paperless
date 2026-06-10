@@ -51,6 +51,7 @@ class Furn1 extends WorkPlace {
 
           // рисуем текущий слой
           project.draw_fragment({elm: -cnstr, faltz: 'faltz'});
+
           // прячем заполнения
           layer.glasses(true);
 
