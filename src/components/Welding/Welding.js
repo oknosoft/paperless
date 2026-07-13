@@ -32,7 +32,7 @@ class Welding extends WorkPlace {
 
           // прячем заполнения и визуализацию
           contour.glasses(true);
-          contour.l_visualization.visible = false;
+          //contour.l_visualization.visible = false;
 
           // показываем номера элементов на палках
           project.l_dimensions.visible = true;
