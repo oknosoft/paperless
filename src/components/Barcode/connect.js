@@ -127,6 +127,8 @@ export function decrypt(barcode, doc = {}) {
       const {adapters: {pouch}, current_user, utils, wsql} = characteristics._owner.$p;
       const work_center = wsql.get_user_param('work_center');
       const person = wsql.get_user_param('individual_person');
+      const browser_id = wsql.get_user_param('browser_uid', 'string');
+      const url_id = wsql.get_user_param('url_id', 'string');
 
       const opts = {
         method: 'post',
@@ -136,6 +138,8 @@ export function decrypt(barcode, doc = {}) {
           place: location.pathname.substring(1).split('/')[0],
           work_center: work_center || utils.blank.guid,
           person: person || utils.blank.guid,
+          browser_id,
+          url_id,
         }),
       };
       return pouch.fetch(`/adm/api/scan`, opts)

@@ -26,4 +26,6 @@ export default function ($p) {
   //chartscharacteristics($p);
   //documents($p);
   reports($p);
+
+  import('./common/browserUid').then(({browserUid}) => browserUid($p));
 }
