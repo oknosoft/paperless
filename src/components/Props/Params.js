@@ -11,8 +11,18 @@ import {TableRow, TableCell} from './TableRow';
 
 export default function Params(props) {
 
-  const {ox: {params}, cnstr, filter} = props;
+  const {ox: {params, constructions}, cnstr, filter} = props;
   const res = [];
+
+  if(cnstr) {
+    const prow = constructions.find({cnstr, kind: 0});
+    if(prow && !prow.furn.empty()) {
+      res.push({
+        param: $p.cch.properties.predefined('direction'),
+        value: prow.direction,
+      });
+    }
+  }
 
   params.find_rows({cnstr, inset: $p.utils.blank.guid}, (row) => {
     const {param} = row;
