@@ -9,10 +9,37 @@ import CompleteListSorting from './CompleteListSorting';
 
 import scale_svg from '../../metadata/common/scale_svg';
 
+function findClrs(ox) {
+  const {pencil_pl, pencil_pl_map} = $p.job_prm.nom;
+  const {clr} = ox;
+  if(clr) {
+    const stop = clr.is_composite() ? 1 : 0;
+    const clrs = new Set();
+    for(const row of ox.specification) {
+      if(pencil_pl.includes(row.nom)) {
+        clrs.add(row.clr);
+        if(clrs.size > stop) {
+          break;
+        }
+      }
+    }
+    if(clrs.size > 1) {
+      return [
+        pencil_pl_map.clrs_map().get(clr.clr_in) || clr.clr_in,
+        pencil_pl_map.clrs_map().get(clr.clr_out) || clr.clr_out,
+      ];
+    }
+    if(clrs.size) {
+      return Array.from(clrs)[0];
+    }
+  }
+}
+
 export default function MainProps(props) {
 
   const {ox, cnstr, block, task, show_spec, changeFull, hideBounds, filter} = props;
   const name = ox.prod_name?.(true);
+  const pencil_clrs = findClrs(ox);
 
   const rows = [];
 
@@ -58,6 +85,23 @@ export default function MainProps(props) {
               <TableCell>Цвет</TableCell>
               <TableCell>{Array.from(clrs).join(',')}</TableCell>
             </TableRow>
+
+            {pencil_clrs ? (
+              Array.isArray(pencil_clrs) ? <>
+                  <TableRow>
+                    <TableCell>Изнутри</TableCell>
+                    <TableCell>{pencil_clrs[0].article}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Снаружи</TableCell>
+                    <TableCell>{pencil_clrs[1].article}</TableCell>
+                  </TableRow>
+              </> :
+                <TableRow>
+                  <TableCell>Карандаш</TableCell>
+                  <TableCell>{pencil_clrs.article}</TableCell>
+                </TableRow>
+            ) : null}
 
             {hideBounds ? null : <TableRow>
               <TableCell>Габарит</TableCell>
