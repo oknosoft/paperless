@@ -133,7 +133,7 @@ export function decrypt(barcode, doc = {}) {
       const opts = {
         method: 'post',
         body: JSON.stringify({
-          _id: `${new Date().toISOString().replace(/(-|:|T|\.|Z)/g, '')}|${barcode}`,
+          _id: `${new Date().toISOString().replace(/\D/g, '')}|${barcode}`,
           user: current_user ? current_user.ref : utils.blank.guid,
           place: location.pathname.substring(1).split('/')[0],
           work_center: work_center || utils.blank.guid,
