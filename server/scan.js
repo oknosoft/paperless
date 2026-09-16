@@ -6,6 +6,10 @@
  * Created by Evgeniy Malyarov on 09.02.2020.
  */
 
+function formatDate() {
+  return new Date().toISOString().replace(/\D/g,'');
+}
+
 module.exports = function scan($p, log) {
 
   const {job_prm: {server}, adapters: {pouch}, utils: {moment, getBody, end}} = $p;
@@ -36,7 +40,7 @@ module.exports = function scan($p, log) {
 
   function events({query, res, method, path, stat}) {
     if(!query.moment) {
-      query.moment = moment().format('YYYYMMDDHHmmssSSS');
+      query.moment = formatDate();
     }
 
     if(!query.period || !['month','year'].includes(query.period)) {
@@ -162,7 +166,7 @@ module.exports = function scan($p, log) {
           const doc = JSON.parse(body);
           // пример 20230301075052995
           const code = doc._id.substring(18);
-          doc._id = moment().format('YYYYMMDDHHmmssSSS') + '|' + code;
+          doc._id = formatDate() + '|' + code;
           if(code.length < 3 || code === 'undefined' || code.length > 20) {
             end.end404(res, `${method} ${path}`);
             return pong(stat);
