@@ -54,12 +54,14 @@ class Locks extends React.Component {
     return Promise.resolve()
       .then(() => {
         const {characteristic: {specification, coordinates, constructions}} = production.get(0);
-        const {Штапик} = $p.enm.elm_types;
+        const {enm: {elm_types: {Штапик}}, job_prm: {nom: {pl_glass}}}  = $p;
 
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр
-          if(!row.elm || !row.len || row.nom.elm_type !== Штапик) {
-            return;
+          if(!pl_glass?.includes(row.nom)) {
+            if(!row.elm || !row.len || row.nom.elm_type !== Штапик) {
+              return;
+            }
           }
           const nrow = data.add(row);
           const crow = constructions.find({cnstr: coordinates.find({elm: row.elm}).cnstr});
@@ -67,17 +69,6 @@ class Locks extends React.Component {
           nrow.grouping = `${crow.parent ? 'Створка' : 'Рама'} №${crow.cnstr}`;
         });
         data.group_by(['grouping', 'nom', 'len'], ['qty']);
-        const nmgr = $p.cat.nom;
-        data._obj.sort((a, b) => {
-          const na = nmgr.get(a.nom), nb = nmgr.get(b.nom);
-          if (na.name < nb.name){
-            return -1;
-          }
-          if (na.name > nb.name){
-            return 1;
-          }
-          return 0;
-        });
       });
   }
 
@@ -100,6 +91,27 @@ class Locks extends React.Component {
 
         // группируем по схеме - сворачиваем результат и сохраняем его в ._rows
         scheme.group_by(data);
+
+        const {enm: {elm_types: {Штапик}}, cat: {nom: nmgr}}  = $p;
+        const sort = (a, b) => {
+          const na = nmgr.get(a.nom), nb = nmgr.get(b.nom);
+          if(na.elm_type === Штапик && nb.elm_type !== Штапик) {
+            return -1;
+          }
+          if(na.elm_type !== Штапик && nb.elm_type === Штапик) {
+            return 1;
+          }
+          if (na.name < nb.name){
+            return -1;
+          }
+          if (na.name > nb.name){
+            return 1;
+          }
+          return 0;
+        };
+        for(const {children} of data._rows) {
+          children.sort(sort);
+        }
 
       });
   }
