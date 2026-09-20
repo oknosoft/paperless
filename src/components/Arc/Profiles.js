@@ -37,6 +37,7 @@ class Profiles extends React.Component {
     const beads = [];
     collection.clear();
     const {ox: {coordinates, specification}, contour: {profiles}} = this.props;
+    const noms  = $p.job_prm.nom?.pl_arc;
     for(const profile of profiles) {
       const row = coordinates.find({elm: profile.elm});
       const nrow = collection.add(row);
@@ -54,7 +55,7 @@ class Profiles extends React.Component {
         row.x2 = rinner;
         // для гнутых, добавляем инфо по штапикам
         specification.find_rows({elm: row.elm}, (srow) => {
-          if(srow.nom.elm_type.is('Штапик')) {
+          if(noms?.includes(srow.nom) || srow.nom.elm_type.is('Штапик')) {
             const nrow = collection.add(row);
             nrow.len = srow.len * 1000;
             nrow.nom = srow.nom;

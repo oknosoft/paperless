@@ -49,9 +49,9 @@ class Coordinates extends React.Component {
     const res = [];
     const noms = new Set();
     const {elm, ox: {cnn_elmnts}} = this.props;
-    const {hide_oper} = $p.job_prm.nom;
+    const {hide_oper, pl_operations} = $p.job_prm.nom;
     collection.forEach((row) => {
-      if(row.elm === elm && row.dop === -2 && row.len && !hide_oper.includes(row.nom)) {
+      if(row.elm === elm && (row.dop === -2 && row.len || pl_operations?.includes(row.nom)) && !hide_oper.includes(row.nom)) {
         pre.push(row);
       }
     });

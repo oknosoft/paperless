@@ -37,6 +37,7 @@ class Noms extends React.Component {
             registerRep={this.registerRep}
             complete_list_sorting={[19,30]}
             count={constructions.length}
+            area="furn2"
           />
         </ConditionalAppearanceContext.Provider>;
       })}
