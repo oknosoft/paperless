@@ -37,11 +37,11 @@ class Nom extends React.Component {
   }
 
   prepare(/*scheme*/) {
-    const {specification: data, production, complete_list_sorting, props: {area}} = this;
+    const {specification: data, production, complete_list_sorting, props} = this;
     return Promise.resolve()
       .then(() => {
         const {characteristic: {specification, coordinates}, elm: cnstr} = production.get(0);
-        const noms  = $p.job_prm.nom?.[`pl_${area || 'furn1'}`];
+        const noms  = $p.job_prm.nom?.[`pl_${props?.area || 'furn1'}`];
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр, передав в компонент массив чисел complete_list_sorting
           if(noms?.includes(row.nom)) {
@@ -95,7 +95,7 @@ class Nom extends React.Component {
           return 0;
         };
         for(const {children} of data._rows) {
-          children.sort(sort);
+          children?.sort?.(sort);
         }
 
       });

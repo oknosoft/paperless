@@ -25,8 +25,8 @@ export default function Params(props) {
   }
 
   params.find_rows({cnstr, inset: $p.utils.blank.guid}, (row) => {
-    const {param} = row;
-    if(param) {
+    const {param, hide} = row;
+    if(param && !hide) {
       if(filter) {
         filter(row) && res.push(row);
       }
