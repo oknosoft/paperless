@@ -27,6 +27,7 @@ class Nom extends React.Component {
     this._meta = utils._clone(this.rep._metadata('specification'));
     this._meta.fields.qty.type.fraction = 0;
     this._meta.fields.totqty.type.fraction = 0;
+    this._meta.fields.len.type.fraction = 0;
 
     cat.scheme_settings.find_rows({obj: 'rep.materials_demand.specification'}, (scheme) => {
       if(scheme.name.endsWith('furn1')) {
@@ -45,15 +46,15 @@ class Nom extends React.Component {
         specification.forEach((row) => {
           // в этом месте можно устроить фильтр, передав в компонент массив чисел complete_list_sorting
           if(noms?.includes(row.nom)) {
-            data.add(row);
+            data.add(row).len *= 1000;
           }
-          else if(!row.len && row.nom.complete_list_sorting >= complete_list_sorting[0] && row.nom.complete_list_sorting <= complete_list_sorting[1]) {
+          else if(row.nom.complete_list_sorting >= complete_list_sorting[0] && row.nom.complete_list_sorting <= complete_list_sorting[1]) {
             if(row.elm === -cnstr || coordinates.find({elm: row.elm, cnstr})) {
-              data.add(row);
+              data.add(row).len *= 1000;
             }
           }
         });
-        data.group_by(['nom'], ['qty', 'totqty']);
+        data.group_by(['nom', 'len'], ['qty', 'totqty']);
       });
   }
 

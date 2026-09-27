@@ -22,6 +22,11 @@ const repos = [
     remote: '..\\wb-forms',
     dir: 'dist',
   },
+  {
+    local: 'metadata-abstract-ui',
+    remote: '..\\metadata\\packages\\metadata-abstract-ui',
+    dir: '',
+  },
 ];
 
 for(const local of Object.keys(dependencies).filter(v => /^metadata-/.test(v))) {
