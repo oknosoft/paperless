@@ -22,14 +22,14 @@
   "license": "SEE LICENSE IN LICENSE",
   "proxy1": "http://localhost:3016/",
   "proxy2": "https://paperless.ecookna.ru/",
-  "proxy3": "https://eco-paperless.oknosoft.ru/",
-  "proxy": "https://develop.ecookna.ru/",
+  "proxy": "https://eco-paperless.oknosoft.ru/",
+  "proxy4": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
     "metadata-react": "2.0.40-beta.2",
     "metadata-redux": "2.0.40-beta.2",
     "url-join": "^5.0",
-    "wb-core": "github:oknosoft/windowbuilder-core#34d3b19c121f8e9527dc0083ca46220f907a3c61",
+    "wb-core": "github:oknosoft/windowbuilder-core#f76da6509a19c14f011f7e47c4ad0b20a14fe999",
     "wb-forms": "github:oknosoft/windowbuilder-forms#bd302666132af8b9238a2747268eccb66bb5e1a5",
     "xlsx": "^0.18.5"
   },
