@@ -56,18 +56,19 @@ class Locks extends React.Component {
         const {characteristic: {specification, coordinates, constructions}} = production.get(0);
         const {enm: {elm_types: {Штапик}}, job_prm: {nom: {pl_glass}}}  = $p;
 
-        specification.forEach((row) => {
+        for(const row of specification) {
           // в этом месте можно устроить фильтр
           if(!pl_glass?.includes(row.nom)) {
             if(!row.elm || !row.len || row.nom.elm_type !== Штапик) {
-              return;
+              continue;
             }
           }
           const nrow = data.add(row);
           const crow = constructions.find({cnstr: coordinates.find({elm: row.elm}).cnstr});
           nrow.len *= 1000;
           nrow.grouping = `${crow.parent ? 'Створка' : 'Рама'} №${crow.cnstr}`;
-        });
+        }
+
         data.group_by(['grouping', 'nom', 'len'], ['qty']);
       });
   }

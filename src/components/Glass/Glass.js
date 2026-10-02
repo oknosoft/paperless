@@ -15,6 +15,7 @@ class Glass extends WorkPlace {
     const {state: {full_picture}, editor: {project, PointText, consts, constructor}} = this;
     return super.barcodeFin(bar)
       .then(({cnstr, elm, ox}) => {
+        const initialOx = ox;
         if((!ox.coordinates.count() || ox.leading_elm) && elm && !ox.leading_product.empty()) {
           const crow = ox.leading_product.coordinates.find({elm});
           if(crow) {
@@ -78,8 +79,8 @@ class Glass extends WorkPlace {
               this.rep && Promise.resolve().then(() => {
                 const {_obj} = this.rep.props;
                 const row = _obj.production.get(0);
-                row.characteristic = bar.ox;
-                row.elm = bar.cnstr;
+                row.characteristic = initialOx;
+                row.elm = cnstr;
                 this.rep
                   .handleSave()
                   .then(() => {
