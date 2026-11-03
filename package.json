@@ -1,6 +1,6 @@
 {
   "name": "paperless",
-  "version": "2.1.269",
+  "version": "2.1.270",
   "description": "Безбумажка для Заказа дилера",
   "repository": {
     "type": "git",
@@ -26,10 +26,10 @@
   "proxy4": "https://develop.ecookna.ru/",
   "dependencies": {
     "md5-file": "^5.0",
-    "metadata-react": "2.0.40-beta.2",
-    "metadata-redux": "2.0.40-beta.2",
+    "metadata-react": "2.0.41-beta.1",
+    "metadata-redux": "2.0.41-beta.1",
     "url-join": "^5.0",
-    "wb-core": "github:oknosoft/windowbuilder-core#f76da6509a19c14f011f7e47c4ad0b20a14fe999",
+    "wb-core": "github:oknosoft/windowbuilder-core#75c30859238ff52feb415d5fc0cb68ce3db93da9",
     "wb-forms": "github:oknosoft/windowbuilder-forms#bd302666132af8b9238a2747268eccb66bb5e1a5",
     "xlsx": "^0.18.5"
   },
