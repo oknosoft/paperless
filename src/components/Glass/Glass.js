@@ -37,8 +37,8 @@ class Glass extends WorkPlace {
             }
 
             // прячем лишние рамные слои
+            project.l_dimensions.clear();
             if(contour.in_virt_layer) {
-              project.l_dimensions.clear();
               for(const cnt of project.contours) {
                 // прячем заполнения и профили
                 for(const item of cnt.profiles.concat(cnt.fillings)) {
@@ -46,15 +46,21 @@ class Glass extends WorkPlace {
                 }
                 cnt.l_dimensions.clear();
               }
-              contour.l_dimensions.redraw(true);
             }
             else {
               for(const cnt of project.contours) {
                 if(cnt !== contour && cnt.layer !== contour) {
+                  for(const flap of cnt.contours) {
+                    flap.l_visualization.visible = false;
+                    flap.l_dimensions.visible = false;
+                  }
+                  cnt.l_visualization.visible = false;
+                  cnt.l_dimensions.visible = false;
                   cnt.visible = false;
                 }
               }
             }
+            contour.l_dimensions.redraw(true, true);
 
             // обработчик клика
             for(const filling of contour.fillings) {

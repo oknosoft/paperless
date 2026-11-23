@@ -47,6 +47,7 @@ class Welding extends WorkPlace {
 
           // вписываем в размер экрана
           if(contour.in_virt_layer) {
+            project.l_dimensions.clear();
             let bl = contour.layer;
             while (bl.layer && !(bl instanceof constructor.ContourVirtual)) {
               bl = bl.layer;
@@ -54,6 +55,9 @@ class Welding extends WorkPlace {
             project.zoom_fit(bl.bounds.expand(300));
           }
           else {
+            if(project.contours.length > 1) {
+              project.l_dimensions.clear();
+            }
             project.zoom_fit();
           }
 

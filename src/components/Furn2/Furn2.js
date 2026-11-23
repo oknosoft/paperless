@@ -43,15 +43,24 @@ class Furn2 extends WorkPlace {
               }
               cnt.l_dimensions.clear();
             }
-            contour.l_dimensions.redraw(true);
           }
           else {
+            if(project.contours.length > 1) {
+              project.l_dimensions.clear();
+            }
             for(const cnt of project.contours) {
               if(cnt !== contour && cnt.layer !== contour) {
+                for(const flap of cnt.contours) {
+                  flap.l_visualization.visible = false;
+                  flap.l_dimensions.visible = false;
+                }
+                cnt.l_visualization.visible = false;
+                cnt.l_dimensions.visible = false;
                 cnt.visible = false;
               }
             }
           }
+          contour.l_dimensions.redraw(true, true);
 
           // прячем заполнения
           for(const glass of contour.fillings) {
